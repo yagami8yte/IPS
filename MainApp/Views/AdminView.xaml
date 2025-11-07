@@ -1,0 +1,481 @@
+<UserControl x:Class="IPS.MainApp.Views.AdminView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:IPS.MainApp.Views"
+             xmlns:vm="clr-namespace:IPS.MainApp.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="1920" d:DesignWidth="1080"
+             d:DataContext="{d:DesignInstance Type=vm:AdminViewModel}">
+    <Grid Background="{StaticResource LightCream}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/> <!-- Header -->
+            <RowDefinition Height="*"/> <!-- Content -->
+            <RowDefinition Height="120"/> <!-- Action buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource DarkBrown}">
+            <TextBlock Text="System Configuration"
+                       FontSize="48"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource LightCream}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      PanningMode="VerticalOnly"
+                      PanningDeceleration="0.001"
+                      PanningRatio="1">
+            <StackPanel Margin="40">
+                <!-- Network Scanner Section -->
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,20">
+                            <TextBlock Text="🔍 Network Device Scanner"
+                                       FontSize="28"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource DarkBrown}"
+                                       HorizontalAlignment="Left"/>
+
+                            <Button Content="Scan Network"
+                                    Command="{Binding ScanNetworkCommand}"
+                                    HorizontalAlignment="Right"
+                                    FontSize="22"
+                                    Padding="30,10"
+                                    Background="{StaticResource AccentGreen}"
+                                    Foreground="White"
+                                    BorderBrush="{StaticResource DarkBrown}"
+                                    BorderThickness="2"
+                                    Cursor="Hand">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </Grid>
+
+                        <!-- Scan Status -->
+                        <StackPanel Visibility="{Binding IsScanning, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Margin="0,0,0,15">
+                            <TextBlock Text="{Binding ScanStatus}"
+                                       FontSize="18"
+                                       Foreground="{StaticResource PrimaryBrown}"
+                                       Margin="0,0,0,10"/>
+                            <ProgressBar Value="{Binding ScanProgress}"
+                                         Height="8"
+                                         Minimum="0"
+                                         Maximum="100"
+                                         Foreground="{StaticResource AccentGreen}"/>
+                        </StackPanel>
+
+                        <!-- Discovered Devices List -->
+                        <ItemsControl ItemsSource="{Binding DiscoveredDevices}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#E8F5E9"
+                                            CornerRadius="6"
+                                            Padding="15"
+                                            Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock FontSize="18"
+                                                           FontWeight="Bold"
+                                                           Foreground="{StaticResource DarkBrown}">
+                                                    <Run Text="{Binding DeviceType}"/>
+                                                    <Run Text=" - "/>
+                                                    <Run Text="{Binding IpAddress}"/>
+                                                    <Run Text=":"/>
+                                                    <Run Text="{Binding Port}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+
+                                            <Button Grid.Column="1"
+                                                    Content="+ Add to Config"
+                                                    Command="{Binding DataContext.AddDiscoveredDeviceCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+                                                    CommandParameter="{Binding}"
+                                                    FontSize="16"
+                                                    Padding="15,5"
+                                                    Background="{StaticResource AccentGold}"
+                                                    Foreground="{StaticResource DarkBrown}"
+                                                    BorderThickness="0"
+                                                    Cursor="Hand">
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Printer Scanner Section -->
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,20">
+                            <TextBlock Text="🖨 Receipt Printer Scanner"
+                                       FontSize="28"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource DarkBrown}"
+                                       HorizontalAlignment="Left"/>
+
+                            <Button Content="Scan Printers"
+                                    Command="{Binding ScanPrintersCommand}"
+                                    HorizontalAlignment="Right"
+                                    FontSize="22"
+                                    Padding="30,10"
+                                    Background="{StaticResource AccentGreen}"
+                                    Foreground="White"
+                                    BorderBrush="{StaticResource DarkBrown}"
+                                    BorderThickness="2"
+                                    Cursor="Hand">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </Grid>
+
+                        <!-- Available Printers List -->
+                        <ItemsControl ItemsSource="{Binding AvailablePrinters}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FFF3E0"
+                                            CornerRadius="6"
+                                            Padding="15"
+                                            Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding PrinterName}"
+                                                           FontSize="18"
+                                                           FontWeight="Bold"
+                                                           Foreground="{StaticResource DarkBrown}"/>
+                                                <StackPanel Orientation="Horizontal"
+                                                            Margin="0,5,0,0">
+                                                    <TextBlock FontSize="14"
+                                                               Foreground="#666">
+                                                        <Run Text="Type:"/>
+                                                        <Run Text="{Binding PrinterType}"/>
+                                                        <Run Text=" | Port:"/>
+                                                        <Run Text="{Binding PortName}"/>
+                                                    </TextBlock>
+                                                    <TextBlock Text="[DEFAULT]"
+                                                               FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Foreground="{StaticResource AccentGold}"
+                                                               Margin="10,0,0,0"
+                                                               Visibility="{Binding IsDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <Button Grid.Column="1"
+                                                    Content="Test Print"
+                                                    Command="{Binding DataContext.TestPrinterCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+                                                    CommandParameter="{Binding}"
+                                                    FontSize="16"
+                                                    Padding="15,5"
+                                                    Background="{StaticResource AccentGold}"
+                                                    Foreground="{StaticResource DarkBrown}"
+                                                    BorderThickness="0"
+                                                    Cursor="Hand">
+                                                <Button.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="5"/>
+                                                    </Style>
+                                                </Button.Resources>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Selected Printer Display -->
+                        <Border Background="#E8F5E9"
+                                BorderBrush="{StaticResource AccentGreen}"
+                                BorderThickness="2"
+                                CornerRadius="6"
+                                Padding="15"
+                                Margin="0,15,0,0"
+                                Visibility="{Binding SelectedPrinter, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel>
+                                <TextBlock Text="Selected Printer:"
+                                           FontSize="16"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding SelectedPrinter}"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource AccentGreen}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- DLL Server Port -->
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="DLL Server Configuration"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,20"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Text="Server Port:"
+                                       FontSize="22"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource DarkBrown}"/>
+
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding DllServerPort, Mode=TwoWay}"
+                                     FontSize="22"
+                                     Padding="10"
+                                     VerticalAlignment="Center"
+                                     Background="#F5F5F5"
+                                     BorderBrush="{StaticResource DarkBrown}"
+                                     BorderThickness="2"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Systems Configuration -->
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,20">
+                            <TextBlock Text="Unmanned Systems"
+                                       FontSize="28"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource DarkBrown}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"/>
+
+                            <Button Content="+ Add System"
+                                    Command="{Binding AddSystemCommand}"
+                                    HorizontalAlignment="Right"
+                                    FontSize="22"
+                                    Padding="30,10"
+                                    Background="{StaticResource AccentGold}"
+                                    Foreground="{StaticResource DarkBrown}"
+                                    BorderBrush="{StaticResource DarkBrown}"
+                                    BorderThickness="2"
+                                    Cursor="Hand">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </Grid>
+
+                        <!-- System List -->
+                        <ItemsControl ItemsSource="{Binding Systems}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#F5F5F5"
+                                            CornerRadius="8"
+                                            Padding="20"
+                                            Margin="0,0,0,15"
+                                            BorderBrush="{StaticResource DarkBrown}"
+                                            BorderThickness="1">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- System Name -->
+                                            <TextBlock Grid.Row="0" Grid.Column="0"
+                                                       Text="System Name:"
+                                                       FontSize="20"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,0,10"
+                                                       Foreground="{StaticResource DarkBrown}"/>
+                                            <TextBox Grid.Row="0" Grid.Column="1"
+                                                     Text="{Binding SystemName, Mode=TwoWay}"
+                                                     FontSize="20"
+                                                     Padding="8"
+                                                     Margin="0,0,10,10"
+                                                     Background="White"
+                                                     BorderBrush="{StaticResource DarkBrown}"
+                                                     BorderThickness="1"/>
+
+                                            <!-- IP Address -->
+                                            <TextBlock Grid.Row="1" Grid.Column="0"
+                                                       Text="IP Address:"
+                                                       FontSize="20"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,0,10"
+                                                       Foreground="{StaticResource DarkBrown}"/>
+                                            <TextBox Grid.Row="1" Grid.Column="1"
+                                                     Text="{Binding IpAddress, Mode=TwoWay}"
+                                                     FontSize="20"
+                                                     Padding="8"
+                                                     Margin="0,0,10,10"
+                                                     Background="White"
+                                                     BorderBrush="{StaticResource DarkBrown}"
+                                                     BorderThickness="1"/>
+
+                                            <!-- Port -->
+                                            <TextBlock Grid.Row="2" Grid.Column="0"
+                                                       Text="Port:"
+                                                       FontSize="20"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{StaticResource DarkBrown}"/>
+                                            <TextBox Grid.Row="2" Grid.Column="1"
+                                                     Text="{Binding Port, Mode=TwoWay}"
+                                                     FontSize="20"
+                                                     Padding="8"
+                                                     Margin="0,0,10,0"
+                                                     Background="White"
+                                                     BorderBrush="{StaticResource DarkBrown}"
+                                                     BorderThickness="1"/>
+
+                                            <!-- Remove Button & Enabled Checkbox -->
+                                            <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="3"
+                                                        VerticalAlignment="Center">
+                                                <CheckBox IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                                                          Content="Enabled"
+                                                          FontSize="20"
+                                                          Foreground="{StaticResource DarkBrown}"
+                                                          VerticalAlignment="Center"
+                                                          Margin="0,0,0,10"/>
+
+                                                <Button Content="✕ Remove"
+                                                        Command="{Binding DataContext.RemoveSystemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        FontSize="20"
+                                                        Padding="20,8"
+                                                        Background="#DC143C"
+                                                        Foreground="White"
+                                                        BorderBrush="#B00020"
+                                                        BorderThickness="2"
+                                                        Cursor="Hand">
+                                                    <Button.Resources>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="CornerRadius" Value="6"/>
+                                                        </Style>
+                                                    </Button.Resources>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Action Buttons -->
+        <Grid Grid.Row="2"
+              Background="{StaticResource DarkBrown}"
+              Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Content="Cancel"
+                    Command="{Binding CancelCommand}"
+                    FontSize="32"
+                    FontWeight="Bold"
+                    Margin="40,20"
+                    Background="#666666"
+                    Foreground="White"
+                    BorderBrush="#444444"
+                    BorderThickness="2"
+                    Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="12"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Grid.Column="1"
+                    Content="Save Configuration"
+                    Command="{Binding SaveCommand}"
+                    FontSize="32"
+                    FontWeight="Bold"
+                    Margin="40,20"
+                    Background="{StaticResource AccentGold}"
+                    Foreground="{StaticResource DarkBrown}"
+                    BorderBrush="{StaticResource DarkBrown}"
+                    BorderThickness="2"
+                    Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="12"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Grid.Column="2"
+                    Content="Exit Program"
+                    Command="{Binding ExitCommand}"
+                    FontSize="32"
+                    FontWeight="Bold"
+                    Margin="40,20"
+                    Background="{StaticResource ErrorRed}"
+                    Foreground="White"
+                    BorderBrush="#B00020"
+                    BorderThickness="2"
+                    Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="12"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,692 @@
+<UserControl x:Class="IPS.MainApp.Views.MenuView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:IPS.MainApp.Views"
+      xmlns:controls="clr-namespace:IPS.MainApp.Views.Controls"
+      xmlns:vm="clr-namespace:IPS.MainApp.ViewModels"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance vm:MenuViewModel}"
+      d:DesignHeight="1920" d:DesignWidth="1080"
+      Width="1080" Height="1920">
+
+    <Grid>
+        <!-- Background -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#F5E6D3" Offset="0"/>
+                <GradientStop Color="#FFF8DC" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="180"/>
+            <!-- Brand Header -->
+            <RowDefinition Height="Auto"/>
+            <!-- System Selector -->
+            <RowDefinition Height="Auto"/>
+            <!-- Category Selector -->
+            <RowDefinition Height="*"/>
+            <!-- Menu Items (scrollable) -->
+            <RowDefinition Height="480"/>
+            <!-- Cart Summary -->
+        </Grid.RowDefinitions>
+
+        <!-- Brand Name at Top -->
+        <Border Grid.Row="0"
+                Background="{StaticResource DarkBrown}"
+                BorderBrush="{StaticResource AccentGold}"
+                BorderThickness="0,0,0,2">
+            <TextBlock Text="Coffeebotic"
+                       Style="{StaticResource BrandHeaderStyle}"/>
+        </Border>
+
+        <!-- System Selector (Horizontal Scrollable) -->
+        <Border Grid.Row="1"
+                Background="{StaticResource DarkBrown}"
+                BorderBrush="{StaticResource AccentGold}"
+                BorderThickness="0,0,0,2"
+                Padding="20,15">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled"
+                          PanningMode="HorizontalOnly"
+                          PanningDeceleration="0.001"
+                          PanningRatio="1"
+                          Stylus.IsPressAndHoldEnabled="False">
+                <ItemsControl ItemsSource="{Binding SystemTabs}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="SystemTabBorder"
+                                    Background="Transparent"
+                                    BorderBrush="{StaticResource AccentLatte}"
+                                    BorderThickness="0,0,0,4"
+                                    Padding="30,10"
+                                    Margin="10,0"
+                                    CornerRadius="5,5,0,0"
+                                    Cursor="Hand">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                                                <Setter Property="BorderThickness" Value="0,0,0,6"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.InputBindings>
+                                    <MouseBinding Command="{Binding Path=DataContext.SelectSystemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                  CommandParameter="{Binding SystemName}"
+                                                  MouseAction="LeftClick"/>
+                                </Border.InputBindings>
+                                <TextBlock Text="{Binding SystemName}"
+                                           FontSize="32"
+                                           FontFamily="{StaticResource BrandFont}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource LightCream}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Category Selector (Horizontal Scrollable) -->
+        <Border Grid.Row="2"
+                Background="{StaticResource LightCream}"
+                BorderBrush="{StaticResource AccentLatte}"
+                BorderThickness="0,0,0,2"
+                Padding="20,15">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled"
+                          PanningMode="HorizontalOnly"
+                          PanningDeceleration="0.001"
+                          PanningRatio="1"
+                          Stylus.IsPressAndHoldEnabled="False">
+                <ItemsControl ItemsSource="{Binding Categories}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="CategoryBorder"
+                                    BorderBrush="{StaticResource AccentLatte}"
+                                    BorderThickness="2"
+                                    Padding="25,10"
+                                    Margin="8,0"
+                                    CornerRadius="20"
+                                    Cursor="Hand">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource DarkBrown}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrown}"/>
+                                                <Setter Property="BorderThickness" Value="3"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.InputBindings>
+                                    <MouseBinding Command="{Binding Path=DataContext.SelectCategoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                  CommandParameter="{Binding CategoryId}"
+                                                  MouseAction="LeftClick"/>
+                                </Border.InputBindings>
+                                <TextBlock FontSize="28"
+                                           FontFamily="{StaticResource BrandFont}"
+                                           FontWeight="Medium"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+                                            <Setter Property="Text" Value="{Binding CategoryName}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter Property="Foreground" Value="{StaticResource LightCream}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Menu Items Grouped by Category -->
+        <ScrollViewer Grid.Row="3"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      PanningMode="VerticalOnly"
+                      PanningDeceleration="0.001"
+                      PanningRatio="1"
+                      CanContentScroll="False"
+                      Stylus.IsPressAndHoldEnabled="False"
+                      Stylus.IsFlicksEnabled="False"
+                      Padding="20,20,10,20">
+            <ScrollViewer.Resources>
+                <Style TargetType="ScrollBar" BasedOn="{StaticResource TouchScrollBar}"/>
+            </ScrollViewer.Resources>
+            <ItemsControl ItemsSource="{Binding CategoryGroups}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,0,0,40">
+                            <!-- Category Header Bar -->
+                            <Border Background="{StaticResource DarkBrown}"
+                                    Padding="25,15"
+                                    Margin="0,0,0,20"
+                                    CornerRadius="8">
+                                <TextBlock Text="{Binding CategoryName}"
+                                           FontSize="38"
+                                           FontWeight="Bold"
+                                           FontFamily="{StaticResource BrandFont}"
+                                           Foreground="{StaticResource LightCream}"/>
+                            </Border>
+
+                            <!-- Menu Items Grid for this Category -->
+                            <ItemsControl ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- Use Border instead of Button to allow touch scrolling while handling taps -->
+                                        <Border Background="Transparent"
+                                                Cursor="Hand"
+                                                Stylus.IsPressAndHoldEnabled="False">
+                                            <Border.InputBindings>
+                                                <!-- MouseBinding handles both mouse clicks and touch taps -->
+                                                <MouseBinding Command="{Binding Path=DataContext.SelectMenuItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                              CommandParameter="{Binding}"
+                                                              MouseAction="LeftClick"/>
+                                            </Border.InputBindings>
+                                            <controls:MenuItemCard DataContext="{Binding}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Cart Section -->
+        <Border Grid.Row="4"
+                Background="{StaticResource DarkBrown}"
+                BorderBrush="{StaticResource AccentGold}"
+                BorderThickness="0,2,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Cart Items List -->
+                <ScrollViewer Grid.Column="0"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              PanningMode="VerticalOnly"
+                              PanningDeceleration="0.001"
+                              PanningRatio="1"
+                              Padding="15,15,10,15">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource TouchScrollBar}"/>
+                    </ScrollViewer.Resources>
+                    <StackPanel>
+                        <!-- Header Row -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2.5*"/>
+                                <!-- Item Name + Options -->
+                                <ColumnDefinition Width="1*"/>
+                                <!-- Unit Price -->
+                                <ColumnDefinition Width="1.5*"/>
+                                <!-- Quantity -->
+                                <ColumnDefinition Width="1*"/>
+                                <!-- Total -->
+                                <ColumnDefinition Width="60"/>
+                                <!-- Delete -->
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Text="Item"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       FontFamily="{StaticResource BrandFont}"
+                                       Foreground="{StaticResource AccentGold}"
+                                       Margin="12,0,0,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="Unit Price"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       FontFamily="{StaticResource BrandFont}"
+                                       Foreground="{StaticResource AccentGold}"
+                                       TextAlignment="Center"/>
+                            <TextBlock Grid.Column="2"
+                                       Text="Quantity"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       FontFamily="{StaticResource BrandFont}"
+                                       Foreground="{StaticResource AccentGold}"
+                                       TextAlignment="Center"/>
+                            <TextBlock Grid.Column="3"
+                                       Text="Total"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       FontFamily="{StaticResource BrandFont}"
+                                       Foreground="{StaticResource AccentGold}"
+                                       TextAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Cart Items -->
+                        <ItemsControl ItemsSource="{Binding CartItems}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource LightCream}"
+                                            CornerRadius="10"
+                                            Padding="12,10"
+                                            Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <!-- Item Name + Options -->
+                                                <ColumnDefinition Width="1*"/>
+                                                <!-- Unit Price -->
+                                                <ColumnDefinition Width="1.5*"/>
+                                                <!-- Quantity -->
+                                                <ColumnDefinition Width="1*"/>
+                                                <!-- Total -->
+                                                <ColumnDefinition Width="60"/>
+                                                <!-- Delete -->
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Item Name + Options -->
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <!-- Item Name -->
+                                                <TextBlock Text="{Binding MenuItem.Name, Mode=OneWay}"
+                                                           FontSize="18"
+                                                           FontWeight="Bold"
+                                                           FontFamily="{StaticResource BrandFont}"
+                                                           Foreground="{StaticResource DarkBrown}"
+                                                           TextWrapping="Wrap"/>
+
+                                                <!-- Selected Options (only show if options exist) -->
+                                                <ItemsControl ItemsSource="{Binding SelectedOptions}"
+                                                              Margin="0,3,0,0">
+                                                    <ItemsControl.Style>
+                                                        <Style TargetType="ItemsControl">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedOptions.Count}" Value="0">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </ItemsControl.Style>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock FontSize="14"
+                                                                       FontFamily="{StaticResource BrandFont}"
+                                                                       Foreground="{StaticResource PrimaryBrown}"
+                                                                       Margin="0,1,0,0">
+                                                                <Run Text="+ "/>
+                                                                <Run Text="{Binding Name, Mode=OneWay}"/>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+
+                                            <!-- Unit Price -->
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding UnitPrice, Mode=OneWay, StringFormat='{}{0:C}'}"
+                                                       FontSize="18"
+                                                       FontFamily="{StaticResource BrandFont}"
+                                                       Foreground="{StaticResource PrimaryBrown}"
+                                                       VerticalAlignment="Center"
+                                                       TextAlignment="Center"/>
+
+                                            <!-- Quantity Controls -->
+                                            <StackPanel Grid.Column="2"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center">
+                                                <!-- Decrease Button -->
+                                                <Button Command="{Binding Path=DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Width="32"
+                                                        Height="32"
+                                                        Background="{StaticResource AccentLatte}"
+                                                        BorderThickness="0"
+                                                        Cursor="Hand">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}"
+                                                                    CornerRadius="6">
+                                                                <TextBlock Text="-"
+                                                                           FontSize="20"
+                                                                           FontWeight="Bold"
+                                                                           Foreground="{StaticResource DarkBrown}"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+
+                                                <!-- Quantity Display -->
+                                                <TextBlock Text="{Binding Quantity, Mode=OneWay}"
+                                                           FontSize="20"
+                                                           FontWeight="Bold"
+                                                           FontFamily="{StaticResource BrandFont}"
+                                                           Foreground="{StaticResource DarkBrown}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0"
+                                                           MinWidth="30"
+                                                           TextAlignment="Center"/>
+
+                                                <!-- Increase Button -->
+                                                <Button Command="{Binding Path=DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Width="32"
+                                                        Height="32"
+                                                        Background="{StaticResource AccentLatte}"
+                                                        BorderThickness="0"
+                                                        Cursor="Hand">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}"
+                                                                    CornerRadius="6">
+                                                                <TextBlock Text="+"
+                                                                           FontSize="20"
+                                                                           FontWeight="Bold"
+                                                                           Foreground="{StaticResource DarkBrown}"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                            </StackPanel>
+
+                                            <!-- Total Price -->
+                                            <TextBlock Grid.Column="3"
+                                                       Text="{Binding TotalPrice, Mode=OneWay, StringFormat='{}{0:C}'}"
+                                                       FontSize="20"
+                                                       FontWeight="Bold"
+                                                       FontFamily="{StaticResource BrandFont}"
+                                                       Foreground="{StaticResource AccentGold}"
+                                                       VerticalAlignment="Center"
+                                                       TextAlignment="Center"/>
+
+                                            <!-- Delete Button -->
+                                            <Button Grid.Column="4"
+                                                    Command="{Binding Path=DataContext.RemoveFromCartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Width="40"
+                                                    Height="40"
+                                                    Background="#C0392B"
+                                                    BorderThickness="0"
+                                                    Cursor="Hand"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="20">
+                                                            <TextBlock Text="✕"
+                                                                       FontSize="24"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="White"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Right: Action Buttons -->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Checkout Button -->
+                    <Button Grid.Row="0"
+                            Command="{Binding CheckoutCommand}"
+                            IsEnabled="{Binding HasCartItems}"
+                            Background="{StaticResource AccentGold}"
+                            BorderThickness="0"
+                            Margin="10"
+                            Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="15"
+                                        Padding="20">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="Checkout"
+                                                   FontSize="28"
+                                                   FontWeight="Bold"
+                                                   FontFamily="{StaticResource BrandFont}"
+                                                   Foreground="{StaticResource DarkBrown}"
+                                                   HorizontalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding CartTotalPrice, Mode=OneWay, StringFormat='{}{0:C}'}"
+                                                   FontSize="32"
+                                                   FontWeight="Bold"
+                                                   FontFamily="{StaticResource BrandFont}"
+                                                   Foreground="{StaticResource DarkBrown}"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,8,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Start Over Button -->
+                    <Button Grid.Row="1"
+                            Command="{Binding StartOverCommand}"
+                            Background="{StaticResource PrimaryBrown}"
+                            BorderThickness="0"
+                            Margin="10"
+                            Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="15"
+                                        Padding="20">
+                                    <TextBlock FontSize="28"
+                                               FontWeight="Bold"
+                                               FontFamily="{StaticResource BrandFont}"
+                                               Foreground="{StaticResource LightCream}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               TextAlignment="Center"
+                                               TextWrapping="Wrap">
+                                        <Run Text="Start Over"/>
+                                        <LineBreak/>
+                                        <Run Text="(" FontSize="24"/>
+                                        <Run Text="{Binding RemainingSeconds, Mode=OneWay}" FontSize="24"/>
+                                        <Run Text="s)" FontSize="24"/>
+                                    </TextBlock>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Modal Overlay (Menu Detail) -->
+        <Grid Grid.RowSpan="5" Visibility="{Binding IsModalVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <controls:MenuDetailModal DataContext="{Binding ModalViewModel}"/>
+        </Grid>
+
+        <!-- Timeout Warning Modal -->
+        <Grid Grid.RowSpan="5"
+              Visibility="{Binding IsTimeoutWarningVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Background="#CC000000">
+            <Border Background="{StaticResource LightCream}"
+                    BorderBrush="{StaticResource DarkBrown}"
+                    BorderThickness="3"
+                    CornerRadius="20"
+                    Width="700"
+                    Height="450"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <StackPanel Margin="40" VerticalAlignment="Center">
+                    <!-- Warning Icon -->
+                    <TextBlock Text="⏱"
+                               FontSize="80"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,20"/>
+
+                    <!-- Title -->
+                    <TextBlock Text="Are you still there?"
+                               FontSize="42"
+                               FontWeight="Bold"
+                               FontFamily="{StaticResource BrandFont}"
+                               Foreground="{StaticResource DarkBrown}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,20"/>
+
+                    <!-- Message -->
+                    <TextBlock FontSize="28"
+                               FontFamily="{StaticResource BrandFont}"
+                               Foreground="{StaticResource PrimaryBrown}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,30">
+                        <Run Text="Your order will be cancelled in "/>
+                        <Run Text="{Binding RemainingSeconds, Mode=OneWay}"
+                             FontWeight="Bold"
+                             Foreground="{StaticResource DarkBrown}"/>
+                        <Run Text=" seconds"/>
+                    </TextBlock>
+
+                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Margin="0,20,0,0">
+                        <!-- Continue Order Button -->
+                        <Button Command="{Binding ContinueOrderCommand}"
+                                Background="{StaticResource AccentGold}"
+                                BorderThickness="0"
+                                Margin="0,0,20,0"
+                                Cursor="Hand"
+                                Width="280"
+                                Height="80">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="15">
+                                        <TextBlock Text="Continue Order"
+                                                   FontSize="28"
+                                                   FontWeight="Bold"
+                                                   FontFamily="{StaticResource BrandFont}"
+                                                   Foreground="{StaticResource DarkBrown}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <!-- Quit Button -->
+                        <Button Command="{Binding QuitOrderCommand}"
+                                Background="{StaticResource PrimaryBrown}"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Width="280"
+                                Height="80">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="15">
+                                        <TextBlock Text="Quit"
+                                                   FontSize="28"
+                                                   FontWeight="Bold"
+                                                   FontFamily="{StaticResource BrandFont}"
+                                                   Foreground="{StaticResource LightCream}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="5"
+              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Background="#DD000000">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <!-- Loading Animation -->
+                <Viewbox Width="100" Height="100" Margin="0,0,0,30">
+                    <Canvas Width="100" Height="100">
+                        <Ellipse Width="100" Height="100"
+                                Stroke="{StaticResource AccentGold}"
+                                StrokeThickness="8"
+                                StrokeDashArray="75,25"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="LoadingRotation2" Angle="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="LoadingRotation2"
+                                                           Storyboard.TargetProperty="Angle"
+                                                           From="0" To="360"
+                                                           Duration="0:0:1.5"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                    </Canvas>
+                </Viewbox>
+
+                <TextBlock Text="Loading menu..."
+                          FontSize="36"
+                          FontWeight="SemiBold"
+                          FontFamily="{StaticResource BrandFont}"
+                          Foreground="{StaticResource LightCream}"
+                          HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

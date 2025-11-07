@@ -1,0 +1,200 @@
+<UserControl x:Class="IPS.MainApp.Views.PaymentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="1920" d:DesignWidth="1080">
+    <UserControl.Resources>
+        <!-- Button style without hover effects -->
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Background="{StaticResource BackgroundBeige}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Cart Items -->
+            <RowDefinition Height="200"/>
+            <!-- Total and Buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Background="{StaticResource PrimaryBrown}"
+                Padding="40,20">
+            <TextBlock Text="Payment"
+                       FontSize="48"
+                       FontWeight="Bold"
+                       FontFamily="{StaticResource BrandFont}"
+                       Foreground="White"
+                       VerticalAlignment="Center"/>
+        </Border>
+
+        <!-- Cart Items List -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="40,20">
+            <ItemsControl ItemsSource="{Binding CartItems}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White"
+                                CornerRadius="15"
+                                Padding="20"
+                                Margin="0,0,0,15"
+                                BorderBrush="{StaticResource AccentLatte}"
+                                BorderThickness="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Item Details -->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding MenuItem.Name}"
+                                               FontSize="24"
+                                               FontWeight="SemiBold"
+                                               FontFamily="{StaticResource BrandFont}"
+                                               Foreground="{StaticResource DarkBrown}"/>
+                                    <TextBlock FontSize="18"
+                                               Foreground="{StaticResource MediumBrown}"
+                                               Margin="0,5,0,0">
+                                        <Run Text="Options: "/>
+                                        <Run Text="{Binding OptionsText, Mode=OneWay}"/>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding UnitPrice, StringFormat={}Unit Price: {0:C}}"
+                                               FontSize="18"
+                                               Foreground="{StaticResource MediumBrown}"
+                                               Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <!-- Quantity Controls -->
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            VerticalAlignment="Center"
+                                            Margin="20,0">
+                                    <Button Content="-"
+                                            Width="50"
+                                            Height="50"
+                                            FontSize="24"
+                                            FontWeight="Bold"
+                                            Background="{StaticResource AccentLatte}"
+                                            Foreground="{StaticResource DarkBrown}"
+                                            BorderThickness="0"
+                                            Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"/>
+                                    <TextBlock Text="{Binding Quantity}"
+                                               FontSize="28"
+                                               FontWeight="Bold"
+                                               VerticalAlignment="Center"
+                                               Margin="20,0"
+                                               MinWidth="40"
+                                               TextAlignment="Center"/>
+                                    <Button Content="+"
+                                            Width="50"
+                                            Height="50"
+                                            FontSize="24"
+                                            FontWeight="Bold"
+                                            Background="{StaticResource AccentLatte}"
+                                            Foreground="{StaticResource DarkBrown}"
+                                            BorderThickness="0"
+                                            Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"/>
+                                </StackPanel>
+
+                                <!-- Price and Remove -->
+                                <StackPanel Grid.Column="2"
+                                            VerticalAlignment="Center"
+                                            Margin="20,0,0,0">
+                                    <TextBlock Text="{Binding TotalPrice, StringFormat={}{0:C}}"
+                                               FontSize="28"
+                                               FontWeight="Bold"
+                                               Foreground="{StaticResource PrimaryBrown}"
+                                               TextAlignment="Right"/>
+                                    <Button Content="Remove"
+                                            Margin="0,10,0,0"
+                                            Padding="15,8"
+                                            Background="{StaticResource ErrorRed}"
+                                            Foreground="White"
+                                            BorderThickness="0"
+                                            FontSize="16"
+                                            Command="{Binding DataContext.RemoveFromCartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Total and Buttons -->
+        <Border Grid.Row="2"
+                Background="White"
+                BorderBrush="{StaticResource AccentLatte}"
+                BorderThickness="0,2,0,0"
+                Padding="40,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Total -->
+                <StackPanel Grid.Column="0"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="Total Amount"
+                               FontSize="24"
+                               Foreground="{StaticResource MediumBrown}"/>
+                    <TextBlock Text="{Binding CartTotalPrice, StringFormat={}{0:C}}"
+                               FontSize="48"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryBrown}"/>
+                </StackPanel>
+
+                <!-- Buttons -->
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right">
+                    <Button Content="Go Back"
+                            Width="200"
+                            Height="80"
+                            Margin="0,0,20,0"
+                            FontSize="24"
+                            FontWeight="SemiBold"
+                            Background="{StaticResource SecondaryBrown}"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Command="{Binding GoBackCommand}"/>
+
+                    <Button Content="Pay"
+                            Width="200"
+                            Height="80"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            Background="{StaticResource AccentGreen}"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Command="{Binding PayCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

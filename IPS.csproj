@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.10" />
+    <PackageReference Include="System.Management" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MainApp\Models\" />
+    <Folder Include="Assets\Ads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy all video files in Assets to output directory -->
+    <None Include="Assets\**\*.mp4" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Assets\**\*.avi" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Assets\**\*.mov" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Assets\**\*.wmv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy FollettoKioskApi DLL and dependencies to output root directory -->
+    <None Include="Adapters\Coffee\FollettoKioskApi.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>FollettoKioskApi.dll</Link>
+    </None>
+    <None Include="Adapters\Coffee\pcre2-8.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>pcre2-8.dll</Link>
+    </None>
+    <None Include="Adapters\Coffee\PocoFoundation.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>PocoFoundation.dll</Link>
+    </None>
+    <None Include="Adapters\Coffee\PocoJSON.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>PocoJSON.dll</Link>
+    </None>
+    <None Include="Adapters\Coffee\PocoNet.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>PocoNet.dll</Link>
+    </None>
+    <None Include="Adapters\Coffee\zlib1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>zlib1.dll</Link>
+    </None>
+  </ItemGroup>
+
+</Project>

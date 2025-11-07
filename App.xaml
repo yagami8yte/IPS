@@ -1,0 +1,146 @@
+﻿<Application x:Class="IPS.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:IPS"
+             xmlns:views="clr-namespace:IPS.MainApp.Views"
+             xmlns:vm="clr-namespace:IPS.MainApp.ViewModels">
+    <Application.Resources>
+        <!-- Converters -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <!-- Coffee Theme Color Palette -->
+        <SolidColorBrush x:Key="PrimaryBrown" Color="#6F4E37"/>
+        <SolidColorBrush x:Key="SecondaryBrown" Color="#8B6F47"/>
+        <SolidColorBrush x:Key="DarkBrown" Color="#3E2723"/>
+        <SolidColorBrush x:Key="MediumBrown" Color="#5D4037"/>
+        <SolidColorBrush x:Key="LightCream" Color="#F5E6D3"/>
+        <SolidColorBrush x:Key="Cream" Color="#FFF8DC"/>
+        <SolidColorBrush x:Key="BackgroundBeige" Color="#FFF9F0"/>
+        <SolidColorBrush x:Key="AccentLatte" Color="#D4A574"/>
+        <SolidColorBrush x:Key="AccentGold" Color="#C4A778"/>
+        <SolidColorBrush x:Key="AccentGreen" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="ErrorRed" Color="#D32F2F"/>
+
+        <!-- Brand Typography -->
+        <FontFamily x:Key="BrandFont">Segoe UI</FontFamily>
+        <FontFamily x:Key="DisplayFont">Bahnschrift</FontFamily>
+
+        <!-- Brand Header Style -->
+        <Style x:Key="BrandHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource DisplayFont}"/>
+            <Setter Property="FontSize" Value="72"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource LightCream}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,40,0,0"/>
+        </Style>
+
+        <!-- Custom ScrollBar Style for Touchscreen -->
+        <Style x:Key="TouchScrollBarThumb" TargetType="Thumb">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Background="{StaticResource DarkBrown}"
+                                CornerRadius="8"
+                                Margin="2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TouchScrollBar" TargetType="ScrollBar">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="MinWidth" Value="24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <Border Background="#20000000"
+                                    CornerRadius="12"
+                                    Margin="2"/>
+                            <Track x:Name="PART_Track"
+                                   IsDirectionReversed="True"
+                                   Grid.Row="0">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource TouchScrollBarThumb}"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Global Button Style - No Hover Effects -->
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Primary Button Style -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource AccentLatte}"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+            <Setter Property="FontFamily" Value="{StaticResource BrandFont}"/>
+            <Setter Property="FontSize" Value="48"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="100,40"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="20"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryBrown}"/>
+                                <Setter Property="Foreground" Value="{StaticResource LightCream}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataTemplates for ViewModels -->
+        <DataTemplate DataType="{x:Type vm:MainViewModel}">
+            <views:MainView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LoadingViewModel}">
+            <views:LoadingView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:WelcomeViewModel}" >
+            <views:WelcomeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MenuViewModel}">
+            <views:MenuView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AdminViewModel}">
+            <views:AdminView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PaymentViewModel}">
+            <views:PaymentView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:OrderResultViewModel}">
+            <views:OrderResultView />
+        </DataTemplate>
+    </Application.Resources>
+</Application>
