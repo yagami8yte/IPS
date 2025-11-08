@@ -10,7 +10,11 @@
       "Bash(dotnet add:*)",
       "Bash(dotnet publish:*)",
       "Bash(git reset:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: IPS multi-kiosk POS integration system\n\n- WPF .NET 8.0 application with MVVM architecture\n- Folletto coffee booth integration via native DLL\n- Multi-system cart and order management\n- Hardware discovery (network devices and printers)\n- Clean Architecture with adapters pattern\n- Self-contained deployment support\n\nKey components:\n- Core: Domain models and interfaces\n- Adapters: Hardware abstraction (CoffeeSystemAdapter)\n- Services: Business logic and system management\n- MainApp: WPF UI with ViewModels and Views\nEOF\n)\")",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
