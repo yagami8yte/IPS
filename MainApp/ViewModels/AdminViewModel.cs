@@ -15,6 +15,7 @@ namespace IPS.MainApp.ViewModels
     public class AdminViewModel : BaseViewModel
     {
         private readonly ConfigurationService _configService;
+        private readonly PasswordService _passwordService;
         private readonly NetworkScannerService _networkScanner;
         private readonly PrinterScannerService _printerScanner;
         private readonly Action? _onNavigateBack;
@@ -23,6 +24,32 @@ namespace IPS.MainApp.ViewModels
         private int _scanProgress;
         private string _scanStatus = string.Empty;
         private string _selectedPrinter = string.Empty;
+        private string _currentPassword = string.Empty;
+        private string _newPassword = string.Empty;
+        private string _confirmPassword = string.Empty;
+        private string _passwordChangeMessage = string.Empty;
+        private bool _hasPasswordChangeMessage = false;
+        private bool _isPasswordChangeSuccess = false;
+        private string _selectedSectionId = "Systems";
+
+        /// <summary>
+        /// Collection of configuration section tabs
+        /// </summary>
+        public ObservableCollection<ConfigSection> ConfigSections { get; } = new();
+
+        /// <summary>
+        /// Currently selected section ID
+        /// </summary>
+        public string SelectedSectionId
+        {
+            get => _selectedSectionId;
+            set
+            {
+                _selectedSectionId = value;
+                OnPropertyChanged();
+                UpdateSectionVisibility();
+            }
+        }
 
         /// <summary>
         /// Collection of system configurations
@@ -105,6 +132,84 @@ namespace IPS.MainApp.ViewModels
         public ObservableCollection<PrinterScannerService.DiscoveredPrinter> AvailablePrinters { get; } = new();
 
         /// <summary>
+        /// Current password for password change
+        /// </summary>
+        public string CurrentPassword
+        {
+            get => _currentPassword;
+            set
+            {
+                _currentPassword = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// New password for password change
+        /// </summary>
+        public string NewPassword
+        {
+            get => _newPassword;
+            set
+            {
+                _newPassword = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Confirm new password for password change
+        /// </summary>
+        public string ConfirmPassword
+        {
+            get => _confirmPassword;
+            set
+            {
+                _confirmPassword = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Password change status/error message
+        /// </summary>
+        public string PasswordChangeMessage
+        {
+            get => _passwordChangeMessage;
+            set
+            {
+                _passwordChangeMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Whether a password change message is displayed
+        /// </summary>
+        public bool HasPasswordChangeMessage
+        {
+            get => _hasPasswordChangeMessage;
+            set
+            {
+                _hasPasswordChangeMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Whether the password change was successful (for styling)
+        /// </summary>
+        public bool IsPasswordChangeSuccess
+        {
+            get => _isPasswordChangeSuccess;
+            set
+            {
+                _isPasswordChangeSuccess = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Command to add new system configuration
         /// </summary>
         public IRelayCommand AddSystemCommand { get; }
@@ -149,24 +254,154 @@ namespace IPS.MainApp.ViewModels
         /// </summary>
         public IRelayCommand ExitCommand { get; }
 
+        /// <summary>
+        /// Command to change admin password
+        /// </summary>
+        public IRelayCommand ChangePasswordCommand { get; }
+
+        /// <summary>
+        /// Command to select a configuration section
+        /// </summary>
+        public IRelayCommand<string> SelectSectionCommand { get; }
+
+        // Section visibility properties
+        private bool _isSystemsSectionVisible = true;
+        private bool _isSalesSectionVisible = false;
+        private bool _isPrintersSectionVisible = false;
+        private bool _isServerSectionVisible = false;
+        private bool _isSecuritySectionVisible = false;
+
+        public bool IsSystemsSectionVisible
+        {
+            get => _isSystemsSectionVisible;
+            set
+            {
+                _isSystemsSectionVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsSalesSectionVisible
+        {
+            get => _isSalesSectionVisible;
+            set
+            {
+                _isSalesSectionVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsPrintersSectionVisible
+        {
+            get => _isPrintersSectionVisible;
+            set
+            {
+                _isPrintersSectionVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsServerSectionVisible
+        {
+            get => _isServerSectionVisible;
+            set
+            {
+                _isServerSectionVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsSecuritySectionVisible
+        {
+            get => _isSecuritySectionVisible;
+            set
+            {
+                _isSecuritySectionVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Sales ViewModel for sales dashboard
+        /// </summary>
+        public SalesViewModel SalesViewModel { get; }
+
         public AdminViewModel(ConfigurationService configService, Action? onNavigateBack = null)
         {
             _configService = configService ?? throw new ArgumentNullException(nameof(configService));
+            _passwordService = new PasswordService();
             _networkScanner = new NetworkScannerService();
             _printerScanner = new PrinterScannerService();
             _onNavigateBack = onNavigateBack;
 
+            // Initialize SalesViewModel
+            SalesViewModel = new SalesViewModel();
+
             AddSystemCommand = new RelayCommand(OnAddSystem);
             RemoveSystemCommand = new RelayCommand<SystemConfigurationViewModel>(OnRemoveSystem);
             ScanNetworkCommand = new RelayCommand(async () => await OnScanNetworkAsync());
-            ScanPrintersCommand = new RelayCommand(OnScanPrinters);
+            ScanPrintersCommand = new RelayCommand(async () => await OnScanPrintersAsync());
             AddDiscoveredDeviceCommand = new RelayCommand<NetworkScannerService.DiscoveredDevice>(OnAddDiscoveredDevice);
             TestPrinterCommand = new RelayCommand<PrinterScannerService.DiscoveredPrinter>(OnTestPrinter);
             SaveCommand = new RelayCommand(OnSave);
             CancelCommand = new RelayCommand(OnCancel);
             ExitCommand = new RelayCommand(OnExit);
+            ChangePasswordCommand = new RelayCommand(OnChangePassword);
+            SelectSectionCommand = new RelayCommand<string>(OnSelectSection);
 
+            InitializeConfigSections();
             LoadConfiguration();
+        }
+
+        private void InitializeConfigSections()
+        {
+            ConfigSections.Add(new ConfigSection
+            {
+                SectionId = "Systems",
+                DisplayName = "Systems",
+                Icon = "🖥️",
+                IsSelected = true
+            });
+
+            ConfigSections.Add(new ConfigSection
+            {
+                SectionId = "Sales",
+                DisplayName = "Sales",
+                Icon = "📊",
+                IsSelected = false
+            });
+
+            ConfigSections.Add(new ConfigSection
+            {
+                SectionId = "Security",
+                DisplayName = "Security",
+                Icon = "🔒",
+                IsSelected = false
+            });
+        }
+
+        private void OnSelectSection(string? sectionId)
+        {
+            if (string.IsNullOrEmpty(sectionId)) return;
+
+            Console.WriteLine($"[AdminViewModel] Selecting section: {sectionId}");
+
+            // Update selected state
+            foreach (var section in ConfigSections)
+            {
+                section.IsSelected = section.SectionId == sectionId;
+            }
+
+            SelectedSectionId = sectionId;
+        }
+
+        private void UpdateSectionVisibility()
+        {
+            IsSystemsSectionVisible = SelectedSectionId == "Systems";
+            IsSalesSectionVisible = SelectedSectionId == "Sales";
+            IsSecuritySectionVisible = SelectedSectionId == "Security";
+
+            Console.WriteLine($"[AdminViewModel] Section visibility updated: {SelectedSectionId}");
         }
 
         private void LoadConfiguration()
@@ -306,13 +541,14 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
-        /// Scan for available receipt printers
+        /// Scan for available receipt printers with progress reporting
         /// </summary>
-        private void OnScanPrinters()
+        private async Task OnScanPrintersAsync()
         {
             if (IsScanning) return;
 
             IsScanning = true;
+            ScanProgress = 0;
             ScanStatus = "Scanning for printers...";
             AvailablePrinters.Clear();
 
@@ -320,7 +556,13 @@ namespace IPS.MainApp.ViewModels
             {
                 Console.WriteLine("[AdminViewModel] Starting printer scan...");
 
-                var printers = _printerScanner.GetReceiptPrinters();
+                var progress = new Progress<int>(percent =>
+                {
+                    ScanProgress = percent;
+                    ScanStatus = $"Scanning for printers... {percent}%";
+                });
+
+                var printers = await _printerScanner.GetReceiptPrintersAsync(progress);
 
                 foreach (var printer in printers)
                 {
@@ -334,7 +576,7 @@ namespace IPS.MainApp.ViewModels
                     SelectedPrinter = defaultPrinter.PrinterName;
                 }
 
-                ScanStatus = $"Found {printers.Count} printer(s)";
+                ScanStatus = $"Scan complete. Found {printers.Count} printer(s)";
                 Console.WriteLine($"[AdminViewModel] Printer scan complete. Found {printers.Count} printer(s)");
             }
             catch (Exception ex)
@@ -403,6 +645,90 @@ namespace IPS.MainApp.ViewModels
                     }
                 });
             });
+        }
+
+        /// <summary>
+        /// Handle PIN change request
+        /// </summary>
+        private void OnChangePassword()
+        {
+            Console.WriteLine("[AdminViewModel] PIN change requested");
+
+            // Clear previous messages
+            HasPasswordChangeMessage = false;
+            PasswordChangeMessage = string.Empty;
+            IsPasswordChangeSuccess = false;
+
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(CurrentPassword))
+            {
+                HasPasswordChangeMessage = true;
+                PasswordChangeMessage = "Please enter your current PIN";
+                Console.WriteLine("[AdminViewModel] Current PIN is empty");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(NewPassword))
+            {
+                HasPasswordChangeMessage = true;
+                PasswordChangeMessage = "Please enter a new PIN";
+                Console.WriteLine("[AdminViewModel] New PIN is empty");
+                return;
+            }
+
+            if (NewPassword.Length < 4)
+            {
+                HasPasswordChangeMessage = true;
+                PasswordChangeMessage = "New PIN must be at least 4 digits long";
+                Console.WriteLine("[AdminViewModel] New PIN too short");
+                return;
+            }
+
+            if (NewPassword != ConfirmPassword)
+            {
+                HasPasswordChangeMessage = true;
+                PasswordChangeMessage = "New PIN and confirmation do not match";
+                Console.WriteLine("[AdminViewModel] PINs do not match");
+                return;
+            }
+
+            // Verify current PIN
+            var config = _configService.GetConfiguration();
+            bool currentPasswordValid = _passwordService.VerifyPassword(CurrentPassword, config.AdminPasswordHash);
+
+            if (!currentPasswordValid)
+            {
+                HasPasswordChangeMessage = true;
+                PasswordChangeMessage = "Current PIN is incorrect";
+                Console.WriteLine("[AdminViewModel] Current PIN is incorrect");
+                return;
+            }
+
+            // Hash new PIN and save
+            string newPasswordHash = _passwordService.HashPassword(NewPassword);
+            config.AdminPasswordHash = newPasswordHash;
+
+            bool saved = _configService.SaveConfiguration(config);
+
+            if (saved)
+            {
+                HasPasswordChangeMessage = true;
+                IsPasswordChangeSuccess = true;
+                PasswordChangeMessage = "PIN changed successfully!";
+                Console.WriteLine("[AdminViewModel] PIN changed successfully");
+
+                // Clear PIN fields
+                CurrentPassword = string.Empty;
+                NewPassword = string.Empty;
+                ConfirmPassword = string.Empty;
+            }
+            else
+            {
+                HasPasswordChangeMessage = true;
+                IsPasswordChangeSuccess = false;
+                PasswordChangeMessage = "Failed to save new PIN. Please try again.";
+                Console.WriteLine("[AdminViewModel] Failed to save new PIN");
+            }
         }
     }
 

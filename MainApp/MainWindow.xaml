@@ -16,6 +16,7 @@
     <!-- Viewbox scales content to fit screen while maintaining aspect ratio -->
     <Viewbox Stretch="Uniform">
         <Grid Width="1080" Height="1920">
+            <!-- Main content -->
             <ContentControl Content="{Binding}" />
         </Grid>
     </Viewbox>

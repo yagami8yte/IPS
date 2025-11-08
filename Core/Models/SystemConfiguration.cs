@@ -43,5 +43,11 @@ namespace IPS.Core.Models
         /// Port for the DLL's internal HTTP server
         /// </summary>
         public int DllServerPort { get; set; } = 5000;
+
+        /// <summary>
+        /// BCrypt hashed admin PIN
+        /// Default PIN is "0000" (numeric only, entered via touchscreen keypad)
+        /// </summary>
+        public string AdminPasswordHash { get; set; } = string.Empty;
     }
 }
