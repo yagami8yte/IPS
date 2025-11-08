@@ -116,9 +116,23 @@ namespace IPS.MainApp.ViewModels
 
         private void ExecuteNavigateToAdmin()
         {
-            Console.WriteLine("[MainViewModel] ExecuteNavigateToAdmin - Creating AdminViewModel");
+            Console.WriteLine("[MainViewModel] ExecuteNavigateToAdmin - Showing password entry");
+
+            var passwordService = new PasswordService();
+            CurrentViewModel = new PasswordEntryViewModel(
+                _configService,
+                passwordService,
+                ExecuteNavigateToAdminAfterAuth,
+                ExecuteNavigateToWelcome);
+
+            Console.WriteLine("[MainViewModel] ExecuteNavigateToAdmin - PasswordEntryViewModel set as CurrentViewModel");
+        }
+
+        private void ExecuteNavigateToAdminAfterAuth()
+        {
+            Console.WriteLine("[MainViewModel] ExecuteNavigateToAdminAfterAuth - Password verified, creating AdminViewModel");
             CurrentViewModel = new AdminViewModel(_configService, ExecuteNavigateToWelcome);
-            Console.WriteLine("[MainViewModel] ExecuteNavigateToAdmin - AdminViewModel set as CurrentViewModel");
+            Console.WriteLine("[MainViewModel] ExecuteNavigateToAdminAfterAuth - AdminViewModel set as CurrentViewModel");
         }
 
         private void ExecuteNavigateToPayment()

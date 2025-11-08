@@ -5,12 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:IPS.MainApp.Views"
              xmlns:vm="clr-namespace:IPS.MainApp.ViewModels"
+             xmlns:controls="clr-namespace:IPS.MainApp.Views.Controls"
              mc:Ignorable="d"
              d:DesignHeight="1920" d:DesignWidth="1080"
              d:DataContext="{d:DesignInstance Type=vm:AdminViewModel}">
     <Grid Background="{StaticResource LightCream}">
         <Grid.RowDefinitions>
             <RowDefinition Height="150"/> <!-- Header -->
+            <RowDefinition Height="Auto"/> <!-- Section Selector -->
             <RowDefinition Height="*"/> <!-- Content -->
             <RowDefinition Height="120"/> <!-- Action buttons -->
         </Grid.RowDefinitions>
@@ -25,13 +27,88 @@
                        VerticalAlignment="Center"/>
         </Border>
 
+        <!-- Configuration Section Selector (Horizontal) -->
+        <Border Grid.Row="1"
+                Background="{StaticResource DarkBrown}"
+                BorderBrush="{StaticResource AccentGold}"
+                BorderThickness="0,2,0,2"
+                Padding="20,15">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled"
+                          PanningMode="HorizontalOnly"
+                          PanningDeceleration="0.001"
+                          PanningRatio="1"
+                          Stylus.IsPressAndHoldEnabled="False">
+                <ItemsControl ItemsSource="{Binding ConfigSections}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{StaticResource AccentLatte}"
+                                    BorderThickness="2"
+                                    Padding="40,15"
+                                    Margin="12,0"
+                                    CornerRadius="20"
+                                    Cursor="Hand">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource AccentLatte}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                                                <Setter Property="BorderThickness" Value="3"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Border.InputBindings>
+                                    <MouseBinding Command="{Binding Path=DataContext.SelectSectionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                  CommandParameter="{Binding SectionId}"
+                                                  MouseAction="LeftClick"/>
+                                </Border.InputBindings>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Icon}"
+                                               FontSize="32"
+                                               Margin="0,0,10,0"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding DisplayName}"
+                                               FontSize="32"
+                                               FontFamily="{StaticResource BrandFont}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{StaticResource LightCream}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
         <!-- Content -->
-        <ScrollViewer Grid.Row="1"
+        <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto"
                       PanningMode="VerticalOnly"
                       PanningDeceleration="0.001"
                       PanningRatio="1">
             <StackPanel Margin="40">
+
+                <!-- Systems Section (Network Scanner + Unmanned Systems) -->
+                <StackPanel Visibility="{Binding IsSystemsSectionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <!-- Network Scanner Section -->
                 <Border Background="White"
                         CornerRadius="8"
@@ -127,7 +204,7 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Printer Scanner Section -->
+                <!-- Receipt Printer Scanner (part of Systems section) -->
                 <Border Background="White"
                         CornerRadius="8"
                         Padding="30"
@@ -239,7 +316,7 @@
                     </StackPanel>
                 </Border>
 
-                <!-- DLL Server Port -->
+                <!-- DLL Server Port (part of Systems section) -->
                 <Border Background="White"
                         CornerRadius="8"
                         Padding="30"
@@ -275,7 +352,7 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Systems Configuration -->
+                <!-- Unmanned Systems Configuration (part of Systems section) -->
                 <Border Background="White"
                         CornerRadius="8"
                         Padding="30"
@@ -410,11 +487,230 @@
                         </ItemsControl>
                     </StackPanel>
                 </Border>
-            </StackPanel>
+                </StackPanel> <!-- Close Systems Section -->
+
+                <!-- Sales Section -->
+                <StackPanel Visibility="{Binding IsSalesSectionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ContentControl>
+                        <ContentControl.Content>
+                            <local:SalesContentView DataContext="{Binding SalesViewModel}"/>
+                        </ContentControl.Content>
+                    </ContentControl>
+                </StackPanel> <!-- Close Sales Section -->
+
+                <!-- Security Section -->
+                <StackPanel Visibility="{Binding IsSecuritySectionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <!-- Admin PIN Change Section -->
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="🔒 Admin PIN"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,20"/>
+
+                        <!-- PIN Fields (tap to select, then use keypad below) -->
+
+                        <!-- Current PIN -->
+                        <Border Background="#F5F5F5"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,15"
+                                Cursor="Hand"
+                                MouseDown="CurrentPinField_MouseDown">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=CurrentPinRadio, Path=IsChecked}" Value="True">
+                                            <Setter Property="Background" Value="#FFF9E6"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                                            <Setter Property="BorderThickness" Value="5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <RadioButton x:Name="CurrentPinRadio"
+                                           Grid.Column="0"
+                                           GroupName="PinFields"
+                                           IsChecked="True"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,15,0"/>
+
+                                <TextBlock Grid.Column="1"
+                                           Text="Current PIN:"
+                                           FontSize="20"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource DarkBrown}"/>
+
+                                <controls:PinDisplay Grid.Column="2"
+                                                    PinLength="{Binding CurrentPassword.Length}"
+                                                    MaxDigits="8"
+                                                    Height="50"
+                                                    VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- New PIN -->
+                        <Border Background="#F5F5F5"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,15"
+                                Cursor="Hand"
+                                MouseDown="NewPinField_MouseDown">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=NewPinRadio, Path=IsChecked}" Value="True">
+                                            <Setter Property="Background" Value="#FFF9E6"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                                            <Setter Property="BorderThickness" Value="5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <RadioButton x:Name="NewPinRadio"
+                                           Grid.Column="0"
+                                           GroupName="PinFields"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,15,0"/>
+
+                                <TextBlock Grid.Column="1"
+                                           Text="New PIN:"
+                                           FontSize="20"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource DarkBrown}"/>
+
+                                <controls:PinDisplay Grid.Column="2"
+                                                    PinLength="{Binding NewPassword.Length}"
+                                                    MaxDigits="8"
+                                                    Height="50"
+                                                    VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Confirm PIN -->
+                        <Border Background="#F5F5F5"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20"
+                                Cursor="Hand"
+                                MouseDown="ConfirmPinField_MouseDown">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=ConfirmPinRadio, Path=IsChecked}" Value="True">
+                                            <Setter Property="Background" Value="#FFF9E6"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                                            <Setter Property="BorderThickness" Value="5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <RadioButton x:Name="ConfirmPinRadio"
+                                           Grid.Column="0"
+                                           GroupName="PinFields"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,15,0"/>
+
+                                <TextBlock Grid.Column="1"
+                                           Text="Confirm PIN:"
+                                           FontSize="20"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource DarkBrown}"/>
+
+                                <controls:PinDisplay Grid.Column="2"
+                                                    PinLength="{Binding ConfirmPassword.Length}"
+                                                    MaxDigits="8"
+                                                    Height="50"
+                                                    VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Shared Numeric Keypad -->
+                        <TextBlock Text="Tap a PIN field above, then use the keypad:"
+                                   FontSize="16"
+                                   Foreground="#666"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,10"/>
+
+                        <controls:NumericKeypad x:Name="PinKeypad"
+                                               Height="350"
+                                               Margin="0,0,0,20"/>
+
+                        <!-- Password Change Status/Error Message -->
+                        <TextBlock Text="{Binding PasswordChangeMessage}"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,15"
+                                   Visibility="{Binding HasPasswordChangeMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource ErrorRed}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPasswordChangeSuccess}" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource AccentGreen}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <!-- Change PIN Button -->
+                        <Button Content="Change PIN"
+                                Command="{Binding ChangePasswordCommand}"
+                                FontSize="22"
+                                Padding="30,10"
+                                HorizontalAlignment="Left"
+                                Background="{StaticResource AccentGreen}"
+                                Foreground="White"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                Cursor="Hand">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </Border>
+                </StackPanel> <!-- Close Security Section -->
+            </StackPanel> <!-- Close main StackPanel -->
         </ScrollViewer>
 
         <!-- Action Buttons -->
-        <Grid Grid.Row="2"
+        <Grid Grid.Row="3"
               Background="{StaticResource DarkBrown}"
               Margin="0">
             <Grid.ColumnDefinitions>

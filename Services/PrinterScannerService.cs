@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IPS.Services
 {
@@ -89,11 +90,122 @@ namespace IPS.Services
         }
 
         /// <summary>
+        /// Scan for printers asynchronously with progress reporting
+        /// </summary>
+        public async Task<List<DiscoveredPrinter>> ScanPrintersAsync(IProgress<int>? progress = null)
+        {
+            return await Task.Run(() =>
+            {
+                var printers = new List<DiscoveredPrinter>();
+
+                Console.WriteLine("[PrinterScanner] Scanning for installed printers...");
+
+                try
+                {
+                    // Get default printer name
+                    PrinterSettings defaultSettings = new PrinterSettings();
+                    string defaultPrinterName = defaultSettings.PrinterName;
+
+                    // Get list of all printers
+                    var installedPrinters = PrinterSettings.InstalledPrinters.Cast<string>().ToList();
+                    int totalPrinters = installedPrinters.Count;
+
+                    // Enumerate all installed printers with progress
+                    for (int i = 0; i < installedPrinters.Count; i++)
+                    {
+                        string printerName = installedPrinters[i];
+
+                        var printer = new DiscoveredPrinter
+                        {
+                            PrinterName = printerName,
+                            IsDefault = printerName.Equals(defaultPrinterName, StringComparison.OrdinalIgnoreCase)
+                        };
+
+                        // Try to get printer details
+                        try
+                        {
+                            PrinterSettings settings = new PrinterSettings
+                            {
+                                PrinterName = printerName
+                            };
+
+                            printer.IsOnline = settings.IsValid;
+                            printer.PortName = GetPrinterPort(printerName);
+                            printer.DriverName = GetPrinterDriver(printerName);
+                            printer.PrinterType = IdentifyPrinterType(printerName, printer.PortName);
+
+                            if (printer.IsOnline)
+                            {
+                                Console.WriteLine($"[PrinterScanner] ✓ Found: {printerName} ({printer.PrinterType})");
+                                if (printer.IsDefault)
+                                {
+                                    Console.WriteLine($"[PrinterScanner]   - Default printer");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[PrinterScanner] ✗ Error reading printer '{printerName}': {ex.Message}");
+                            printer.IsOnline = false;
+                        }
+
+                        printers.Add(printer);
+
+                        // Report progress
+                        int percentComplete = (int)(((i + 1) / (double)totalPrinters) * 100);
+                        progress?.Report(percentComplete);
+                    }
+
+                    Console.WriteLine($"[PrinterScanner] Found {printers.Count} printer(s), {printers.Count(p => p.IsOnline)} online");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[PrinterScanner] Error scanning printers: {ex.Message}");
+                }
+
+                return printers;
+            });
+        }
+
+        /// <summary>
         /// Get receipt printers only (filter out regular document printers)
         /// </summary>
         public List<DiscoveredPrinter> GetReceiptPrinters()
         {
             var allPrinters = ScanPrinters();
+
+            // Filter for receipt printers based on common naming patterns and types
+            var receiptPrinters = allPrinters.Where(p =>
+                p.PrinterName.ToLower().Contains("receipt") ||
+                p.PrinterName.ToLower().Contains("pos") ||
+                p.PrinterName.ToLower().Contains("thermal") ||
+                p.PrinterName.ToLower().Contains("epson") && p.PrinterName.ToLower().Contains("tm") ||
+                p.PrinterName.ToLower().Contains("star") ||
+                p.PrinterName.ToLower().Contains("tsp") ||
+                p.PrinterName.ToLower().Contains("bixolon") ||
+                p.PortName.ToLower().Contains("usb") ||
+                p.PortName.ToLower().Contains("com")
+            ).ToList();
+
+            if (receiptPrinters.Count > 0)
+            {
+                Console.WriteLine($"[PrinterScanner] Identified {receiptPrinters.Count} receipt printer(s)");
+            }
+            else
+            {
+                Console.WriteLine("[PrinterScanner] No receipt printers identified by name. Showing all printers.");
+                return allPrinters;
+            }
+
+            return receiptPrinters;
+        }
+
+        /// <summary>
+        /// Get receipt printers asynchronously with progress reporting
+        /// </summary>
+        public async Task<List<DiscoveredPrinter>> GetReceiptPrintersAsync(IProgress<int>? progress = null)
+        {
+            var allPrinters = await ScanPrintersAsync(progress);
 
             // Filter for receipt printers based on common naming patterns and types
             var receiptPrinters = allPrinters.Where(p =>

@@ -77,6 +77,16 @@ namespace IPS.Services
                     var config = JsonSerializer.Deserialize<AppConfiguration>(json, options);
                     if (config != null)
                     {
+                        // If password hash is empty (migration from old config), set default
+                        if (string.IsNullOrWhiteSpace(config.AdminPasswordHash))
+                        {
+                            var passwordService = new PasswordService();
+                            config.AdminPasswordHash = passwordService.GetDefaultPasswordHash();
+                            Console.WriteLine("[ConfigurationService] No password hash found, setting default PIN '0000'");
+                            // Save the updated config
+                            SaveConfiguration(config);
+                        }
+
                         Console.WriteLine($"[ConfigurationService] Configuration loaded from {_configFilePath}");
                         return config;
                     }
@@ -97,9 +107,12 @@ namespace IPS.Services
         /// </summary>
         private AppConfiguration CreateDefaultConfiguration()
         {
+            var passwordService = new PasswordService();
+
             return new AppConfiguration
             {
                 DllServerPort = 6000,  // DLL internal server port (different from booth port)
+                AdminPasswordHash = passwordService.GetDefaultPasswordHash(),  // Default PIN: "0000"
                 Systems = new()
                 {
                     new SystemConfiguration

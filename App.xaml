@@ -142,5 +142,8 @@
         <DataTemplate DataType="{x:Type vm:OrderResultViewModel}">
             <views:OrderResultView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PasswordEntryViewModel}">
+            <views:PasswordEntryView />
+        </DataTemplate>
     </Application.Resources>
 </Application>
