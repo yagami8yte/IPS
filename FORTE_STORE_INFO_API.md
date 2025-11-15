@@ -80,10 +80,11 @@ All Forte API requests require HTTP Basic Authentication with two custom headers
 
 ```http
 Authorization: Basic {base64_encoded_credentials}
+X-Forte-Auth-Organization-Id: {organization_id}
 Accept: application/json
 ```
 
-**Note**: The `X-Forte-Auth-Organization-Id` header is **NOT required** for these endpoints since the organization ID is already included in the URL path.
+**Important**: The `X-Forte-Auth-Organization-Id` header is **REQUIRED** and verifies the account included in the API call. This must match your Organization ID from your Forte merchant account.
 
 ### Credential Encoding
 
@@ -135,6 +136,7 @@ public async Task<ForteOrganizationInfo?> GetOrganizationInfoAsync()
     var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
     var authBase64 = Convert.ToBase64String(authBytes);
     httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
+    httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
     httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
     // Send request
@@ -179,6 +181,7 @@ public async Task<ForteLocationInfo?> GetLocationInfoAsync()
     var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
     var authBase64 = Convert.ToBase64String(authBytes);
     httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
+    httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
     httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
     // Send request
@@ -381,6 +384,7 @@ Invoke-WebRequest `
     -Uri "https://sandbox.forte.net/api/v3/organizations/$orgId" `
     -Headers @{
         'Authorization' = "Basic $auth"
+        'X-Forte-Auth-Organization-Id' = $orgId
         'Accept' = 'application/json'
     } `
     -Method GET
@@ -390,6 +394,7 @@ Invoke-WebRequest `
     -Uri "https://sandbox.forte.net/api/v3/organizations/$orgId/locations/$locationId" `
     -Headers @{
         'Authorization' = "Basic $auth"
+        'X-Forte-Auth-Organization-Id' = $orgId
         'Accept' = 'application/json'
     } `
     -Method GET
@@ -411,12 +416,14 @@ AUTH=$(echo -n "$API_ACCESS_ID:$API_SECURE_KEY" | base64)
 curl -X GET \
   "https://sandbox.forte.net/api/v3/organizations/$ORG_ID" \
   -H "Authorization: Basic $AUTH" \
+  -H "X-Forte-Auth-Organization-Id: $ORG_ID" \
   -H "Accept: application/json"
 
 # Test Location endpoint (Recommended)
 curl -X GET \
   "https://sandbox.forte.net/api/v3/organizations/$ORG_ID/locations/$LOCATION_ID" \
   -H "Authorization: Basic $AUTH" \
+  -H "X-Forte-Auth-Organization-Id: $ORG_ID" \
   -H "Accept: application/json"
 ```
 
@@ -426,12 +433,18 @@ curl -X GET \
    - Method: `GET`
    - URL: `https://sandbox.forte.net/api/v3/organizations/{organization_id}/locations/{location_id}`
 
-2. **Authorization**:
+2. **Headers**:
+   ```
+   X-Forte-Auth-Organization-Id: 507890
+   Accept: application/json
+   ```
+
+3. **Authorization**:
    - Type: `Basic Auth`
    - Username: `03a04fee3e438b44ef168052227cf9ac` (API Access ID)
    - Password: `c24eadad0838c40a8bb469c67d71eceb` (API Secure Key)
 
-3. **Send Request**
+4. **Send Request**
 
 ### Using Insomnia
 
@@ -444,7 +457,13 @@ curl -X GET \
    - Username: Your API Access ID
    - Password: Your API Secure Key
 
-3. **Send Request**
+3. **Header Tab**:
+   ```
+   X-Forte-Auth-Organization-Id: {organization_id}
+   Accept: application/json
+   ```
+
+4. **Send Request**
 
 ---
 
@@ -459,8 +478,8 @@ curl -X GET \
 **Solution**:
 - Verify API Access ID and API Secure Key are correct
 - Ensure credentials are properly Base64 encoded (format: `api_access_id:api_secure_key`)
+- Check that `X-Forte-Auth-Organization-Id` header is included and matches your Organization ID
 - Verify you're using the correct environment (Sandbox vs Production)
-- **Do NOT** include `X-Forte-Auth-Organization-Id` header - it's not needed for these endpoints
 
 #### 403 Forbidden
 

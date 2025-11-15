@@ -257,6 +257,7 @@ namespace IPS.Services
                 var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
                 var authBase64 = Convert.ToBase64String(authBytes);
                 httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
+                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
                 httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var response = await _httpClient.SendAsync(httpRequest);
@@ -311,6 +312,7 @@ namespace IPS.Services
                 var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
                 var authBase64 = Convert.ToBase64String(authBytes);
                 httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
+                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
                 httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var response = await _httpClient.SendAsync(httpRequest);
