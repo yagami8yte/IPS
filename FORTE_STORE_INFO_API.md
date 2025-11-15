@@ -80,11 +80,22 @@ All Forte API requests require HTTP Basic Authentication with two custom headers
 
 ```http
 Authorization: Basic {base64_encoded_credentials}
-X-Forte-Auth-Organization-Id: {organization_id}
+X-Forte-Auth-Organization-Id: org_{organization_id}
 Accept: application/json
 ```
 
-**Important**: The `X-Forte-Auth-Organization-Id` header is **REQUIRED** and verifies the account included in the API call. This must match your Organization ID from your Forte merchant account.
+**Important**:
+- The `X-Forte-Auth-Organization-Id` header is **REQUIRED** and verifies the account included in the API call
+- The Organization ID must be prefixed with `org_` (e.g., if your Organization ID is `507890`, use `org_507890` in the header)
+- This is different from the URL path which uses the numeric ID only
+- The code automatically adds the `org_` prefix if not present, so you can enter just the numeric ID in the application
+
+**Forte ID Prefix Convention**:
+Forte uses prefixes for different resource types:
+- `org_` - Organization IDs (e.g., `org_507890`)
+- `loc_` - Location IDs (e.g., `loc_123456`)
+- `trn_` - Transaction IDs
+- `eft_` - EFT Transaction IDs
 
 ### Credential Encoding
 
@@ -98,7 +109,11 @@ Encoding: Base64(api_access_id:api_secure_key)
 ```
 API Access ID: 03a04fee3e438b44ef168052227cf9ac
 API Secure Key: c24eadad0838c40a8bb469c67d71eceb
+Combined: 03a04fee3e438b44ef168052227cf9ac:c24eadad0838c40a8bb469c67d71eceb
 Encoded: MDNhMDRmZWUzZTQzOGI0NGVmMTY4MDUyMjI3Y2Y5YWM6YzI0ZWFkYWQwODM4YzQwYThiYjQ2OWM2N2Q3MWVjZWI=
+
+Organization ID (numeric): 507890
+Organization ID (for header): org_507890
 ```
 
 ---
@@ -136,7 +151,12 @@ public async Task<ForteOrganizationInfo?> GetOrganizationInfoAsync()
     var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
     var authBase64 = Convert.ToBase64String(authBytes);
     httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
-    httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
+
+    // Organization ID header requires "org_" prefix
+    var orgIdWithPrefix = config.ForteOrganizationId.StartsWith("org_")
+        ? config.ForteOrganizationId
+        : $"org_{config.ForteOrganizationId}";
+    httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", orgIdWithPrefix);
     httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
     // Send request
@@ -181,7 +201,12 @@ public async Task<ForteLocationInfo?> GetLocationInfoAsync()
     var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
     var authBase64 = Convert.ToBase64String(authBytes);
     httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
-    httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
+
+    // Organization ID header requires "org_" prefix
+    var orgIdWithPrefix = config.ForteOrganizationId.StartsWith("org_")
+        ? config.ForteOrganizationId
+        : $"org_{config.ForteOrganizationId}";
+    httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", orgIdWithPrefix);
     httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
     // Send request
@@ -384,7 +409,7 @@ Invoke-WebRequest `
     -Uri "https://sandbox.forte.net/api/v3/organizations/$orgId" `
     -Headers @{
         'Authorization' = "Basic $auth"
-        'X-Forte-Auth-Organization-Id' = $orgId
+        'X-Forte-Auth-Organization-Id' = "org_$orgId"
         'Accept' = 'application/json'
     } `
     -Method GET
@@ -394,7 +419,7 @@ Invoke-WebRequest `
     -Uri "https://sandbox.forte.net/api/v3/organizations/$orgId/locations/$locationId" `
     -Headers @{
         'Authorization' = "Basic $auth"
-        'X-Forte-Auth-Organization-Id' = $orgId
+        'X-Forte-Auth-Organization-Id' = "org_$orgId"
         'Accept' = 'application/json'
     } `
     -Method GET
@@ -416,14 +441,14 @@ AUTH=$(echo -n "$API_ACCESS_ID:$API_SECURE_KEY" | base64)
 curl -X GET \
   "https://sandbox.forte.net/api/v3/organizations/$ORG_ID" \
   -H "Authorization: Basic $AUTH" \
-  -H "X-Forte-Auth-Organization-Id: $ORG_ID" \
+  -H "X-Forte-Auth-Organization-Id: org_$ORG_ID" \
   -H "Accept: application/json"
 
 # Test Location endpoint (Recommended)
 curl -X GET \
   "https://sandbox.forte.net/api/v3/organizations/$ORG_ID/locations/$LOCATION_ID" \
   -H "Authorization: Basic $AUTH" \
-  -H "X-Forte-Auth-Organization-Id: $ORG_ID" \
+  -H "X-Forte-Auth-Organization-Id: org_$ORG_ID" \
   -H "Accept: application/json"
 ```
 
@@ -435,7 +460,7 @@ curl -X GET \
 
 2. **Headers**:
    ```
-   X-Forte-Auth-Organization-Id: 507890
+   X-Forte-Auth-Organization-Id: org_507890
    Accept: application/json
    ```
 
@@ -459,9 +484,11 @@ curl -X GET \
 
 3. **Header Tab**:
    ```
-   X-Forte-Auth-Organization-Id: {organization_id}
+   X-Forte-Auth-Organization-Id: org_{organization_id}
    Accept: application/json
    ```
+
+   **Note**: Replace `{organization_id}` with your numeric Organization ID. The `org_` prefix will be automatically added.
 
 4. **Send Request**
 

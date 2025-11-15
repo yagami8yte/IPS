@@ -123,9 +123,20 @@ namespace IPS.Services
         {
             try
             {
-                // Build endpoint URL
+                // Build endpoint URL with proper prefixes
                 var baseUrl = config.ForteSandboxMode ? SANDBOX_BASE_URL : PRODUCTION_BASE_URL;
-                var endpoint = $"{baseUrl}/organizations/{config.ForteOrganizationId}/locations/{config.ForteLocationId}/transactions";
+
+                // Organization ID requires "org_" prefix in both URL and header
+                var orgIdWithPrefix = config.ForteOrganizationId.StartsWith("org_")
+                    ? config.ForteOrganizationId
+                    : $"org_{config.ForteOrganizationId}";
+
+                // Location ID requires "loc_" prefix in URL
+                var locIdWithPrefix = config.ForteLocationId.StartsWith("loc_")
+                    ? config.ForteLocationId
+                    : $"loc_{config.ForteLocationId}";
+
+                var endpoint = $"{baseUrl}/organizations/{orgIdWithPrefix}/locations/{locIdWithPrefix}/transactions";
 
                 Console.WriteLine($"[FortePaymentService] Endpoint: {endpoint}");
                 Console.WriteLine($"[FortePaymentService] Sandbox Mode: {config.ForteSandboxMode}");
@@ -139,7 +150,7 @@ namespace IPS.Services
                 httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
 
                 // Add required headers
-                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
+                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", orgIdWithPrefix);
                 httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 // Serialize request body
@@ -249,7 +260,13 @@ namespace IPS.Services
                 }
 
                 var baseUrl = config.ForteSandboxMode ? SANDBOX_BASE_URL : PRODUCTION_BASE_URL;
-                var endpoint = $"{baseUrl}/organizations/{config.ForteOrganizationId}";
+
+                // Organization ID requires "org_" prefix in both URL and header
+                var orgIdWithPrefix = config.ForteOrganizationId.StartsWith("org_")
+                    ? config.ForteOrganizationId
+                    : $"org_{config.ForteOrganizationId}";
+
+                var endpoint = $"{baseUrl}/organizations/{orgIdWithPrefix}";
 
                 Console.WriteLine($"[FortePaymentService] Fetching organization info from: {endpoint}");
 
@@ -257,24 +274,32 @@ namespace IPS.Services
                 var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
                 var authBase64 = Convert.ToBase64String(authBytes);
                 httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
-                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
+                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", orgIdWithPrefix);
                 httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                Console.WriteLine($"[FortePaymentService] Request Headers:");
+                Console.WriteLine($"  Authorization: Basic {authBase64.Substring(0, Math.Min(20, authBase64.Length))}...");
+                Console.WriteLine($"  X-Forte-Auth-Organization-Id: {orgIdWithPrefix}");
+                Console.WriteLine($"  Accept: application/json");
 
                 var response = await _httpClient.SendAsync(httpRequest);
                 var responseBody = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine($"[FortePaymentService] Organization API response: {response.StatusCode}");
+                Console.WriteLine($"[FortePaymentService] Organization API Response:");
+                Console.WriteLine($"  Status Code: {(int)response.StatusCode} {response.StatusCode}");
+                Console.WriteLine($"  Response Body Length: {responseBody.Length} characters");
+                Console.WriteLine($"  Response Body: {responseBody}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                     var orgInfo = JsonSerializer.Deserialize<ForteOrganizationInfo>(responseBody, jsonOptions);
-                    Console.WriteLine($"[FortePaymentService] Organization fetched: {orgInfo?.OrganizationName}");
+                    Console.WriteLine($"[FortePaymentService] ✓ Organization fetched successfully: {orgInfo?.OrganizationName}");
                     return orgInfo;
                 }
                 else
                 {
-                    Console.WriteLine($"[FortePaymentService] Failed to fetch organization: {responseBody}");
+                    Console.WriteLine($"[FortePaymentService] ✗ Failed to fetch organization - Status: {response.StatusCode}");
                     return null;
                 }
             }
@@ -304,7 +329,18 @@ namespace IPS.Services
                 }
 
                 var baseUrl = config.ForteSandboxMode ? SANDBOX_BASE_URL : PRODUCTION_BASE_URL;
-                var endpoint = $"{baseUrl}/organizations/{config.ForteOrganizationId}/locations/{config.ForteLocationId}";
+
+                // Organization ID requires "org_" prefix in both URL and header
+                var orgIdWithPrefix = config.ForteOrganizationId.StartsWith("org_")
+                    ? config.ForteOrganizationId
+                    : $"org_{config.ForteOrganizationId}";
+
+                // Location ID requires "loc_" prefix in URL
+                var locIdWithPrefix = config.ForteLocationId.StartsWith("loc_")
+                    ? config.ForteLocationId
+                    : $"loc_{config.ForteLocationId}";
+
+                var endpoint = $"{baseUrl}/organizations/{orgIdWithPrefix}/locations/{locIdWithPrefix}";
 
                 Console.WriteLine($"[FortePaymentService] Fetching location info from: {endpoint}");
 
@@ -312,24 +348,32 @@ namespace IPS.Services
                 var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
                 var authBase64 = Convert.ToBase64String(authBytes);
                 httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
-                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
+                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", orgIdWithPrefix);
                 httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                Console.WriteLine($"[FortePaymentService] Request Headers:");
+                Console.WriteLine($"  Authorization: Basic {authBase64.Substring(0, Math.Min(20, authBase64.Length))}...");
+                Console.WriteLine($"  X-Forte-Auth-Organization-Id: {orgIdWithPrefix}");
+                Console.WriteLine($"  Accept: application/json");
 
                 var response = await _httpClient.SendAsync(httpRequest);
                 var responseBody = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine($"[FortePaymentService] Location API response: {response.StatusCode}");
+                Console.WriteLine($"[FortePaymentService] Location API Response:");
+                Console.WriteLine($"  Status Code: {(int)response.StatusCode} {response.StatusCode}");
+                Console.WriteLine($"  Response Body Length: {responseBody.Length} characters");
+                Console.WriteLine($"  Response Body: {responseBody}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                     var locationInfo = JsonSerializer.Deserialize<ForteLocationInfo>(responseBody, jsonOptions);
-                    Console.WriteLine($"[FortePaymentService] Location fetched: {locationInfo?.DbaName}");
+                    Console.WriteLine($"[FortePaymentService] ✓ Location fetched successfully: {locationInfo?.DbaName}");
                     return locationInfo;
                 }
                 else
                 {
-                    Console.WriteLine($"[FortePaymentService] Failed to fetch location: {responseBody}");
+                    Console.WriteLine($"[FortePaymentService] ✗ Failed to fetch location - Status: {response.StatusCode}");
                     return null;
                 }
             }
@@ -358,13 +402,19 @@ namespace IPS.Services
                 }
 
                 var baseUrl = config.ForteSandboxMode ? SANDBOX_BASE_URL : PRODUCTION_BASE_URL;
-                var testEndpoint = $"{baseUrl}/organizations/{config.ForteOrganizationId}";
+
+                // Organization ID requires "org_" prefix in both URL and header
+                var orgIdWithPrefix = config.ForteOrganizationId.StartsWith("org_")
+                    ? config.ForteOrganizationId
+                    : $"org_{config.ForteOrganizationId}";
+
+                var testEndpoint = $"{baseUrl}/organizations/{orgIdWithPrefix}";
 
                 var httpRequest = new HttpRequestMessage(HttpMethod.Get, testEndpoint);
                 var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
                 var authBase64 = Convert.ToBase64String(authBytes);
                 httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
-                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
+                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", orgIdWithPrefix);
 
                 var response = await _httpClient.SendAsync(httpRequest);
                 Console.WriteLine($"[FortePaymentService] Test connection result: {response.StatusCode}");

@@ -15,7 +15,7 @@ try {
         -Uri "https://sandbox.forte.net/api/v3/organizations/$orgId" `
         -Headers @{
             'Authorization' = "Basic $auth"
-            'X-Forte-Auth-Organization-Id' = $orgId
+            'X-Forte-Auth-Organization-Id' = "org_$orgId"
             'Accept' = 'application/json'
         } `
         -Method GET `

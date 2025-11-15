@@ -43,7 +43,7 @@ try {
         -Uri "$baseUrl/organizations/$orgId" `
         -Headers @{
             'Authorization' = "Basic $auth"
-            'X-Forte-Auth-Organization-Id' = $orgId
+            'X-Forte-Auth-Organization-Id' = "org_$orgId"
             'Accept' = 'application/json'
         } `
         -Method GET `
@@ -102,7 +102,7 @@ try {
         -Uri "$baseUrl/organizations/$orgId/locations/$locationId" `
         -Headers @{
             'Authorization' = "Basic $auth"
-            'X-Forte-Auth-Organization-Id' = $orgId
+            'X-Forte-Auth-Organization-Id' = "org_$orgId"
             'Accept' = 'application/json'
         } `
         -Method GET `
