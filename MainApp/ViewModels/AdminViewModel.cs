@@ -765,7 +765,7 @@ namespace IPS.MainApp.ViewModels
             ConfigSections.Add(new ConfigSection
             {
                 SectionId = "BreakTime",
-                DisplayName = "Break Time",
+                DisplayName = "Pause",
                 Icon = "☕",
                 IsSelected = false
             });

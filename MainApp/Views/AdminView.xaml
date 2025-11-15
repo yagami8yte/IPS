@@ -1395,7 +1395,7 @@
             </Button>
 
             <Button Grid.Column="1"
-                    Content="Save Configuration"
+                    Content="Save / Go Back"
                     Command="{Binding SaveCommand}"
                     FontSize="32"
                     FontWeight="Bold"
