@@ -35,7 +35,11 @@
       "Bash(powershell -ExecutionPolicy Bypass -File \"test_forte_creds.ps1\")",
       "Bash(rm:*)",
       "Bash(powershell -Command \"$cred = ''03a04fee3e438b44ef168052227cf9ac:c24eadad0838c40a8bb469c67d71eceb''; $bytes = [Text.Encoding]::ASCII.GetBytes($cred); $auth = [Convert]::ToBase64String($bytes); Invoke-WebRequest -Uri ''https://sandbox.forte.net/api/v3/organizations/507890'' -Headers @{Authorization=\"\"Basic $auth\"\"; ''X-Forte-Auth-Organization-Id''=''507890''} -Method GET\")",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(if [ -f \"config.json\" ])",
+      "Bash(then cat config.json)",
+      "Bash(else echo \"config.json not found\")",
+      "Bash(fi)"
     ],
     "deny": [],
     "ask": []
