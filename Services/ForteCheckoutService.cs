@@ -373,7 +373,9 @@ namespace IPS.Services
                                 type: 'success',
                                 transactionId: response.trace_number,
                                 authorizationCode: response.authorization_code || '',
-                                orderLabel: response.order_number || '{orderLabel}'
+                                orderLabel: response.order_number || '{orderLabel}',
+                                cardLast4: response.last_4 || '',
+                                cardType: response.card_type || ''
                             }});
                         }}
                         break;

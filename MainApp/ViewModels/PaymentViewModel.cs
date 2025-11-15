@@ -15,6 +15,7 @@ namespace IPS.MainApp.ViewModels
         private readonly Action<bool, string> _onPaymentComplete;  // success, orderLabel
         private readonly ConfigurationService _configService;
         private readonly ForteCheckoutService? _forteCheckoutService;
+        private readonly MainViewModel? _mainViewModel;  // For storing payment details
 
         private bool _isProcessing = false;
         private string _paymentStatusMessage = string.Empty;
@@ -68,11 +69,13 @@ namespace IPS.MainApp.ViewModels
             ObservableCollection<CartItem> cartItems,
             ConfigurationService configService,
             Action onNavigateBack,
-            Action<bool, string> onPaymentComplete)
+            Action<bool, string> onPaymentComplete,
+            MainViewModel? mainViewModel = null)
         {
             _onNavigateBack = onNavigateBack ?? throw new ArgumentNullException(nameof(onNavigateBack));
             _onPaymentComplete = onPaymentComplete ?? throw new ArgumentNullException(nameof(onPaymentComplete));
             _configService = configService ?? throw new ArgumentNullException(nameof(configService));
+            _mainViewModel = mainViewModel;
 
             // Use the same cart items collection (shared reference)
             CartItems = cartItems;
@@ -236,9 +239,19 @@ namespace IPS.MainApp.ViewModels
         /// <summary>
         /// Called from PaymentView when Forte Checkout reports success
         /// </summary>
-        public void HandleCheckoutSuccess(string transactionId, string authorizationCode, string orderLabel)
+        public void HandleCheckoutSuccess(string transactionId, string authorizationCode, string orderLabel, string cardLast4 = "")
         {
-            Console.WriteLine($"[PaymentViewModel] Payment successful - Transaction ID: {transactionId}, Auth Code: {authorizationCode}");
+            Console.WriteLine($"[PaymentViewModel] Payment successful - Transaction ID: {transactionId}, Auth Code: {authorizationCode}, Card: ****{cardLast4}");
+
+            // Store payment details in MainViewModel for receipt printing
+            if (_mainViewModel != null)
+            {
+                _mainViewModel.LastPaymentTransactionId = transactionId;
+                _mainViewModel.LastPaymentAuthorizationCode = authorizationCode;
+                _mainViewModel.LastPaymentCardLast4Digits = cardLast4;
+                Console.WriteLine("[PaymentViewModel] Payment details stored in MainViewModel for receipt printing");
+            }
+
             PaymentStatusMessage = $"Payment approved! Transaction ID: {transactionId}";
             IsProcessing = false;
             _onPaymentComplete(true, orderLabel);

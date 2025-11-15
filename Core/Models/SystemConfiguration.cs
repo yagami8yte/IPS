@@ -148,5 +148,64 @@ namespace IPS.Core.Models
         /// Different from REST API Secure Key
         /// </summary>
         public string ForteProcessingPassword { get; set; } = string.Empty;
+
+        // ========================================
+        // Receipt Printing Configuration
+        // ========================================
+
+        /// <summary>
+        /// Business/Store name to print on receipts
+        /// </summary>
+        public string BusinessName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Business address line 1 (e.g., "123 Main Street, Suite 100")
+        /// </summary>
+        public string BusinessAddressLine1 { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Business address line 2 (e.g., "New York, NY 10001")
+        /// </summary>
+        public string BusinessAddressLine2 { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Business phone number (e.g., "(555) 123-4567")
+        /// </summary>
+        public string BusinessPhone { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Tax ID / EIN for receipt (optional, for compliance)
+        /// </summary>
+        public string BusinessTaxId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Custom footer message on receipt (e.g., "Thank you for your order!")
+        /// </summary>
+        public string ReceiptFooterMessage { get; set; } = "Thank you for your order!";
+
+        /// <summary>
+        /// Selected receipt printer name (from Windows installed printers)
+        /// </summary>
+        public string SelectedReceiptPrinter { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Enable automatic receipt printing after successful payment
+        /// </summary>
+        public bool AutoPrintReceipt { get; set; } = true;
+
+        /// <summary>
+        /// Enable tax calculation on orders
+        /// </summary>
+        public bool TaxEnabled { get; set; } = false;
+
+        /// <summary>
+        /// Tax rate (e.g., 0.08 for 8%)
+        /// </summary>
+        public decimal TaxRate { get; set; } = 0.0m;
+
+        /// <summary>
+        /// Tax label to display on receipt (e.g., "Sales Tax", "VAT")
+        /// </summary>
+        public string TaxLabel { get; set; } = "Tax";
     }
 }

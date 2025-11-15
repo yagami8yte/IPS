@@ -167,4 +167,79 @@ namespace IPS.Services
         [JsonPropertyName("response_code")]
         public int ResponseCode { get; set; }
     }
+
+    /// <summary>
+    /// Forte organization information response
+    /// </summary>
+    public class ForteOrganizationInfo
+    {
+        [JsonPropertyName("organization_id")]
+        public string OrganizationId { get; set; } = string.Empty;
+
+        [JsonPropertyName("name")]
+        public string OrganizationName { get; set; } = string.Empty;
+
+        [JsonPropertyName("company_name")]
+        public string CompanyName { get; set; } = string.Empty;
+
+        [JsonPropertyName("dba_name")]
+        public string DbaName { get; set; } = string.Empty;
+
+        [JsonPropertyName("phone")]
+        public string Phone { get; set; } = string.Empty;
+
+        [JsonPropertyName("email")]
+        public string Email { get; set; } = string.Empty;
+
+        [JsonPropertyName("address")]
+        public ForteAddress? Address { get; set; }
+    }
+
+    /// <summary>
+    /// Forte location information response
+    /// </summary>
+    public class ForteLocationInfo
+    {
+        [JsonPropertyName("location_id")]
+        public string LocationId { get; set; } = string.Empty;
+
+        [JsonPropertyName("dba_name")]
+        public string DbaName { get; set; } = string.Empty;
+
+        [JsonPropertyName("merchant_category_code")]
+        public string MerchantCategoryCode { get; set; } = string.Empty;
+
+        [JsonPropertyName("customer_service_phone")]
+        public string CustomerServicePhone { get; set; } = string.Empty;
+
+        [JsonPropertyName("address")]
+        public ForteAddress? Address { get; set; }
+
+        [JsonPropertyName("tax_id")]
+        public string TaxId { get; set; } = string.Empty;
+    }
+
+    /// <summary>
+    /// Forte address information
+    /// </summary>
+    public class ForteAddress
+    {
+        [JsonPropertyName("street_line1")]
+        public string StreetLine1 { get; set; } = string.Empty;
+
+        [JsonPropertyName("street_line2")]
+        public string? StreetLine2 { get; set; }
+
+        [JsonPropertyName("locality")]
+        public string Locality { get; set; } = string.Empty;
+
+        [JsonPropertyName("region")]
+        public string Region { get; set; } = string.Empty;
+
+        [JsonPropertyName("postal_code")]
+        public string PostalCode { get; set; } = string.Empty;
+
+        [JsonPropertyName("country")]
+        public string Country { get; set; } = string.Empty;
+    }
 }

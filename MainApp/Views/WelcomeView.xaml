@@ -23,7 +23,7 @@
                 <!-- Brand Header -->
                 <RowDefinition Height="*"/>
                 <!-- Video Content -->
-                <RowDefinition Height="300"/>
+                <RowDefinition Height="180"/>
                 <!-- Button Label Area -->
             </Grid.RowDefinitions>
 
@@ -131,40 +131,30 @@
             </Button>
 
             <!-- Video Advertisement -->
-            <Grid Grid.Row="1" Margin="60,80,60,60" IsHitTestVisible="False">
-                <Border CornerRadius="30"
-                        Background="White"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#D4AF37"
-                                        Direction="270"
-                                        ShadowDepth="10"
-                                        Opacity="0.3"
-                                        BlurRadius="30"/>
-                    </Border.Effect>
+            <Grid Grid.Row="1" Margin="40,40,40,40" IsHitTestVisible="False">
+                <!-- Video Player with rounded corners using OpacityMask -->
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.OpacityMask>
+                        <VisualBrush Stretch="Fill">
+                            <VisualBrush.Visual>
+                                <Border Background="Black"
+                                        CornerRadius="30"
+                                        Width="1000"
+                                        Height="1600"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Grid.OpacityMask>
 
-                    <!-- Video Player Container -->
-                    <Border CornerRadius="27" Margin="3" ClipToBounds="True">
-                        <MediaElement x:Name="VideoPlayer"
-                                      Source="{Binding AdVideoPath}"
-                                      LoadedBehavior="Manual"
-                                      UnloadedBehavior="Manual"
-                                      Stretch="Uniform"
-                                      MediaEnded="VideoPlayer_MediaEnded"
-                                      Volume="0.7"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-                    </Border>
-                </Border>
-
-                <!-- Border overlay to ensure corners are covered -->
-                <Border CornerRadius="30"
-                        BorderBrush="{StaticResource MetallicGold}"
-                        BorderThickness="3"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        IsHitTestVisible="False"/>
+                    <MediaElement x:Name="VideoPlayer"
+                                  Source="{Binding AdVideoPath}"
+                                  LoadedBehavior="Manual"
+                                  UnloadedBehavior="Manual"
+                                  Stretch="Uniform"
+                                  MediaEnded="VideoPlayer_MediaEnded"
+                                  Volume="0.7"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                </Grid>
 
                 <!-- Placeholder when no video -->
                 <Border CornerRadius="30"

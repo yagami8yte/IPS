@@ -232,6 +232,115 @@ namespace IPS.Services
         }
 
         /// <summary>
+        /// Fetch organization information from Forte API
+        /// </summary>
+        public async Task<ForteOrganizationInfo?> GetOrganizationInfoAsync()
+        {
+            try
+            {
+                var config = _configService.GetConfiguration();
+
+                if (string.IsNullOrWhiteSpace(config.ForteApiAccessId) ||
+                    string.IsNullOrWhiteSpace(config.ForteApiSecureKey) ||
+                    string.IsNullOrWhiteSpace(config.ForteOrganizationId))
+                {
+                    Console.WriteLine("[FortePaymentService] Credentials not configured");
+                    return null;
+                }
+
+                var baseUrl = config.ForteSandboxMode ? SANDBOX_BASE_URL : PRODUCTION_BASE_URL;
+                var endpoint = $"{baseUrl}/organizations/{config.ForteOrganizationId}";
+
+                Console.WriteLine($"[FortePaymentService] Fetching organization info from: {endpoint}");
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, endpoint);
+                var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
+                var authBase64 = Convert.ToBase64String(authBytes);
+                httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
+                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
+                httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"[FortePaymentService] Organization API response: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var orgInfo = JsonSerializer.Deserialize<ForteOrganizationInfo>(responseBody, jsonOptions);
+                    Console.WriteLine($"[FortePaymentService] Organization fetched: {orgInfo?.OrganizationName}");
+                    return orgInfo;
+                }
+                else
+                {
+                    Console.WriteLine($"[FortePaymentService] Failed to fetch organization: {responseBody}");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[FortePaymentService] Error fetching organization: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Fetch location information from Forte API
+        /// </summary>
+        public async Task<ForteLocationInfo?> GetLocationInfoAsync()
+        {
+            try
+            {
+                var config = _configService.GetConfiguration();
+
+                if (string.IsNullOrWhiteSpace(config.ForteApiAccessId) ||
+                    string.IsNullOrWhiteSpace(config.ForteApiSecureKey) ||
+                    string.IsNullOrWhiteSpace(config.ForteOrganizationId) ||
+                    string.IsNullOrWhiteSpace(config.ForteLocationId))
+                {
+                    Console.WriteLine("[FortePaymentService] Credentials or Location ID not configured");
+                    return null;
+                }
+
+                var baseUrl = config.ForteSandboxMode ? SANDBOX_BASE_URL : PRODUCTION_BASE_URL;
+                var endpoint = $"{baseUrl}/organizations/{config.ForteOrganizationId}/locations/{config.ForteLocationId}";
+
+                Console.WriteLine($"[FortePaymentService] Fetching location info from: {endpoint}");
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, endpoint);
+                var authBytes = Encoding.UTF8.GetBytes($"{config.ForteApiAccessId}:{config.ForteApiSecureKey}");
+                var authBase64 = Convert.ToBase64String(authBytes);
+                httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", authBase64);
+                httpRequest.Headers.Add("X-Forte-Auth-Organization-Id", config.ForteOrganizationId);
+                httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"[FortePaymentService] Location API response: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var locationInfo = JsonSerializer.Deserialize<ForteLocationInfo>(responseBody, jsonOptions);
+                    Console.WriteLine($"[FortePaymentService] Location fetched: {locationInfo?.DbaName}");
+                    return locationInfo;
+                }
+                else
+                {
+                    Console.WriteLine($"[FortePaymentService] Failed to fetch location: {responseBody}");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[FortePaymentService] Error fetching location: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Test connection to Forte API with current credentials
         /// </summary>
         public async Task<bool> TestConnectionAsync()
@@ -283,4 +392,5 @@ namespace IPS.Services
         public string? ResponseMessage { get; set; }
         public string? ErrorMessage { get; set; }
     }
+
 }

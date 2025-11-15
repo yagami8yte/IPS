@@ -12,8 +12,14 @@ namespace IPS.MainApp.ViewModels
         private readonly SystemManagerService _systemManager;
         private readonly SystemPollingService _pollingService;
         private readonly ConfigurationService _configService;
+        private readonly PrintingService _printingService;
         private BaseViewModel? _currentViewModel;
         private MenuViewModel? _currentMenuViewModel;
+
+        // Payment details for receipt printing
+        public string? LastPaymentTransactionId { get; set; }
+        public string? LastPaymentAuthorizationCode { get; set; }
+        public string? LastPaymentCardLast4Digits { get; set; }
 
         public BaseViewModel? CurrentViewModel
         {
@@ -38,6 +44,7 @@ namespace IPS.MainApp.ViewModels
             _systemManager = systemManager;
             _pollingService = pollingService;
             _configService = configService;
+            _printingService = new PrintingService(configService);
 
             NavigateToWelcomeCommand = new RelayCommand(ExecuteNavigateToWelcome);
             NavigateToMenuCommand = new RelayCommand(ExecuteNavigateToMenu);
@@ -203,7 +210,8 @@ namespace IPS.MainApp.ViewModels
                 _currentMenuViewModel.CartItems,
                 _configService,
                 ExecuteNavigateBackToMenu,
-                ExecuteProcessPaymentAndOrder);
+                ExecuteProcessPaymentAndOrder,
+                this);
 
             CurrentViewModel = paymentViewModel;
             Console.WriteLine("[MainViewModel] ExecuteNavigateToPayment - PaymentViewModel set as CurrentViewModel");
@@ -271,6 +279,32 @@ namespace IPS.MainApp.ViewModels
                 if (allSuccess)
                 {
                     Console.WriteLine($"[MainViewModel] ✓ All orders sent successfully!");
+
+                    // Print receipt (non-blocking - don't fail order if printing fails)
+                    try
+                    {
+                        Console.WriteLine("[MainViewModel] Attempting to print receipt...");
+                        bool printed = _printingService.PrintReceipt(
+                            order,
+                            _currentMenuViewModel.CartItems,
+                            LastPaymentCardLast4Digits,
+                            LastPaymentAuthorizationCode,
+                            LastPaymentTransactionId);
+
+                        if (printed)
+                        {
+                            Console.WriteLine("[MainViewModel] ✓ Receipt printed successfully");
+                        }
+                        else
+                        {
+                            Console.WriteLine("[MainViewModel] Receipt printing skipped or failed (non-blocking)");
+                        }
+                    }
+                    catch (Exception printEx)
+                    {
+                        Console.WriteLine($"[MainViewModel] Receipt printing error (non-blocking): {printEx.Message}");
+                    }
+
                     _currentMenuViewModel.ClearCart();
                     ExecuteNavigateToOrderResult(true, orderLabel, "Your order has been placed successfully! Please collect it at the pickup counter.");
                 }

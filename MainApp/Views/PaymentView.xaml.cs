@@ -172,13 +172,14 @@ namespace IPS.MainApp.Views
                 switch (message.type?.ToLower())
                 {
                     case "success":
-                        Console.WriteLine($"[PaymentView] Payment SUCCESS - Transaction ID: {message.transactionId}, Order: {message.orderLabel}");
+                        Console.WriteLine($"[PaymentView] Payment SUCCESS - Transaction ID: {message.transactionId}, Order: {message.orderLabel}, Card: ****{message.cardLast4}");
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             viewModel.HandleCheckoutSuccess(
                                 message.transactionId ?? "",
                                 message.authorizationCode ?? "",
-                                message.orderLabel ?? ""
+                                message.orderLabel ?? "",
+                                message.cardLast4 ?? ""
                             );
                         });
                         break;
@@ -243,6 +244,8 @@ namespace IPS.MainApp.Views
             public string? orderLabel { get; set; }
             public string? error { get; set; }
             public decimal? amount { get; set; }
+            public string? cardLast4 { get; set; }
+            public string? cardType { get; set; }
         }
     }
 }

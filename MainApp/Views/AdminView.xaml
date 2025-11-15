@@ -205,7 +205,7 @@
                         Margin="0,0,0,20">
                     <StackPanel>
                         <Grid Margin="0,0,0,20">
-                            <TextBlock Text="🖨 Receipt Printer Scanner"
+                            <TextBlock Text="🖨️ Receipt Printer Scanner"
                                        FontSize="28"
                                        FontWeight="Bold"
                                        Foreground="{StaticResource DarkBrown}"
@@ -229,36 +229,57 @@
                             </Button>
                         </Grid>
 
-                        <!-- Available Printers List -->
+                        <!-- Scan Status -->
+                        <StackPanel Visibility="{Binding IsPrinterScanning, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Margin="0,0,0,15">
+                            <TextBlock Text="{Binding PrinterScanStatus}"
+                                       FontSize="18"
+                                       Foreground="{StaticResource PrimaryBrown}"
+                                       Margin="0,0,0,10"/>
+                            <ProgressBar Value="{Binding PrinterScanProgress}"
+                                         Height="8"
+                                         Minimum="0"
+                                         Maximum="100"
+                                         Foreground="{StaticResource AccentGreen}"/>
+                        </StackPanel>
+
+                        <!-- Discovered Printers List -->
                         <ItemsControl ItemsSource="{Binding AvailablePrinters}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="#F5EFDF"
-                                            CornerRadius="6"
+                                    <Border BorderBrush="{StaticResource AccentLatte}"
+                                            BorderThickness="2"
+                                            CornerRadius="8"
                                             Padding="15"
-                                            Margin="0,0,0,10">
+                                            Margin="0,0,0,10"
+                                            Background="{StaticResource BackgroundBeige}"
+                                            Cursor="Hand">
+                                        <Border.InputBindings>
+                                            <MouseBinding Command="{Binding DataContext.SelectReceiptPrinterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                          CommandParameter="{Binding PrinterName}"
+                                                          MouseAction="LeftClick"/>
+                                        </Border.InputBindings>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-
                                             <StackPanel Grid.Column="0">
                                                 <TextBlock Text="{Binding PrinterName}"
-                                                           FontSize="18"
-                                                           FontWeight="Bold"
+                                                           FontSize="20"
+                                                           FontWeight="SemiBold"
                                                            Foreground="{StaticResource DarkBrown}"/>
                                                 <StackPanel Orientation="Horizontal"
                                                             Margin="0,5,0,0">
-                                                    <TextBlock FontSize="14"
-                                                               Foreground="{StaticResource Espresso}">
+                                                    <TextBlock FontSize="16"
+                                                               Foreground="{StaticResource PrimaryBrown}">
                                                         <Run Text="Type:"/>
                                                         <Run Text="{Binding PrinterType}"/>
                                                         <Run Text=" | Port:"/>
                                                         <Run Text="{Binding PortName}"/>
                                                     </TextBlock>
                                                     <TextBlock Text="[DEFAULT]"
-                                                               FontSize="14"
+                                                               FontSize="16"
                                                                FontWeight="Bold"
                                                                Foreground="{StaticResource AccentGold}"
                                                                Margin="10,0,0,0"
@@ -266,47 +287,56 @@
                                                 </StackPanel>
                                             </StackPanel>
 
-                                            <Button Grid.Column="1"
-                                                    Content="Test Print"
-                                                    Command="{Binding DataContext.TestPrinterCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
-                                                    CommandParameter="{Binding}"
-                                                    FontSize="16"
-                                                    Padding="15,5"
-                                                    Background="{StaticResource AccentGold}"
-                                                    Foreground="{StaticResource DarkBrown}"
-                                                    BorderThickness="0"
-                                                    Cursor="Hand">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="5"/>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <!-- Test Print Button -->
+                                                <Button Content="Test Print"
+                                                        Command="{Binding DataContext.TestPrinterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        FontSize="18"
+                                                        Padding="20,8"
+                                                        Background="{StaticResource AccentGold}"
+                                                        Foreground="{StaticResource DarkBrown}"
+                                                        BorderThickness="0"
+                                                        Margin="0,0,10,0"
+                                                        Cursor="Hand">
+                                                    <Button.Resources>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="CornerRadius" Value="6"/>
+                                                        </Style>
+                                                    </Button.Resources>
+                                                </Button>
+
+                                                <!-- Selection indicator (checkmark) -->
+                                                <TextBlock Text="✓"
+                                                           FontSize="28"
+                                                           FontWeight="Bold"
+                                                           Foreground="{StaticResource AccentGreen}"
+                                                           VerticalAlignment="Center">
+                                                    <TextBlock.Visibility>
+                                                        <MultiBinding Converter="{StaticResource StringEqualityConverter}">
+                                                            <Binding Path="PrinterName"/>
+                                                            <Binding Path="DataContext.SelectedReceiptPrinter" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Visibility>
+                                                </TextBlock>
+                                            </StackPanel>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <!-- Selected Printer Display -->
-                        <Border Background="#E8F0E7"
-                                BorderBrush="{StaticResource AccentGreen}"
-                                BorderThickness="2"
-                                CornerRadius="6"
-                                Padding="15"
-                                Margin="0,15,0,0"
-                                Visibility="{Binding SelectedPrinter, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <StackPanel>
-                                <TextBlock Text="Selected Printer:"
-                                           FontSize="16"
-                                           Foreground="{StaticResource DarkBrown}"
-                                           Margin="0,0,0,5"/>
-                                <TextBlock Text="{Binding SelectedPrinter}"
-                                           FontSize="20"
-                                           FontWeight="Bold"
-                                           Foreground="{StaticResource AccentGreen}"/>
-                            </StackPanel>
-                        </Border>
+                        <!-- Auto-print Receipt Checkbox -->
+                        <CheckBox IsChecked="{Binding AutoPrintReceipt}"
+                                  FontSize="22"
+                                  Foreground="{StaticResource Espresso}"
+                                  FontFamily="{StaticResource BrandFont}"
+                                  Margin="0,20,0,0">
+                            <TextBlock Text="Automatically print receipt after successful payment"
+                                       FontSize="22"
+                                       Foreground="{StaticResource Espresso}"
+                                       TextWrapping="Wrap"/>
+                        </CheckBox>
                     </StackPanel>
                 </Border>
 
@@ -479,6 +509,235 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Business Information Section (Receipt Settings) -->
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,20">
+                            <TextBlock Text="🧾 Receipt Settings"
+                                       FontSize="28"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource DarkBrown}"
+                                       HorizontalAlignment="Left"/>
+
+                            <!-- Fetch from Forte Button -->
+                            <Button Command="{Binding FetchFromForteCommand}"
+                                    HorizontalAlignment="Right"
+                                    FontSize="20"
+                                    Padding="25,10"
+                                    Background="{StaticResource AccentGreen}"
+                                    Foreground="White"
+                                    BorderBrush="{StaticResource DarkBrown}"
+                                    BorderThickness="2"
+                                    Cursor="Hand">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📥 " FontSize="20" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Fetch from Forte" FontSize="20"/>
+                                </StackPanel>
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="8"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </Grid>
+
+                        <!-- Fetch Status -->
+                        <TextBlock Text="{Binding ForteStoreInfoStatus}"
+                                   FontSize="18"
+                                   Foreground="{StaticResource PrimaryBrown}"
+                                   Margin="0,0,0,15"
+                                   Visibility="{Binding ForteStoreInfoStatus, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+                        <!-- Business Name -->
+                        <TextBlock Text="Business Name *"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20">
+                            <TextBox Text="{Binding BusinessName, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="22"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource Espresso}"
+                                     FontFamily="{StaticResource BrandFont}"/>
+                        </Border>
+
+                        <!-- Address Line 1 -->
+                        <TextBlock Text="Address Line 1 (Street)"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20">
+                            <TextBox Text="{Binding BusinessAddressLine1, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="22"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource Espresso}"
+                                     FontFamily="{StaticResource BrandFont}"/>
+                        </Border>
+
+                        <!-- Address Line 2 -->
+                        <TextBlock Text="Address Line 2 (City, State ZIP)"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20">
+                            <TextBox Text="{Binding BusinessAddressLine2, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="22"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource Espresso}"
+                                     FontFamily="{StaticResource BrandFont}"/>
+                        </Border>
+
+                        <!-- Phone Number -->
+                        <TextBlock Text="Phone Number"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20">
+                            <TextBox Text="{Binding BusinessPhone, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="22"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource Espresso}"
+                                     FontFamily="{StaticResource BrandFont}"/>
+                        </Border>
+
+                        <!-- Tax ID (Optional) -->
+                        <TextBlock Text="Tax ID / EIN (Optional)"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20">
+                            <TextBox Text="{Binding BusinessTaxId, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="22"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource Espresso}"
+                                     FontFamily="{StaticResource BrandFont}"/>
+                        </Border>
+
+                        <!-- Receipt Footer Message -->
+                        <TextBlock Text="Receipt Footer Message"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20">
+                            <TextBox Text="{Binding ReceiptFooterMessage, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="22"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource Espresso}"
+                                     FontFamily="{StaticResource BrandFont}"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tax Settings Section -->
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="💰 Tax Settings"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,20"/>
+
+                        <!-- Enable Tax Checkbox -->
+                        <CheckBox IsChecked="{Binding TaxEnabled}"
+                                  FontSize="22"
+                                  Foreground="{StaticResource Espresso}"
+                                  FontFamily="{StaticResource BrandFont}"
+                                  Margin="0,0,0,20">
+                            <TextBlock Text="Enable tax calculation on orders"
+                                       FontSize="22"
+                                       Foreground="{StaticResource Espresso}"/>
+                        </CheckBox>
+
+                        <!-- Tax Rate -->
+                        <TextBlock Text="Tax Rate (%)"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20">
+                            <TextBox Text="{Binding TaxRateDisplay, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="22"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource Espresso}"
+                                     FontFamily="{StaticResource BrandFont}"/>
+                        </Border>
+
+                        <!-- Tax Label -->
+                        <TextBlock Text="Tax Label (e.g., 'Sales Tax', 'VAT')"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,8"/>
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="15"
+                                Margin="0,0,0,20">
+                            <TextBox Text="{Binding TaxLabel, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="22"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource Espresso}"
+                                     FontFamily="{StaticResource BrandFont}"/>
+                        </Border>
                     </StackPanel>
                 </Border>
 

@@ -12,6 +12,7 @@
         <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         <converters:InverseStringToVisibilityConverter x:Key="InverseStringToVisibilityConverter"/>
         <converters:BoolToPaymentTextConverter x:Key="BoolToPaymentTextConverter"/>
+        <converters:StringEqualityConverter x:Key="StringEqualityConverter"/>
 
         <!-- COFFEEBOTIC Color Palette -->
         <!-- Primary Colors from Brand -->

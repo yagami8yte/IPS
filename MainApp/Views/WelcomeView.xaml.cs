@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IPS.MainApp.ViewModels;
 
 namespace IPS.MainApp.Views
 {
@@ -20,6 +21,8 @@ namespace IPS.MainApp.Views
     /// </summary>
     public partial class WelcomeView : UserControl
     {
+        private int _currentVideoIndex = 0;
+
         public WelcomeView()
         {
             InitializeComponent();
@@ -34,9 +37,33 @@ namespace IPS.MainApp.Views
 
         private void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
         {
-            // Loop the video
-            VideoPlayer.Position = TimeSpan.Zero;
-            VideoPlayer.Play();
+            // Play next video in playlist
+            if (DataContext is WelcomeViewModel viewModel && viewModel.AdVideoPlaylist.Count > 0)
+            {
+                // Move to next video
+                _currentVideoIndex++;
+
+                // Loop back to first video if we've reached the end
+                if (_currentVideoIndex >= viewModel.AdVideoPlaylist.Count)
+                {
+                    _currentVideoIndex = 0;
+                    Console.WriteLine("[WelcomeView] Playlist completed, looping back to first video");
+                }
+
+                // Update the video path
+                viewModel.AdVideoPath = viewModel.AdVideoPlaylist[_currentVideoIndex];
+                Console.WriteLine($"[WelcomeView] Playing next video ({_currentVideoIndex + 1}/{viewModel.AdVideoPlaylist.Count}): {viewModel.AdVideoPath}");
+
+                // Play the new video
+                VideoPlayer.Position = TimeSpan.Zero;
+                VideoPlayer.Play();
+            }
+            else
+            {
+                // Fallback: loop the current video if no playlist
+                VideoPlayer.Position = TimeSpan.Zero;
+                VideoPlayer.Play();
+            }
         }
     }
 }

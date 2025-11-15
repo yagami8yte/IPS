@@ -104,7 +104,7 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
-        /// Indicates if network/printer scan is in progress
+        /// Indicates if network scan is in progress
         /// </summary>
         public bool IsScanning
         {
@@ -117,7 +117,7 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
-        /// Scan progress percentage (0-100)
+        /// Scan progress percentage for network scan (0-100)
         /// </summary>
         public int ScanProgress
         {
@@ -130,7 +130,7 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
-        /// Status message for current scan operation
+        /// Status message for network scan operation
         /// </summary>
         public string ScanStatus
         {
@@ -138,6 +138,49 @@ namespace IPS.MainApp.ViewModels
             set
             {
                 _scanStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isPrinterScanning = false;
+        private int _printerScanProgress = 0;
+        private string _printerScanStatus = string.Empty;
+
+        /// <summary>
+        /// Indicates if printer scan is in progress
+        /// </summary>
+        public bool IsPrinterScanning
+        {
+            get => _isPrinterScanning;
+            set
+            {
+                _isPrinterScanning = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Scan progress percentage for printer scan (0-100)
+        /// </summary>
+        public int PrinterScanProgress
+        {
+            get => _printerScanProgress;
+            set
+            {
+                _printerScanProgress = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Status message for printer scan operation
+        /// </summary>
+        public string PrinterScanStatus
+        {
+            get => _printerScanStatus;
+            set
+            {
+                _printerScanStatus = value;
                 OnPropertyChanged();
             }
         }
@@ -621,6 +664,16 @@ namespace IPS.MainApp.ViewModels
         /// </summary>
         public IRelayCommand TestPaymentCommand { get; }
 
+        /// <summary>
+        /// Command to fetch store information from Forte
+        /// </summary>
+        public IRelayCommand FetchFromForteCommand { get; }
+
+        /// <summary>
+        /// Command to select a receipt printer
+        /// </summary>
+        public IRelayCommand<string> SelectReceiptPrinterCommand { get; }
+
         // Section visibility properties
         private bool _isSystemsSectionVisible = true;
         private bool _isSalesSectionVisible = false;
@@ -629,6 +682,7 @@ namespace IPS.MainApp.ViewModels
         private bool _isBreakTimeSectionVisible = false;
         private bool _isPaymentSectionVisible = false;
         private bool _isSecuritySectionVisible = false;
+        private bool _isReceiptSectionVisible = false;
 
         public bool IsSystemsSectionVisible
         {
@@ -700,6 +754,178 @@ namespace IPS.MainApp.ViewModels
             }
         }
 
+        public bool IsReceiptSectionVisible
+        {
+            get => _isReceiptSectionVisible;
+            set
+            {
+                _isReceiptSectionVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // ========================================
+        // Receipt Settings Properties
+        // ========================================
+
+        private string _businessName = string.Empty;
+        public string BusinessName
+        {
+            get => _businessName;
+            set
+            {
+                _businessName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _businessAddressLine1 = string.Empty;
+        public string BusinessAddressLine1
+        {
+            get => _businessAddressLine1;
+            set
+            {
+                _businessAddressLine1 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _businessAddressLine2 = string.Empty;
+        public string BusinessAddressLine2
+        {
+            get => _businessAddressLine2;
+            set
+            {
+                _businessAddressLine2 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _businessPhone = string.Empty;
+        public string BusinessPhone
+        {
+            get => _businessPhone;
+            set
+            {
+                _businessPhone = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _businessTaxId = string.Empty;
+        public string BusinessTaxId
+        {
+            get => _businessTaxId;
+            set
+            {
+                _businessTaxId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _receiptFooterMessage = string.Empty;
+        public string ReceiptFooterMessage
+        {
+            get => _receiptFooterMessage;
+            set
+            {
+                _receiptFooterMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedReceiptPrinter = string.Empty;
+        public string SelectedReceiptPrinter
+        {
+            get => _selectedReceiptPrinter;
+            set
+            {
+                _selectedReceiptPrinter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _autoPrintReceipt = true;
+        public bool AutoPrintReceipt
+        {
+            get => _autoPrintReceipt;
+            set
+            {
+                _autoPrintReceipt = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _taxEnabled = false;
+        public bool TaxEnabled
+        {
+            get => _taxEnabled;
+            set
+            {
+                _taxEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private decimal _taxRate = 0.0m;
+        public string TaxRateDisplay
+        {
+            get => (_taxRate * 100).ToString("F2");
+            set
+            {
+                if (decimal.TryParse(value, out decimal rate))
+                {
+                    _taxRate = rate / 100;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(TaxRate));
+                }
+            }
+        }
+
+        public decimal TaxRate
+        {
+            get => _taxRate;
+            set
+            {
+                _taxRate = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TaxRateDisplay));
+            }
+        }
+
+        private string _taxLabel = "Tax";
+        public string TaxLabel
+        {
+            get => _taxLabel;
+            set
+            {
+                _taxLabel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isFetchingFromForte = false;
+        public bool IsFetchingFromForte
+        {
+            get => _isFetchingFromForte;
+            set
+            {
+                _isFetchingFromForte = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _forteStoreInfoStatus = string.Empty;
+        public string ForteStoreInfoStatus
+        {
+            get => _forteStoreInfoStatus;
+            set
+            {
+                _forteStoreInfoStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Sales ViewModel for sales dashboard
         /// </summary>
@@ -739,6 +965,8 @@ namespace IPS.MainApp.ViewModels
             ChangePasswordCommand = new RelayCommand(OnChangePassword);
             SelectSectionCommand = new RelayCommand<string>(OnSelectSection);
             TestPaymentCommand = new RelayCommand(async () => await OnTestPaymentAsync());
+            FetchFromForteCommand = new RelayCommand(async () => await OnFetchFromForteAsync());
+            SelectReceiptPrinterCommand = new RelayCommand<string>(OnSelectReceiptPrinter);
 
             InitializeConfigSections();
             LoadConfiguration();
@@ -809,6 +1037,7 @@ namespace IPS.MainApp.ViewModels
             IsBreakTimeSectionVisible = SelectedSectionId == "BreakTime";
             IsPaymentSectionVisible = SelectedSectionId == "Payment";
             IsSecuritySectionVisible = SelectedSectionId == "Security";
+            IsReceiptSectionVisible = SelectedSectionId == "Receipt";
 
             Console.WriteLine($"[AdminViewModel] Section visibility updated: {SelectedSectionId}");
         }
@@ -843,6 +1072,19 @@ namespace IPS.MainApp.ViewModels
             TerminalComPort = config.TerminalComPort;
             ForteMerchantId = config.ForteMerchantId;
             ForteProcessingPassword = config.ForteProcessingPassword;
+
+            // Load receipt settings
+            BusinessName = config.BusinessName;
+            BusinessAddressLine1 = config.BusinessAddressLine1;
+            BusinessAddressLine2 = config.BusinessAddressLine2;
+            BusinessPhone = config.BusinessPhone;
+            BusinessTaxId = config.BusinessTaxId;
+            ReceiptFooterMessage = config.ReceiptFooterMessage;
+            SelectedReceiptPrinter = config.SelectedReceiptPrinter;
+            AutoPrintReceipt = config.AutoPrintReceipt;
+            TaxEnabled = config.TaxEnabled;
+            TaxRate = config.TaxRate;
+            TaxLabel = config.TaxLabel;
 
             Systems.Clear();
             foreach (var system in config.Systems)
@@ -901,6 +1143,17 @@ namespace IPS.MainApp.ViewModels
                 TerminalComPort = TerminalComPort,
                 ForteMerchantId = ForteMerchantId,
                 ForteProcessingPassword = ForteProcessingPassword,
+                BusinessName = BusinessName,
+                BusinessAddressLine1 = BusinessAddressLine1,
+                BusinessAddressLine2 = BusinessAddressLine2,
+                BusinessPhone = BusinessPhone,
+                BusinessTaxId = BusinessTaxId,
+                ReceiptFooterMessage = ReceiptFooterMessage,
+                SelectedReceiptPrinter = SelectedReceiptPrinter,
+                AutoPrintReceipt = AutoPrintReceipt,
+                TaxEnabled = TaxEnabled,
+                TaxRate = TaxRate,
+                TaxLabel = TaxLabel,
                 Systems = Systems.Select(vm => new SystemConfiguration
                 {
                     SystemName = vm.SystemName,
@@ -1002,11 +1255,11 @@ namespace IPS.MainApp.ViewModels
         /// </summary>
         private async Task OnScanPrintersAsync()
         {
-            if (IsScanning) return;
+            if (IsPrinterScanning) return;
 
-            IsScanning = true;
-            ScanProgress = 0;
-            ScanStatus = "Scanning for printers...";
+            IsPrinterScanning = true;
+            PrinterScanProgress = 0;
+            PrinterScanStatus = "Scanning for printers...";
             AvailablePrinters.Clear();
 
             try
@@ -1015,8 +1268,8 @@ namespace IPS.MainApp.ViewModels
 
                 var progress = new Progress<int>(percent =>
                 {
-                    ScanProgress = percent;
-                    ScanStatus = $"Scanning for printers... {percent}%";
+                    PrinterScanProgress = percent;
+                    PrinterScanStatus = $"Scanning for printers... {percent}%";
                 });
 
                 var printers = await _printerScanner.GetReceiptPrintersAsync(progress);
@@ -1033,17 +1286,17 @@ namespace IPS.MainApp.ViewModels
                     SelectedPrinter = defaultPrinter.PrinterName;
                 }
 
-                ScanStatus = $"Scan complete. Found {printers.Count} printer(s)";
+                PrinterScanStatus = $"Scan complete. Found {printers.Count} printer(s)";
                 Console.WriteLine($"[AdminViewModel] Printer scan complete. Found {printers.Count} printer(s)");
             }
             catch (Exception ex)
             {
-                ScanStatus = $"Printer scan failed: {ex.Message}";
+                PrinterScanStatus = $"Printer scan failed: {ex.Message}";
                 Console.WriteLine($"[AdminViewModel] Printer scan failed: {ex.Message}");
             }
             finally
             {
-                IsScanning = false;
+                IsPrinterScanning = false;
             }
         }
 
@@ -1353,6 +1606,156 @@ namespace IPS.MainApp.ViewModels
             public string? orderLabel { get; set; }
             public string? error { get; set; }
             public decimal? amount { get; set; }
+        }
+
+        /// <summary>
+        /// Select a receipt printer from the discovered printers list
+        /// </summary>
+        private void OnSelectReceiptPrinter(string? printerName)
+        {
+            if (!string.IsNullOrEmpty(printerName))
+            {
+                SelectedReceiptPrinter = printerName;
+                Console.WriteLine($"[AdminViewModel] Selected receipt printer: {printerName}");
+            }
+        }
+
+        /// <summary>
+        /// Fetch store information from Forte and auto-populate receipt settings
+        /// </summary>
+        private async Task OnFetchFromForteAsync()
+        {
+            try
+            {
+                IsFetchingFromForte = true;
+                ForteStoreInfoStatus = "Fetching store information from Forte...";
+                Console.WriteLine("[AdminViewModel] Fetching store info from Forte");
+
+                // Create FortePaymentService
+                var forteService = new FortePaymentService(_configService);
+
+                // Fetch location info first (has more detailed business information)
+                var locationInfo = await forteService.GetLocationInfoAsync();
+
+                if (locationInfo != null)
+                {
+                    Console.WriteLine($"[AdminViewModel] Location info retrieved: {locationInfo.DbaName}");
+
+                    // Populate business information from location
+                    if (!string.IsNullOrWhiteSpace(locationInfo.DbaName))
+                    {
+                        BusinessName = locationInfo.DbaName;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(locationInfo.CustomerServicePhone))
+                    {
+                        BusinessPhone = locationInfo.CustomerServicePhone;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(locationInfo.TaxId))
+                    {
+                        BusinessTaxId = locationInfo.TaxId;
+                    }
+
+                    // Populate address
+                    if (locationInfo.Address != null)
+                    {
+                        var addr = locationInfo.Address;
+
+                        // Line 1: Street address
+                        if (!string.IsNullOrWhiteSpace(addr.StreetLine1))
+                        {
+                            if (!string.IsNullOrWhiteSpace(addr.StreetLine2))
+                            {
+                                BusinessAddressLine1 = $"{addr.StreetLine1}, {addr.StreetLine2}";
+                            }
+                            else
+                            {
+                                BusinessAddressLine1 = addr.StreetLine1;
+                            }
+                        }
+
+                        // Line 2: City, State ZIP
+                        if (!string.IsNullOrWhiteSpace(addr.Locality) && !string.IsNullOrWhiteSpace(addr.Region))
+                        {
+                            BusinessAddressLine2 = $"{addr.Locality}, {addr.Region} {addr.PostalCode}";
+                        }
+                        else if (!string.IsNullOrWhiteSpace(addr.Locality))
+                        {
+                            BusinessAddressLine2 = $"{addr.Locality} {addr.PostalCode}";
+                        }
+                    }
+
+                    ForteStoreInfoStatus = $"✅ Successfully loaded: {locationInfo.DbaName}";
+                    Console.WriteLine("[AdminViewModel] Store info populated successfully");
+                }
+                else
+                {
+                    // Try organization info as fallback
+                    Console.WriteLine("[AdminViewModel] Location info not available, trying organization info");
+                    var orgInfo = await forteService.GetOrganizationInfoAsync();
+
+                    if (orgInfo != null)
+                    {
+                        Console.WriteLine($"[AdminViewModel] Organization info retrieved: {orgInfo.OrganizationName}");
+
+                        // Populate from organization
+                        if (!string.IsNullOrWhiteSpace(orgInfo.DbaName))
+                        {
+                            BusinessName = orgInfo.DbaName;
+                        }
+                        else if (!string.IsNullOrWhiteSpace(orgInfo.CompanyName))
+                        {
+                            BusinessName = orgInfo.CompanyName;
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(orgInfo.Phone))
+                        {
+                            BusinessPhone = orgInfo.Phone;
+                        }
+
+                        // Populate address
+                        if (orgInfo.Address != null)
+                        {
+                            var addr = orgInfo.Address;
+
+                            if (!string.IsNullOrWhiteSpace(addr.StreetLine1))
+                            {
+                                if (!string.IsNullOrWhiteSpace(addr.StreetLine2))
+                                {
+                                    BusinessAddressLine1 = $"{addr.StreetLine1}, {addr.StreetLine2}";
+                                }
+                                else
+                                {
+                                    BusinessAddressLine1 = addr.StreetLine1;
+                                }
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(addr.Locality) && !string.IsNullOrWhiteSpace(addr.Region))
+                            {
+                                BusinessAddressLine2 = $"{addr.Locality}, {addr.Region} {addr.PostalCode}";
+                            }
+                        }
+
+                        ForteStoreInfoStatus = $"✅ Successfully loaded: {orgInfo.OrganizationName}";
+                        Console.WriteLine("[AdminViewModel] Store info populated from organization");
+                    }
+                    else
+                    {
+                        ForteStoreInfoStatus = "❌ Failed to retrieve store information from Forte. Check your credentials.";
+                        Console.WriteLine("[AdminViewModel] Failed to retrieve both location and organization info");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AdminViewModel] Error fetching from Forte: {ex.Message}");
+                ForteStoreInfoStatus = $"❌ Error: {ex.Message}";
+            }
+            finally
+            {
+                IsFetchingFromForte = false;
+            }
         }
 
         /// <summary>
