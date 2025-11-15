@@ -11,13 +11,9 @@
       Width="1080" Height="1920">
 
     <Grid>
-        <!-- Coffee-themed gradient background -->
+        <!-- COFFEEBOTIC unified background -->
         <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="#3E2723" Offset="0"/>
-                <GradientStop Color="#6F4E37" Offset="0.5"/>
-                <GradientStop Color="#4E342E" Offset="1"/>
-            </LinearGradientBrush>
+            <SolidColorBrush Color="#F0E4CC"/>
         </Grid.Background>
 
         <!-- Main Content -->
@@ -31,14 +27,39 @@
                 <!-- Button Label Area -->
             </Grid.RowDefinitions>
 
-            <!-- Brand Name at Top -->
+            <!-- Brand Logo at Top -->
             <Border Grid.Row="0"
-                    Background="#50000000"
-                    BorderBrush="{StaticResource AccentGold}"
-                    BorderThickness="0,0,0,2">
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0">
                 <Grid>
-                    <TextBlock Text="Coffeebotic"
-                               Style="{StaticResource BrandHeaderStyle}"/>
+                    <!-- COFFEEBOTIC Logo - Left Side -->
+                    <Image Source="pack://application:,,,/Assets/Branding/coffeebotic.jpg"
+                           Height="140"
+                           Margin="40,20,0,20"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                    <!-- Date and Time Display - Right Side -->
+                    <StackPanel HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0,0,180,0">
+                        <TextBlock Text="{Binding CurrentDate}"
+                                   FontSize="32"
+                                   FontWeight="SemiBold"
+                                   FontFamily="{StaticResource BrandFont}"
+                                   Foreground="{StaticResource Espresso}"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="{Binding CurrentTime}"
+                                   FontSize="48"
+                                   FontWeight="Bold"
+                                   FontFamily="{StaticResource BrandFont}"
+                                   Foreground="{StaticResource MetallicGold}"
+                                   HorizontalAlignment="Right"/>
+                    </StackPanel>
 
                     <!-- Admin Button (Top-Right) -->
                     <Button Command="{Binding OpenAdminCommand}"
@@ -112,14 +133,14 @@
             <!-- Video Advertisement -->
             <Grid Grid.Row="1" Margin="60,80,60,60" IsHitTestVisible="False">
                 <Border CornerRadius="30"
-                        Background="#30000000"
+                        Background="White"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch">
                     <Border.Effect>
-                        <DropShadowEffect Color="Black"
+                        <DropShadowEffect Color="#D4AF37"
                                         Direction="270"
                                         ShadowDepth="10"
-                                        Opacity="0.5"
+                                        Opacity="0.3"
                                         BlurRadius="30"/>
                     </Border.Effect>
 
@@ -139,7 +160,7 @@
 
                 <!-- Border overlay to ensure corners are covered -->
                 <Border CornerRadius="30"
-                        BorderBrush="{StaticResource AccentLatte}"
+                        BorderBrush="{StaticResource MetallicGold}"
                         BorderThickness="3"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
@@ -147,12 +168,12 @@
 
                 <!-- Placeholder when no video -->
                 <Border CornerRadius="30"
-                        Background="#20FFFFFF"
+                        Background="{StaticResource BackgroundBeige}"
                         x:Name="PlaceholderBorder"
                         Visibility="Collapsed">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Path Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,5.5A6.5,6.5 0 0,0 5.5,12A6.5,6.5 0 0,0 12,18.5A6.5,6.5 0 0,0 18.5,12A6.5,6.5 0 0,0 12,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M10.5,8.67V15.33L15.25,12L10.5,8.67Z"
-                              Fill="{StaticResource LightCream}"
+                              Fill="{StaticResource MetallicGold}"
                               Width="120" Height="120"
                               Stretch="Uniform"
                               HorizontalAlignment="Center"
@@ -160,7 +181,7 @@
                         <TextBlock Text="Advertisement"
                                    FontSize="36"
                                    FontFamily="{StaticResource BrandFont}"
-                                   Foreground="{StaticResource LightCream}"
+                                   Foreground="{StaticResource Espresso}"
                                    HorizontalAlignment="Center"
                                    Margin="0,30,0,0"/>
                     </StackPanel>
@@ -173,14 +194,14 @@
                            FontSize="56"
                            FontWeight="Bold"
                            FontFamily="{StaticResource BrandFont}"
-                           Foreground="White"
+                           Foreground="{StaticResource Espresso}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center">
                     <TextBlock.Effect>
-                        <DropShadowEffect Color="Black"
+                        <DropShadowEffect Color="#D4AF37"
                                         Direction="270"
                                         ShadowDepth="3"
-                                        Opacity="0.6"
+                                        Opacity="0.4"
                                         BlurRadius="8"/>
                     </TextBlock.Effect>
                 </TextBlock>

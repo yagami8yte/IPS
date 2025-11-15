@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
 using OxyPlot;
 using OxyPlot.Series;
@@ -19,6 +20,7 @@ namespace IPS.MainApp.ViewModels
     public class SalesViewModel : BaseViewModel
     {
         private readonly SalesService _salesService;
+        private readonly Dispatcher _dispatcher;
         private TimeInterval _selectedTimeInterval = TimeInterval.Last7Days;
         private DateTime _customStartDate = DateTime.Now.AddDays(-7);
         private DateTime _customEndDate = DateTime.Now;
@@ -76,8 +78,7 @@ namespace IPS.MainApp.ViewModels
             {
                 _customStartDate = value;
                 OnPropertyChanged();
-                if (SelectedTimeInterval == TimeInterval.CustomRange)
-                    _ = RefreshDataAsync(); // Fire and forget for property setter
+                // Don't auto-refresh when date changes - user must click Apply
             }
         }
 
@@ -91,8 +92,7 @@ namespace IPS.MainApp.ViewModels
             {
                 _customEndDate = value;
                 OnPropertyChanged();
-                if (SelectedTimeInterval == TimeInterval.CustomRange)
-                    _ = RefreshDataAsync(); // Fire and forget for property setter
+                // Don't auto-refresh when date changes - user must click Apply
             }
         }
 
@@ -154,12 +154,19 @@ namespace IPS.MainApp.ViewModels
         /// </summary>
         public IRelayCommand RefreshDataCommand { get; }
 
+        /// <summary>
+        /// Command to apply custom date range
+        /// </summary>
+        public IRelayCommand ApplyCustomRangeCommand { get; }
+
         public SalesViewModel()
         {
             _salesService = new SalesService();
+            _dispatcher = Dispatcher.CurrentDispatcher;
 
             ExportDataCommand = new RelayCommand(OnExportData);
             RefreshDataCommand = new RelayCommand(async () => await RefreshDataAsync());
+            ApplyCustomRangeCommand = new RelayCommand(async () => await RefreshDataAsync());
 
             // Initialize OxyPlot model
             RevenuePlotModel = new PlotModel { Title = "Revenue Trend" };
@@ -181,6 +188,7 @@ namespace IPS.MainApp.ViewModels
             TimeIntervals.Add(new TimeIntervalOption { Interval = TimeInterval.Last3Months, DisplayName = "Last 3 Months" });
             TimeIntervals.Add(new TimeIntervalOption { Interval = TimeInterval.ThisYear, DisplayName = "This Year" });
             TimeIntervals.Add(new TimeIntervalOption { Interval = TimeInterval.AllTime, DisplayName = "All Time" });
+            TimeIntervals.Add(new TimeIntervalOption { Interval = TimeInterval.CustomRange, DisplayName = "Custom Range" });
         }
 
 
@@ -224,42 +232,46 @@ namespace IPS.MainApp.ViewModels
 
             _statistics = _salesService.GetSalesStatistics(startDate, endDate);
 
-            // Update summary statistics
-            TotalRevenue = _statistics.TotalRevenue;
-            TotalOrders = _statistics.TotalOrders;
-            AverageOrderValue = _statistics.AverageOrderValue;
-
-            // Update chart
-            UpdateChart(_statistics.DailySalesData);
-
-            // Update top items
-            TopItems.Clear();
-            foreach (var item in _statistics.TopItems)
+            // Update on UI thread
+            _dispatcher.Invoke(() =>
             {
-                TopItems.Add(item);
-            }
+                // Update summary statistics
+                TotalRevenue = _statistics.TotalRevenue;
+                TotalOrders = _statistics.TotalOrders;
+                AverageOrderValue = _statistics.AverageOrderValue;
 
-            // Update order history
-            var orders = _salesService.GetOrderHistory(startDate, endDate);
-            OrderHistory.Clear();
-            foreach (var order in orders)
-            {
-                OrderHistory.Add(order);
-            }
+                // Update chart
+                UpdateChart(_statistics.DailySalesData);
 
-            // Update system revenue
-            SystemRevenue.Clear();
-            foreach (var kvp in _statistics.RevenueBySystem)
-            {
-                SystemRevenue.Add(new SystemRevenue
+                // Update top items
+                TopItems.Clear();
+                foreach (var item in _statistics.TopItems)
                 {
-                    SystemName = kvp.Key,
-                    Revenue = kvp.Value,
-                    Percentage = _statistics.TotalRevenue > 0 ? (double)(kvp.Value / _statistics.TotalRevenue * 100) : 0
-                });
-            }
+                    TopItems.Add(item);
+                }
 
-            Console.WriteLine($"[SalesViewModel] Data refreshed for {SelectedTimeInterval}: {TotalOrders} orders, ${TotalRevenue:F2} revenue");
+                // Update order history
+                var orders = _salesService.GetOrderHistory(startDate, endDate);
+                OrderHistory.Clear();
+                foreach (var order in orders)
+                { 
+                    OrderHistory.Add(order);
+                }
+
+                // Update system revenue
+                SystemRevenue.Clear();
+                foreach (var kvp in _statistics.RevenueBySystem)
+                {
+                    SystemRevenue.Add(new SystemRevenue
+                    {
+                        SystemName = kvp.Key,
+                        Revenue = kvp.Value,
+                        Percentage = _statistics.TotalRevenue > 0 ? (double)(kvp.Value / _statistics.TotalRevenue * 100) : 0
+                    });
+                }
+
+                Console.WriteLine($"[SalesViewModel] Data refreshed for {SelectedTimeInterval}: {TotalOrders} orders, ${TotalRevenue:F2} revenue");
+            });
         }
 
         private void UpdateChart(List<DailySales> dailySales)

@@ -85,9 +85,63 @@ namespace IPS.MainApp.ViewModels
 
         private void ExecuteNavigateToWelcome()
         {
-            Console.WriteLine("[MainViewModel] ExecuteNavigateToWelcome - Creating WelcomeViewModel");
-            CurrentViewModel = new WelcomeViewModel(ExecuteNavigateToMenu, ExecuteNavigateToAdmin);
-            Console.WriteLine("[MainViewModel] ExecuteNavigateToWelcome - WelcomeViewModel set as CurrentViewModel");
+            Console.WriteLine("[MainViewModel] ExecuteNavigateToWelcome - Checking break time status");
+
+            // Check if we're in break time (instant or scheduled)
+            var config = _configService.GetConfiguration();
+            bool isInstantBreak;
+            if (IsInBreakTime(config, out isInstantBreak))
+            {
+                Console.WriteLine($"[MainViewModel] Break time active (Instant: {isInstantBreak}) - showing BreakTimeView");
+                CurrentViewModel = new BreakTimeViewModel(
+                    config.BreakEndHour,
+                    config.BreakEndMinute,
+                    config.BreakMessage,
+                    isInstantBreak,
+                    ExecuteNavigateToAdmin);
+                Console.WriteLine("[MainViewModel] BreakTimeViewModel set as CurrentViewModel");
+            }
+            else
+            {
+                Console.WriteLine("[MainViewModel] Not in break time - creating WelcomeViewModel");
+                CurrentViewModel = new WelcomeViewModel(ExecuteNavigateToMenu, ExecuteNavigateToAdmin);
+                Console.WriteLine("[MainViewModel] WelcomeViewModel set as CurrentViewModel");
+            }
+        }
+
+        private bool IsInBreakTime(IPS.Core.Models.AppConfiguration config, out bool isInstantBreak)
+        {
+            isInstantBreak = false;
+
+            // Check instant break first (takes priority)
+            if (config.IsInstantBreakActive)
+            {
+                isInstantBreak = true;
+                return true;
+            }
+
+            // Check scheduled break time
+            if (!config.IsBreakTimeEnabled)
+            {
+                return false;
+            }
+
+            var now = DateTime.Now;
+            var currentTime = now.TimeOfDay;
+            var breakStart = new TimeSpan(config.BreakStartHour, config.BreakStartMinute, 0);
+            var breakEnd = new TimeSpan(config.BreakEndHour, config.BreakEndMinute, 0);
+
+            // Handle break time that crosses midnight
+            if (breakStart > breakEnd)
+            {
+                // Example: 23:00 to 01:00 (11 PM to 1 AM)
+                return currentTime >= breakStart || currentTime < breakEnd;
+            }
+            else
+            {
+                // Normal case: 14:00 to 15:00 (2 PM to 3 PM)
+                return currentTime >= breakStart && currentTime < breakEnd;
+            }
         }
 
         private void ExecuteNavigateToMenu()
@@ -147,6 +201,7 @@ namespace IPS.MainApp.ViewModels
 
             var paymentViewModel = new PaymentViewModel(
                 _currentMenuViewModel.CartItems,
+                _configService,
                 ExecuteNavigateBackToMenu,
                 ExecuteProcessPaymentAndOrder);
 

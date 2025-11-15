@@ -102,10 +102,13 @@ namespace IPS.MainApp.ViewModels
         public void ResetState()
         {
             Console.WriteLine("[PasswordEntryViewModel] ResetState called");
+
+            // Use property setters instead of backing fields to ensure proper binding updates
             Password = string.Empty;
             ErrorMessage = string.Empty;
             HasError = false;
-            Console.WriteLine("[PasswordEntryViewModel] State reset complete");
+
+            Console.WriteLine($"[PasswordEntryViewModel] State reset complete - Password is now: '{Password}' (length: {Password.Length})");
         }
 
         private void OnSubmit()

@@ -1,0 +1,168 @@
+================================================================================
+EMAIL DRAFT FOR JAMES IVEY - FORTE SUPPORT
+================================================================================
+
+To: James.Ivey@csgi.com
+From: yagami.byte@gmail.com
+Subject: Forte Checkout v2 Integration Complete - Static IP & Terminal Recommendation Needed
+
+================================================================================
+
+Hi James,
+
+Thank you for your detailed guidance via email about integrating Forte Checkout
+with our COFFEEBOTIC robotic barista kiosks. Based on your recommendation, we've
+successfully implemented Forte Checkout v2 and are ready for testing.
+
+
+IMPLEMENTATION COMPLETE ✓
+================================================================================
+
+Per your recommendation, we've built:
+
+ ✓ Forte Checkout v2 (modal-based payment flow)
+ ✓ Microsoft Edge WebView2 (embedded Chromium browser hosting the Forte
+   Checkout modal)
+ ✓ Support for both terminals: Dynaflex II Go and v400c (plug-and-play)
+ ✓ Dex console for refunds (manual voids/refunds by customer support)
+ ✓ Complete callback handling: onSuccess, onFailure, onCancel, onReady,
+   onProcessing
+
+Payment flow:
+Customer walks up to kiosk → selects drink → Forte Checkout modal displays in
+WebView2 → customer completes payment via terminal or manual entry → modal
+sends callback to our application → machine makes the drink
+
+
+STATIC IP ADDRESS NEEDED (BLOCKER)
+================================================================================
+
+Per your email requesting our static IP address for whitelisting:
+
+Development Environment IP: _____._____._____._____
+
+Production Kiosk IPs (Atlanta Airport): _____._____._____._____
+
+Please let us know once these are whitelisted so we can begin testing.
+
+
+TERMINAL DRIVER CONFIGURATION
+================================================================================
+
+You mentioned terminals can be "set up in Dex, or download the driver locally."
+
+QUESTION: For our kiosk environment (Windows 10/11 PCs), which approach do you
+recommend?
+  - Option A: Configure terminals in Dex console (cloud-based)
+  - Option B: Download and install driver locally on each kiosk
+
+We prefer minimal local dependencies if possible.
+
+
+TERMINAL SELECTION RECOMMENDATION NEEDED
+================================================================================
+
+We've already received both terminals from Forte for testing:
+ ✓ Verifone v400c Smart Terminal (with keypad)
+ ✓ Dynaflex II Go swiper
+
+BASED ON OUR IMPLEMENTATION, WE'D LIKE YOUR RECOMMENDATION:
+
+Our Forte Checkout integration displays the modal embedded inside our kiosk
+application window (via WebView2). The modal itself supports manual card entry
+via the touchscreen interface.
+
+QUESTION: Given that Forte Checkout already provides an on-screen manual entry
+option, would the Dynaflex II Go swiper alone be sufficient for our use case?
+
+Or would you recommend the v400c with physical keypad for better reliability
+in a kiosk environment?
+
+We want to ensure we're choosing the terminal that works best with Forte
+Checkout's modal interface in our embedded WebView2 setup.
+
+
+TECHNICAL IMPLEMENTATION (CODE ATTACHED)
+================================================================================
+
+I've attached four code files showing our complete Forte Checkout v2
+integration for your review:
+
+1. ForJames_ForteCheckoutService.cs
+   - HTML generation with Forte Checkout JavaScript
+
+2. ForJames_PaymentViewModel.cs
+   - Payment flow and callback handling
+
+3. ForJames_PaymentView.xaml
+   - WebView2 UI integration
+
+4. ForJames_PaymentView.xaml.cs
+   - JavaScript postMessage handling
+
+Our implementation uses:
+  - Sandbox URL: https://sandbox.forte.net/checkout/v2/js
+  - Production URL: https://checkout.forte.net/v2/js
+  - Callbacks: onSuccess, onFailure, onCancel, onReady, onProcessing
+  - Communication: window.chrome.webview.postMessage() from JavaScript to C#
+
+
+TESTING PLAN
+================================================================================
+
+Once we receive confirmation on:
+ 1. ✓ Static IP whitelisting
+ 2. ✓ Terminal recommendation (Dynaflex II Go vs v400c)
+ 3. ✓ Driver setup method (Dex vs local)
+
+We'll proceed with:
+ 1. Configure API credentials (Organization ID, Location ID) in our admin panel
+ 2. Test in Sandbox mode with test cards
+ 3. Configure and test with physical terminal (per your recommendation)
+ 4. Verify all callback scenarios (success, failure, cancel, error)
+ 5. Train customer support on Dex console for voids/refunds
+ 6. Switch to Production mode for live deployment
+
+
+ADDITIONAL QUESTIONS
+================================================================================
+
+1. For sandbox testing, do test card numbers work with Forte Checkout the
+   same way they work with REST API?
+
+2. Are there recommended timeout values for card-present transactions in
+   kiosks?
+
+3. Should we configure any transaction limits or velocity controls in Dex
+   for our kiosk environment?
+
+Please review the attached code files and let us know if our implementation
+aligns with Forte's best practices for embedded Checkout integrations.
+
+Thank you for your support!
+
+
+Best regards,
+Yagami
+Payment Integration Developer for COFFEEBOTIC
+yagami.byte@gmail.com
+
+
+================================================================================
+ATTACHMENTS TO INCLUDE:
+================================================================================
+- ForJames_ForteCheckoutService.cs
+- ForJames_PaymentViewModel.cs
+- ForJames_PaymentView.xaml
+- ForJames_PaymentView.xaml.cs
+
+
+================================================================================
+ACTION REQUIRED BEFORE SENDING:
+================================================================================
+1. Fill in the static IP addresses where marked: _____._____._____._____
+2. Attach the four code files from C:\Users\jinho\DEV\IPS\
+3. Review and send via email client
+
+
+================================================================================

@@ -19,6 +19,7 @@ namespace IPS.MainApp.ViewModels
         private readonly SystemManagerService _systemManager;
         private readonly SystemPollingService _pollingService;
         private readonly System.Windows.Threading.DispatcherTimer _inactivityTimer;
+        private readonly System.Windows.Threading.DispatcherTimer _clockTimer;
 
         private string _selectedSystemName = string.Empty;
         private string _selectedCategoryId = "ALL";
@@ -30,6 +31,8 @@ namespace IPS.MainApp.ViewModels
         private int _inactivityTimeoutSeconds = 120; // 20 seconds for debugging, will be 120 for production
         private int _warningThresholdSeconds = 10;
         private bool _isLoading = true;
+        private string _currentDate = string.Empty;
+        private string _currentTime = string.Empty;
 
         /// <summary>
         /// Available system tabs for selection
@@ -170,6 +173,32 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
+        /// Current date string for display
+        /// </summary>
+        public string CurrentDate
+        {
+            get => _currentDate;
+            set
+            {
+                _currentDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Current time string for display
+        /// </summary>
+        public string CurrentTime
+        {
+            get => _currentTime;
+            set
+            {
+                _currentTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Command to select a menu item and show detail modal
         /// </summary>
         public IRelayCommand<MenuItem> SelectMenuItemCommand { get; }
@@ -252,6 +281,16 @@ namespace IPS.MainApp.ViewModels
             _inactivityTimer.Tick += OnInactivityTimerTick;
             ResetInactivityTimer();
             Console.WriteLine("[MenuViewModel] Inactivity timer initialized");
+
+            Console.WriteLine("[MenuViewModel] Initializing clock timer...");
+            UpdateDateTime();
+            _clockTimer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            _clockTimer.Tick += (s, e) => UpdateDateTime();
+            _clockTimer.Start();
+            Console.WriteLine("[MenuViewModel] Clock timer initialized");
 
             Console.WriteLine("[MenuViewModel] Subscribing to polling updates...");
             _pollingService.MenuItemsUpdated += OnMenuItemsUpdated;
@@ -714,10 +753,18 @@ namespace IPS.MainApp.ViewModels
             ResetInactivityTimer();
         }
 
+        private void UpdateDateTime()
+        {
+            var now = DateTime.Now;
+            CurrentDate = now.ToString("MM/dd/yyyy");  // US format: 11/09/2025
+            CurrentTime = now.ToString("HH:mm:ss");  // 24-hour format without AM/PM: 14:30:45
+        }
+
         public void Cleanup()
         {
             // Stop timers and unsubscribe from polling events
             _inactivityTimer.Stop();
+            _clockTimer.Stop();
             _pollingService.MenuItemsUpdated -= OnMenuItemsUpdated;
             // Note: Polling service is managed at app level, not stopped here
         }

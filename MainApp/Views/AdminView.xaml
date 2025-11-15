@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:IPS.MainApp.Views"
              xmlns:vm="clr-namespace:IPS.MainApp.ViewModels"
              xmlns:controls="clr-namespace:IPS.MainApp.Views.Controls"
+             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
              mc:Ignorable="d"
              d:DesignHeight="1920" d:DesignWidth="1080"
              d:DataContext="{d:DesignInstance Type=vm:AdminViewModel}">
@@ -32,71 +33,64 @@
                 Background="{StaticResource DarkBrown}"
                 BorderBrush="{StaticResource AccentGold}"
                 BorderThickness="0,2,0,2"
-                Padding="20,15">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                          VerticalScrollBarVisibility="Disabled"
-                          PanningMode="HorizontalOnly"
-                          PanningDeceleration="0.001"
-                          PanningRatio="1"
-                          Stylus.IsPressAndHoldEnabled="False">
-                <ItemsControl ItemsSource="{Binding ConfigSections}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="{StaticResource AccentLatte}"
-                                    BorderThickness="2"
-                                    Padding="40,15"
-                                    Margin="12,0"
-                                    CornerRadius="20"
-                                    Cursor="Hand">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                                <Setter Property="Background" Value="{StaticResource AccentLatte}"/>
-                                                <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                                                <Setter Property="BorderThickness" Value="3"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <Border.InputBindings>
-                                    <MouseBinding Command="{Binding Path=DataContext.SelectSectionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                  CommandParameter="{Binding SectionId}"
-                                                  MouseAction="LeftClick"/>
-                                </Border.InputBindings>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Icon}"
-                                               FontSize="32"
-                                               Margin="0,0,10,0"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding DisplayName}"
-                                               FontSize="32"
-                                               FontFamily="{StaticResource BrandFont}"
-                                               FontWeight="SemiBold"
-                                               VerticalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{StaticResource LightCream}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                                        <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                Padding="15,12">
+            <ItemsControl ItemsSource="{Binding ConfigSections}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{StaticResource AccentLatte}"
+                                BorderThickness="2"
+                                Padding="28,12"
+                                Margin="8,0"
+                                CornerRadius="18"
+                                Cursor="Hand">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource AccentLatte}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                                            <Setter Property="BorderThickness" Value="3"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border.InputBindings>
+                                <MouseBinding Command="{Binding Path=DataContext.SelectSectionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              CommandParameter="{Binding SectionId}"
+                                              MouseAction="LeftClick"/>
+                            </Border.InputBindings>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Icon}"
+                                           FontSize="28"
+                                           Margin="0,0,8,0"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding DisplayName}"
+                                           FontSize="28"
+                                           FontFamily="{StaticResource BrandFont}"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{StaticResource LightCream}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Border>
 
         <!-- Content -->
@@ -158,7 +152,7 @@
                         <ItemsControl ItemsSource="{Binding DiscoveredDevices}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="#E8F5E9"
+                                    <Border Background="#E8F0E7"
                                             CornerRadius="6"
                                             Padding="15"
                                             Margin="0,0,0,10">
@@ -239,7 +233,7 @@
                         <ItemsControl ItemsSource="{Binding AvailablePrinters}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="#FFF3E0"
+                                    <Border Background="#F5EFDF"
                                             CornerRadius="6"
                                             Padding="15"
                                             Margin="0,0,0,10">
@@ -257,7 +251,7 @@
                                                 <StackPanel Orientation="Horizontal"
                                                             Margin="0,5,0,0">
                                                     <TextBlock FontSize="14"
-                                                               Foreground="#666">
+                                                               Foreground="{StaticResource Espresso}">
                                                         <Run Text="Type:"/>
                                                         <Run Text="{Binding PrinterType}"/>
                                                         <Run Text=" | Port:"/>
@@ -295,7 +289,7 @@
                         </ItemsControl>
 
                         <!-- Selected Printer Display -->
-                        <Border Background="#E8F5E9"
+                        <Border Background="#E8F0E7"
                                 BorderBrush="{StaticResource AccentGreen}"
                                 BorderThickness="2"
                                 CornerRadius="6"
@@ -345,7 +339,7 @@
                                      FontSize="22"
                                      Padding="10"
                                      VerticalAlignment="Center"
-                                     Background="#F5F5F5"
+                                     Background="{StaticResource BackgroundBeige}"
                                      BorderBrush="{StaticResource DarkBrown}"
                                      BorderThickness="2"/>
                         </Grid>
@@ -388,7 +382,7 @@
                         <ItemsControl ItemsSource="{Binding Systems}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="#F5F5F5"
+                                    <Border Background="{StaticResource BackgroundBeige}"
                                             CornerRadius="8"
                                             Padding="20"
                                             Margin="0,0,0,15"
@@ -468,9 +462,9 @@
                                                         CommandParameter="{Binding}"
                                                         FontSize="20"
                                                         Padding="20,8"
-                                                        Background="#DC143C"
+                                                        Background="{StaticResource ErrorRed}"
                                                         Foreground="White"
-                                                        BorderBrush="#B00020"
+                                                        BorderBrush="{StaticResource ErrorRed}"
                                                         BorderThickness="2"
                                                         Cursor="Hand">
                                                     <Button.Resources>
@@ -487,6 +481,7 @@
                         </ItemsControl>
                     </StackPanel>
                 </Border>
+
                 </StackPanel> <!-- Close Systems Section -->
 
                 <!-- Sales Section -->
@@ -497,6 +492,668 @@
                         </ContentControl.Content>
                     </ContentControl>
                 </StackPanel> <!-- Close Sales Section -->
+
+                <!-- Break Time Section -->
+                <StackPanel Visibility="{Binding IsBreakTimeSectionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="☕ Break Time Configuration"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,20"/>
+
+                        <!-- Instant Break (Manual Override) -->
+                        <Border Background="{StaticResource MetallicGold}"
+                                BorderBrush="{StaticResource Espresso}"
+                                BorderThickness="3"
+                                CornerRadius="12"
+                                Padding="25"
+                                Margin="0,0,0,25">
+                            <StackPanel>
+                                <TextBlock Text="⚡ INSTANT BREAK MODE"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource Espresso}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,15"/>
+
+                                <TextBlock Text="Toggle break mode ON/OFF immediately, regardless of scheduled time"
+                                           FontSize="18"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center"
+                                           Margin="0,0,0,15"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0"
+                                              IsChecked="{Binding IsInstantBreakActive}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Cursor="Hand">
+                                        <CheckBox.LayoutTransform>
+                                            <ScaleTransform ScaleX="3" ScaleY="3"/>
+                                        </CheckBox.LayoutTransform>
+                                    </CheckBox>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="30,0,0,0">
+                                        <TextBlock FontSize="32"
+                                                   FontWeight="Bold"
+                                                   Foreground="{StaticResource Espresso}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="OFF"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsInstantBreakActive}" Value="True">
+                                                            <Setter Property="Text" Value="ON"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource ForestGreen}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Enable/Disable Scheduled Break Time -->
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource SageGreen}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Binding IsBreakTimeEnabled}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,20,0"
+                                          Cursor="Hand">
+                                    <CheckBox.LayoutTransform>
+                                        <ScaleTransform ScaleX="2" ScaleY="2"/>
+                                    </CheckBox.LayoutTransform>
+                                </CheckBox>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Enable Scheduled Break Time"
+                                               FontSize="24"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource Espresso}"
+                                               Margin="0,0,0,5"/>
+                                    <TextBlock Text="When enabled, kiosk will automatically show break screen during configured hours"
+                                               FontSize="18"
+                                               Foreground="{StaticResource ForestGreen}"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Break Time Schedule -->
+                        <Border Background="{StaticResource Latte}"
+                                BorderBrush="{StaticResource MetallicGold}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="25"
+                                Margin="0,0,0,20"
+                                IsEnabled="{Binding IsBreakTimeEnabled}">
+                            <StackPanel>
+                                <TextBlock Text="Break Schedule"
+                                           FontSize="24"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           Margin="0,0,0,15"/>
+
+                                <!-- Break Start Time -->
+                                <Grid Margin="0,0,0,15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"
+                                               Text="Start Time:"
+                                               FontSize="22"
+                                               VerticalAlignment="Center"
+                                               Foreground="{StaticResource Espresso}"/>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <!-- Hour -->
+                                        <Border Background="White"
+                                                BorderBrush="{StaticResource DarkBrown}"
+                                                BorderThickness="2"
+                                                CornerRadius="8"
+                                                Padding="15,10"
+                                                Margin="0,0,10,0">
+                                            <StackPanel>
+                                                <TextBlock Text="Hour (0-23)"
+                                                           FontSize="16"
+                                                           Foreground="{StaticResource ForestGreen}"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,0,0,5"/>
+                                                <TextBox Text="{Binding BreakStartHour, UpdateSourceTrigger=PropertyChanged}"
+                                                         FontSize="28"
+                                                         FontWeight="Bold"
+                                                         Width="100"
+                                                         TextAlignment="Center"
+                                                         BorderThickness="0"
+                                                         Background="Transparent"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <TextBlock Text=":"
+                                                   FontSize="36"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0"/>
+
+                                        <!-- Minute -->
+                                        <Border Background="White"
+                                                BorderBrush="{StaticResource DarkBrown}"
+                                                BorderThickness="2"
+                                                CornerRadius="8"
+                                                Padding="15,10"
+                                                Margin="10,0,0,0">
+                                            <StackPanel>
+                                                <TextBlock Text="Minute (0-59)"
+                                                           FontSize="16"
+                                                           Foreground="{StaticResource ForestGreen}"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,0,0,5"/>
+                                                <TextBox Text="{Binding BreakStartMinute, UpdateSourceTrigger=PropertyChanged}"
+                                                         FontSize="28"
+                                                         FontWeight="Bold"
+                                                         Width="100"
+                                                         TextAlignment="Center"
+                                                         BorderThickness="0"
+                                                         Background="Transparent"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Break End Time -->
+                                <Grid Margin="0,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"
+                                               Text="End Time:"
+                                               FontSize="22"
+                                               VerticalAlignment="Center"
+                                               Foreground="{StaticResource Espresso}"/>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <!-- Hour -->
+                                        <Border Background="White"
+                                                BorderBrush="{StaticResource DarkBrown}"
+                                                BorderThickness="2"
+                                                CornerRadius="8"
+                                                Padding="15,10"
+                                                Margin="0,0,10,0">
+                                            <StackPanel>
+                                                <TextBlock Text="Hour (0-23)"
+                                                           FontSize="16"
+                                                           Foreground="{StaticResource ForestGreen}"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,0,0,5"/>
+                                                <TextBox Text="{Binding BreakEndHour, UpdateSourceTrigger=PropertyChanged}"
+                                                         FontSize="28"
+                                                         FontWeight="Bold"
+                                                         Width="100"
+                                                         TextAlignment="Center"
+                                                         BorderThickness="0"
+                                                         Background="Transparent"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <TextBlock Text=":"
+                                                   FontSize="36"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0"/>
+
+                                        <!-- Minute -->
+                                        <Border Background="White"
+                                                BorderBrush="{StaticResource DarkBrown}"
+                                                BorderThickness="2"
+                                                CornerRadius="8"
+                                                Padding="15,10"
+                                                Margin="10,0,0,0">
+                                            <StackPanel>
+                                                <TextBlock Text="Minute (0-59)"
+                                                           FontSize="16"
+                                                           Foreground="{StaticResource ForestGreen}"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,0,0,5"/>
+                                                <TextBox Text="{Binding BreakEndMinute, UpdateSourceTrigger=PropertyChanged}"
+                                                         FontSize="28"
+                                                         FontWeight="Bold"
+                                                         Width="100"
+                                                         TextAlignment="Center"
+                                                         BorderThickness="0"
+                                                         Background="Transparent"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Custom Break Message -->
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource SageGreen}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,0"
+                                IsEnabled="{Binding IsBreakTimeEnabled}">
+                            <StackPanel>
+                                <TextBlock Text="Custom Message (Optional)"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource Espresso}"
+                                           Margin="0,0,0,10"/>
+
+                                <TextBlock Text="Leave empty to show default break message"
+                                           FontSize="18"
+                                           Foreground="{StaticResource ForestGreen}"
+                                           Margin="0,0,0,10"/>
+
+                                <TextBox Text="{Binding BreakMessage, UpdateSourceTrigger=PropertyChanged}"
+                                         FontSize="20"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         Height="120"
+                                         VerticalScrollBarVisibility="Auto"
+                                         Padding="10"
+                                         BorderBrush="{StaticResource DarkBrown}"
+                                         BorderThickness="2"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                </StackPanel> <!-- Close Break Time Section -->
+
+                <!-- Payment Section -->
+                <StackPanel Visibility="{Binding IsPaymentSectionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="💳 Forte Payment Gateway Configuration"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,20"/>
+
+                        <!-- Enable Payment Toggle -->
+                        <Border Background="{StaticResource MetallicGold}"
+                                BorderBrush="{StaticResource Espresso}"
+                                BorderThickness="3"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Binding PaymentEnabled}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,20,0"
+                                          Cursor="Hand">
+                                    <CheckBox.LayoutTransform>
+                                        <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
+                                    </CheckBox.LayoutTransform>
+                                </CheckBox>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Enable Payment Processing"
+                                               FontSize="26"
+                                               FontWeight="Bold"
+                                               Foreground="{StaticResource Espresso}"
+                                               Margin="0,0,0,5"/>
+                                    <TextBlock Text="When disabled, orders will be processed without payment (for testing only)"
+                                               FontSize="18"
+                                               Foreground="{StaticResource DarkBrown}"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Sandbox Mode Toggle -->
+                        <Border Background="{StaticResource Latte}"
+                                BorderBrush="{StaticResource MetallicGold}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                IsEnabled="{Binding PaymentEnabled}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Binding ForteSandboxMode}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,20,0"
+                                          Cursor="Hand">
+                                    <CheckBox.LayoutTransform>
+                                        <ScaleTransform ScaleX="2" ScaleY="2"/>
+                                    </CheckBox.LayoutTransform>
+                                </CheckBox>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Sandbox Mode (Test Environment)"
+                                               FontSize="24"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource Espresso}"
+                                               Margin="0,0,0,5"/>
+                                    <TextBlock Text="Enable for testing. Disable for live transactions."
+                                               FontSize="18"
+                                               Foreground="{StaticResource ForestGreen}"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- API Credentials -->
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource SageGreen}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                IsEnabled="{Binding PaymentEnabled}">
+                            <StackPanel>
+                                <TextBlock Text="API Credentials"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource Espresso}"
+                                           Margin="0,0,0,15"/>
+
+                                <!-- API Access ID -->
+                                <TextBlock Text="API Access ID:"
+                                           FontSize="20"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding ForteApiAccessId, UpdateSourceTrigger=PropertyChanged}"
+                                         FontSize="20"
+                                         Padding="12"
+                                         BorderBrush="{StaticResource DarkBrown}"
+                                         BorderThickness="2"
+                                         Margin="0,0,0,15"/>
+
+                                <!-- API Secure Key -->
+                                <TextBlock Text="API Secure Key:"
+                                           FontSize="20"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           Margin="0,0,0,8"/>
+                                <PasswordBox x:Name="ForteApiSecureKeyBox"
+                                             FontSize="20"
+                                             Padding="12"
+                                             BorderBrush="{StaticResource DarkBrown}"
+                                             BorderThickness="2"
+                                             Margin="0,0,0,5"
+                                             PasswordChanged="ForteSecureKey_PasswordChanged"/>
+                                <TextBlock Text="Leave blank to keep existing key"
+                                           FontSize="16"
+                                           Foreground="{StaticResource ForestGreen}"
+                                           FontStyle="Italic"
+                                           Margin="0,0,0,15"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Organization and Location IDs -->
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource SageGreen}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                IsEnabled="{Binding PaymentEnabled}">
+                            <StackPanel>
+                                <TextBlock Text="Organization &amp; Location"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource Espresso}"
+                                           Margin="0,0,0,15"/>
+
+                                <!-- Organization ID -->
+                                <TextBlock Text="Organization ID (e.g., org_300005):"
+                                           FontSize="20"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding ForteOrganizationId, UpdateSourceTrigger=PropertyChanged}"
+                                         FontSize="20"
+                                         Padding="12"
+                                         BorderBrush="{StaticResource DarkBrown}"
+                                         BorderThickness="2"
+                                         Margin="0,0,0,15"/>
+
+                                <!-- Location ID -->
+                                <TextBlock Text="Location ID (e.g., loc_192834):"
+                                           FontSize="20"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           Margin="0,0,0,8"/>
+                                <TextBox Text="{Binding ForteLocationId, UpdateSourceTrigger=PropertyChanged}"
+                                         FontSize="20"
+                                         Padding="12"
+                                         BorderBrush="{StaticResource DarkBrown}"
+                                         BorderThickness="2"
+                                         Margin="0,0,0,5"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Info Box -->
+                        <Border Background="{StaticResource MetallicGold}"
+                                BorderBrush="{StaticResource Espresso}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="ℹ️ How to get your credentials:"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           Margin="0,0,0,10"/>
+                                <TextBlock TextWrapping="Wrap"
+                                           FontSize="18"
+                                           Foreground="{StaticResource Espresso}"
+                                           LineHeight="26">
+                                    <Run Text="1. Log in to Forte Dex portal"/>
+                                    <LineBreak/>
+                                    <Run Text="2. For Organization ID: Click profile icon → Organization"/>
+                                    <LineBreak/>
+                                    <Run Text="3. For Location ID: Click Location from menu"/>
+                                    <LineBreak/>
+                                    <Run Text="4. For API Credentials: Developer → API Credentials → Create"/>
+                                    <LineBreak/>
+                                    <LineBreak/>
+                                    <Run Text="Current credentials:" FontWeight="Bold"/>
+                                    <LineBreak/>
+                                    <Run Text="API Access ID: 03a04fee3e438b44ef168052227cf9ac"/>
+                                    <LineBreak/>
+                                    <Run Text="API Secure Key: c24eadad0838c40a8bb469c67d71eceb"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Payment Test Section -->
+                        <Border Background="{StaticResource AccentLatte}"
+                                BorderBrush="{StaticResource AccentGold}"
+                                BorderThickness="3"
+                                CornerRadius="8"
+                                Padding="30"
+                                IsEnabled="{Binding PaymentEnabled}">
+                            <StackPanel>
+                                <TextBlock Text="🧪 Test Payment Integration"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource DarkBrown}"
+                                           Margin="0,0,0,15"/>
+
+                                <TextBlock Text="Click the button below to verify that your Forte payment credentials are working correctly."
+                                           FontSize="18"
+                                           Foreground="{StaticResource Espresso}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,20"/>
+
+                                <Button Command="{Binding TestPaymentCommand}"
+                                        Background="{StaticResource ForestGreen}"
+                                        BorderBrush="{StaticResource DarkBrown}"
+                                        BorderThickness="2"
+                                        Padding="30,15"
+                                        Cursor="Hand"
+                                        Margin="0,0,0,20">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="8"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="{StaticResource SageGreen}"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter Property="Background" Value="{StaticResource DarkBrown}"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                    <TextBlock FontSize="22"
+                                               FontWeight="Bold"
+                                               Foreground="White">
+                                        <Run Text="🔍 Test Payment Connection"/>
+                                    </TextBlock>
+                                </Button>
+
+                                <!-- Test Status Message -->
+                                <Border Visibility="{Binding HasPaymentTestStatus, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Padding="20"
+                                        CornerRadius="8"
+                                        Margin="0,0,0,0">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="{StaticResource LightCream}"/>
+                                            <Setter Property="BorderBrush" Value="#E74C3C"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPaymentTestSuccess}" Value="True">
+                                                    <Setter Property="Background" Value="#D4EDDA"/>
+                                                    <Setter Property="BorderBrush" Value="#28A745"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding PaymentTestStatus}"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#C0392B"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsPaymentTestSuccess}" Value="True">
+                                                        <Setter Property="Foreground" Value="#155724"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+
+                                <!-- Loading Indicator -->
+                                <Border Visibility="{Binding IsTestingPayment, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Background="{StaticResource BackgroundBeige}"
+                                        BorderBrush="{StaticResource MetallicGold}"
+                                        BorderThickness="2"
+                                        Padding="20"
+                                        CornerRadius="8"
+                                        Margin="0,10,0,0">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Text="⏳"
+                                                   FontSize="24"
+                                                   Margin="0,0,10,0"/>
+                                        <TextBlock Text="Testing payment integration..."
+                                                   FontSize="20"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource DarkBrown}"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Detailed Logs Display -->
+                                <Border Background="#F8F9FA"
+                                        BorderBrush="{StaticResource DarkBrown}"
+                                        BorderThickness="2"
+                                        CornerRadius="8"
+                                        Padding="0"
+                                        Margin="0,20,0,0">
+                                    <StackPanel>
+                                        <Border Background="{StaticResource Espresso}"
+                                                Padding="15,10"
+                                                CornerRadius="8,8,0,0">
+                                            <TextBlock Text="📋 Detailed Test Logs"
+                                                       FontSize="20"
+                                                       FontWeight="Bold"
+                                                       Foreground="White"/>
+                                        </Border>
+
+                                        <ScrollViewer Height="400"
+                                                      VerticalScrollBarVisibility="Auto"
+                                                      Padding="15">
+                                            <ItemsControl ItemsSource="{Binding PaymentTestLogs}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}"
+                                                                   FontSize="16"
+                                                                   FontFamily="Consolas, Courier New, monospace"
+                                                                   Foreground="{StaticResource Espresso}"
+                                                                   TextWrapping="Wrap"
+                                                                   Margin="0,2"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                </StackPanel> <!-- Close Payment Section -->
 
                 <!-- Security Section -->
                 <StackPanel Visibility="{Binding IsSecuritySectionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -515,7 +1172,7 @@
                         <!-- PIN Fields (tap to select, then use keypad below) -->
 
                         <!-- Current PIN -->
-                        <Border Background="#F5F5F5"
+                        <Border Background="{StaticResource BackgroundBeige}"
                                 BorderBrush="{StaticResource DarkBrown}"
                                 BorderThickness="2"
                                 CornerRadius="8"
@@ -563,7 +1220,7 @@
                         </Border>
 
                         <!-- New PIN -->
-                        <Border Background="#F5F5F5"
+                        <Border Background="{StaticResource BackgroundBeige}"
                                 BorderBrush="{StaticResource DarkBrown}"
                                 BorderThickness="2"
                                 CornerRadius="8"
@@ -610,7 +1267,7 @@
                         </Border>
 
                         <!-- Confirm PIN -->
-                        <Border Background="#F5F5F5"
+                        <Border Background="{StaticResource BackgroundBeige}"
                                 BorderBrush="{StaticResource DarkBrown}"
                                 BorderThickness="2"
                                 CornerRadius="8"
@@ -659,7 +1316,7 @@
                         <!-- Shared Numeric Keypad -->
                         <TextBlock Text="Tap a PIN field above, then use the keypad:"
                                    FontSize="16"
-                                   Foreground="#666"
+                                   Foreground="{StaticResource Espresso}"
                                    HorizontalAlignment="Center"
                                    Margin="0,0,0,10"/>
 
@@ -725,9 +1382,9 @@
                     FontSize="32"
                     FontWeight="Bold"
                     Margin="40,20"
-                    Background="#666666"
+                    Background="{StaticResource Espresso}"
                     Foreground="White"
-                    BorderBrush="#444444"
+                    BorderBrush="{StaticResource ForestGreen}"
                     BorderThickness="2"
                     Cursor="Hand">
                 <Button.Resources>
@@ -763,7 +1420,7 @@
                     Margin="40,20"
                     Background="{StaticResource ErrorRed}"
                     Foreground="White"
-                    BorderBrush="#B00020"
+                    BorderBrush="{StaticResource ErrorRed}"
                     BorderThickness="2"
                     Cursor="Hand">
                 <Button.Resources>
@@ -773,5 +1430,13 @@
                 </Button.Resources>
             </Button>
         </Grid>
+
+        <!-- Hidden WebView2 for payment test validation -->
+        <wv2:WebView2 x:Name="PaymentTestWebView"
+                      Grid.Row="0"
+                      Grid.RowSpan="4"
+                      Visibility="Collapsed"
+                      Width="0"
+                      Height="0"/>
     </Grid>
 </UserControl>

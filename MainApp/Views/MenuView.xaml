@@ -12,11 +12,13 @@
       Width="1080" Height="1920">
 
     <Grid>
-        <!-- Background -->
+        <!-- COFFEEBOTIC Background -->
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="#F5E6D3" Offset="0"/>
-                <GradientStop Color="#FFF8DC" Offset="1"/>
+                <GradientStop Color="#F5F0E8" Offset="0"/>
+                <!-- Light Cream -->
+                <GradientStop Color="#D8CABA" Offset="1"/>
+                <!-- Latte -->
             </LinearGradientBrush>
         </Grid.Background>
 
@@ -33,19 +35,46 @@
             <!-- Cart Summary -->
         </Grid.RowDefinitions>
 
-        <!-- Brand Name at Top -->
+        <!-- Brand Logo at Top -->
         <Border Grid.Row="0"
-                Background="{StaticResource DarkBrown}"
-                BorderBrush="{StaticResource AccentGold}"
+                Background="#F0E4CC"
+                BorderBrush="{StaticResource MetallicGold}"
                 BorderThickness="0,0,0,2">
-            <TextBlock Text="Coffeebotic"
-                       Style="{StaticResource BrandHeaderStyle}"/>
+            <Grid>
+                <!-- COFFEEBOTIC Logo - Left Side -->
+                <Image Source="pack://application:,,,/Assets/Branding/coffeebotic.jpg"
+                       Height="140"
+                       Margin="40,20,0,20"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                <!-- Date and Time Display - Right Side -->
+                <StackPanel HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,40,0">
+                    <TextBlock Text="{Binding CurrentDate}"
+                               FontSize="32"
+                               FontWeight="SemiBold"
+                               FontFamily="{StaticResource BrandFont}"
+                               Foreground="{StaticResource Espresso}"
+                               HorizontalAlignment="Right"
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding CurrentTime}"
+                               FontSize="48"
+                               FontWeight="Bold"
+                               FontFamily="{StaticResource BrandFont}"
+                               Foreground="{StaticResource MetallicGold}"
+                               HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Grid>
         </Border>
 
         <!-- System Selector (Horizontal Scrollable) -->
         <Border Grid.Row="1"
-                Background="{StaticResource DarkBrown}"
-                BorderBrush="{StaticResource AccentGold}"
+                Background="#F0E4CC"
+                BorderBrush="{StaticResource MetallicGold}"
                 BorderThickness="0,0,0,2"
                 Padding="20,15">
             <ScrollViewer HorizontalScrollBarVisibility="Auto"
@@ -89,7 +118,7 @@
                                            FontSize="32"
                                            FontFamily="{StaticResource BrandFont}"
                                            FontWeight="SemiBold"
-                                           Foreground="{StaticResource LightCream}"
+                                           Foreground="{StaticResource Espresso}"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"/>
                             </Border>
@@ -442,7 +471,7 @@
                                                     CommandParameter="{Binding}"
                                                     Width="40"
                                                     Height="40"
-                                                    Background="#C0392B"
+                                                    Background="{StaticResource ErrorRed}"
                                                     BorderThickness="0"
                                                     Cursor="Hand"
                                                     VerticalAlignment="Center"
@@ -553,7 +582,7 @@
         <!-- Timeout Warning Modal -->
         <Grid Grid.RowSpan="5"
               Visibility="{Binding IsTimeoutWarningVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-              Background="#CC000000">
+              Background="#CC442B2D">
             <Border Background="{StaticResource LightCream}"
                     BorderBrush="{StaticResource DarkBrown}"
                     BorderThickness="3"
@@ -651,7 +680,7 @@
         <!-- Loading Overlay -->
         <Grid Grid.RowSpan="5"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
-              Background="#DD000000">
+              Background="#DD442B2D">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <!-- Loading Animation -->
                 <Viewbox Width="100" Height="100" Margin="0,0,0,30">

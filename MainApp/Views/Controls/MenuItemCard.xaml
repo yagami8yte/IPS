@@ -45,7 +45,7 @@
 
                 <!-- Unavailable Overlay -->
                 <Grid>
-                    <Border Background="#CC000000">
+                    <Border Background="#CC442B2D">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Collapsed"/>

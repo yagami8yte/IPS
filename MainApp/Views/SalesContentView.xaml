@@ -66,6 +66,80 @@
                         </Button.Resources>
                     </Button>
                 </Grid>
+
+                <!-- Custom Date Range Selector -->
+                <Border Visibility="{Binding IsCustomRangeVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Background="{StaticResource LightCream}"
+                        BorderBrush="{StaticResource SageGreen}"
+                        BorderThickness="2"
+                        CornerRadius="8"
+                        Padding="20"
+                        Margin="0,20,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Start Date -->
+                        <TextBlock Grid.Column="0"
+                                   Text="From:"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,10,0"/>
+
+                        <DatePicker Grid.Column="1"
+                                    SelectedDate="{Binding CustomStartDate, Mode=TwoWay}"
+                                    FontSize="16"
+                                    Padding="10"
+                                    BorderBrush="{StaticResource DarkBrown}"
+                                    BorderThickness="2"
+                                    Width="180"/>
+
+                        <!-- End Date -->
+                        <TextBlock Grid.Column="3"
+                                   Text="To:"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,10,0"/>
+
+                        <DatePicker Grid.Column="4"
+                                    SelectedDate="{Binding CustomEndDate, Mode=TwoWay}"
+                                    FontSize="16"
+                                    Padding="10"
+                                    BorderBrush="{StaticResource DarkBrown}"
+                                    BorderThickness="2"
+                                    Width="180"/>
+
+                        <!-- Apply Button -->
+                        <Button Grid.Column="6"
+                                Content="📊 Apply"
+                                Command="{Binding ApplyCustomRangeCommand}"
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Padding="30,8"
+                                Background="{StaticResource PrimaryBrown}"
+                                Foreground="White"
+                                BorderBrush="{StaticResource DarkBrown}"
+                                BorderThickness="2"
+                                Cursor="Hand">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
             </StackPanel>
         </Border>
 
@@ -81,19 +155,19 @@
 
             <!-- Total Revenue Card -->
             <Border Grid.Column="0"
-                    Background="#E8F5E9"
-                    BorderBrush="{StaticResource AccentGreen}"
+                    Background="#E8F0E7"
+                    BorderBrush="{StaticResource SageGreen}"
                     BorderThickness="3"
                     CornerRadius="8"
                     Padding="20">
                 <StackPanel>
                     <TextBlock Text="Total Revenue"
                                FontSize="16"
-                               Foreground="#666"
+                               Foreground="{StaticResource Espresso}"
                                Margin="0,0,0,5"/>
                     <TextBlock FontSize="36"
                                FontWeight="Bold"
-                               Foreground="{StaticResource AccentGreen}">
+                               Foreground="{StaticResource SageGreen}">
                         <Run Text="$"/>
                         <Run Text="{Binding TotalRevenue, StringFormat=F2}"/>
                     </TextBlock>
@@ -102,38 +176,38 @@
 
             <!-- Total Orders Card -->
             <Border Grid.Column="2"
-                    Background="#FFF3E0"
-                    BorderBrush="{StaticResource AccentGold}"
+                    Background="{StaticResource LightCream}"
+                    BorderBrush="{StaticResource MetallicGold}"
                     BorderThickness="3"
                     CornerRadius="8"
                     Padding="20">
                 <StackPanel>
                     <TextBlock Text="Total Orders"
                                FontSize="16"
-                               Foreground="#666"
+                               Foreground="{StaticResource Espresso}"
                                Margin="0,0,0,5"/>
                     <TextBlock Text="{Binding TotalOrders}"
                                FontSize="36"
                                FontWeight="Bold"
-                               Foreground="{StaticResource PrimaryBrown}"/>
+                               Foreground="{StaticResource ForestGreen}"/>
                 </StackPanel>
             </Border>
 
             <!-- Average Order Value Card -->
             <Border Grid.Column="4"
-                    Background="#E3F2FD"
-                    BorderBrush="#2196F3"
+                    Background="#F5EFDF"
+                    BorderBrush="{StaticResource MetallicGold}"
                     BorderThickness="3"
                     CornerRadius="8"
                     Padding="20">
                 <StackPanel>
                     <TextBlock Text="Avg. Order Value"
                                FontSize="16"
-                               Foreground="#666"
+                               Foreground="{StaticResource Espresso}"
                                Margin="0,0,0,5"/>
                     <TextBlock FontSize="36"
                                FontWeight="Bold"
-                               Foreground="#2196F3">
+                               Foreground="{StaticResource MetallicGold}">
                         <Run Text="$"/>
                         <Run Text="{Binding AverageOrderValue, StringFormat=F2}"/>
                     </TextBlock>
@@ -179,7 +253,7 @@
                           Background="White"
                           BorderThickness="0"
                           RowBackground="White"
-                          AlternatingRowBackground="#F5F5F5"
+                          AlternatingRowBackground="{StaticResource BackgroundBeige}"
                           FontSize="16"
                           LoadingRow="TopItemsDataGrid_LoadingRow">
                     <DataGrid.Columns>
@@ -233,7 +307,7 @@
                           Background="White"
                           BorderThickness="0"
                           RowBackground="White"
-                          AlternatingRowBackground="#F5F5F5"
+                          AlternatingRowBackground="{StaticResource BackgroundBeige}"
                           FontSize="14"
                           MaxHeight="400">
                     <DataGrid.Columns>
@@ -262,7 +336,7 @@
         </StackPanel>
 
         <!-- Loading Overlay (only shown during data refresh) -->
-        <Border Background="#CC000000"
+        <Border Background="#CC442B2D"
                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
                 CornerRadius="8">
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">

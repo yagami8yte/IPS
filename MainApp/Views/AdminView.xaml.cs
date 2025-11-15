@@ -1,7 +1,10 @@
+using System;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using IPS.MainApp.ViewModels;
+using Microsoft.Web.WebView2.Core;
 
 namespace IPS.MainApp.Views
 {
@@ -18,6 +21,118 @@ namespace IPS.MainApp.Views
             PinKeypad.NumberPressed += OnPinKeypadNumberPressed;
             PinKeypad.BackspacePressed += OnPinKeypadBackspacePressed;
             PinKeypad.ClearPressed += OnPinKeypadClearPressed;
+
+            // Initialize WebView2 for payment testing
+            InitializePaymentTestWebView();
+
+            // Watch for PaymentTestHtml changes
+            DataContextChanged += AdminView_DataContextChanged;
+        }
+
+        private void AdminView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue is AdminViewModel oldViewModel)
+            {
+                oldViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            }
+
+            if (e.NewValue is AdminViewModel newViewModel)
+            {
+                newViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            }
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AdminViewModel.PaymentTestHtml))
+            {
+                LoadPaymentTestHtml();
+            }
+        }
+
+        private void LoadPaymentTestHtml()
+        {
+            if (DataContext is AdminViewModel viewModel && PaymentTestWebView.CoreWebView2 != null)
+            {
+                if (!string.IsNullOrWhiteSpace(viewModel.PaymentTestHtml))
+                {
+                    Console.WriteLine($"[AdminView] Loading payment test HTML ({viewModel.PaymentTestHtml.Length} chars)");
+                    PaymentTestWebView.NavigateToString(viewModel.PaymentTestHtml);
+                }
+            }
+        }
+
+        private async void InitializePaymentTestWebView()
+        {
+            try
+            {
+                await PaymentTestWebView.EnsureCoreWebView2Async(null);
+
+                // Enable DevTools for debugging (same as PaymentView)
+                PaymentTestWebView.CoreWebView2.Settings.AreDevToolsEnabled = true;
+                PaymentTestWebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
+
+                // Set up virtual host mapping to allow localStorage access (same as PaymentView)
+                PaymentTestWebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                    "forte.local",
+                    Environment.CurrentDirectory,
+                    CoreWebView2HostResourceAccessKind.Allow
+                );
+
+                // Handle messages from JavaScript
+                PaymentTestWebView.CoreWebView2.WebMessageReceived += PaymentTestWebView_WebMessageReceived;
+
+                Console.WriteLine("[AdminView] Payment test WebView2 initialized");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AdminView] Failed to initialize payment test WebView2: {ex.Message}");
+            }
+        }
+
+        private void PaymentTestWebView_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)
+        {
+            try
+            {
+                // Get message as JSON (same as PaymentView)
+                string? json = null;
+                try
+                {
+                    json = e.TryGetWebMessageAsString();
+                }
+                catch
+                {
+                    json = e.WebMessageAsJson;
+                }
+
+                Console.WriteLine($"[AdminView] WebView2 message received: {json}");
+
+                if (string.IsNullOrEmpty(json))
+                {
+                    Console.WriteLine("[AdminView] Empty message, ignoring");
+                    return;
+                }
+
+                if (DataContext is AdminViewModel viewModel)
+                {
+                    viewModel.HandlePaymentTestWebViewMessage(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AdminView] Error handling WebView2 message: {ex.Message}");
+            }
+        }
+
+        // JSON message structure from Forte Checkout (same as PaymentView)
+        private class ForteCheckoutMessage
+        {
+            public string? type { get; set; }
+            public string? transactionId { get; set; }
+            public string? authorizationCode { get; set; }
+            public string? orderLabel { get; set; }
+            public string? error { get; set; }
+            public decimal? amount { get; set; }
         }
 
         private void CurrentPinField_MouseDown(object sender, MouseButtonEventArgs e)
@@ -95,6 +210,18 @@ namespace IPS.MainApp.Views
             else if (ConfirmPinRadio.IsChecked == true)
             {
                 viewModel.ConfirmPassword = string.Empty;
+            }
+        }
+
+        private void ForteSecureKey_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is AdminViewModel viewModel && sender is PasswordBox passwordBox)
+            {
+                // Only update if user typed something (not empty)
+                if (!string.IsNullOrEmpty(passwordBox.Password))
+                {
+                    viewModel.ForteApiSecureKey = passwordBox.Password;
+                }
             }
         }
     }

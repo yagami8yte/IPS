@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3595.46" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.10" />
     <PackageReference Include="System.Management" Version="9.0.10" />
@@ -27,6 +28,11 @@
     <None Include="Assets\**\*.avi" CopyToOutputDirectory="PreserveNewest" />
     <None Include="Assets\**\*.mov" CopyToOutputDirectory="PreserveNewest" />
     <None Include="Assets\**\*.wmv" CopyToOutputDirectory="PreserveNewest" />
+
+    <!-- Embed image files as resources for pack:// URIs -->
+    <Resource Include="Assets\**\*.png" />
+    <Resource Include="Assets\**\*.jpg" />
+    <Resource Include="Assets\**\*.jpeg" />
   </ItemGroup>
 
   <ItemGroup>

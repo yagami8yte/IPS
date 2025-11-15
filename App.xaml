@@ -3,23 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:IPS"
              xmlns:views="clr-namespace:IPS.MainApp.Views"
-             xmlns:vm="clr-namespace:IPS.MainApp.ViewModels">
+             xmlns:vm="clr-namespace:IPS.MainApp.ViewModels"
+             xmlns:converters="clr-namespace:IPS.MainApp.Converters">
     <Application.Resources>
         <!-- Converters -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <converters:InverseStringToVisibilityConverter x:Key="InverseStringToVisibilityConverter"/>
+        <converters:BoolToPaymentTextConverter x:Key="BoolToPaymentTextConverter"/>
 
-        <!-- Coffee Theme Color Palette -->
-        <SolidColorBrush x:Key="PrimaryBrown" Color="#6F4E37"/>
-        <SolidColorBrush x:Key="SecondaryBrown" Color="#8B6F47"/>
-        <SolidColorBrush x:Key="DarkBrown" Color="#3E2723"/>
-        <SolidColorBrush x:Key="MediumBrown" Color="#5D4037"/>
-        <SolidColorBrush x:Key="LightCream" Color="#F5E6D3"/>
-        <SolidColorBrush x:Key="Cream" Color="#FFF8DC"/>
-        <SolidColorBrush x:Key="BackgroundBeige" Color="#FFF9F0"/>
-        <SolidColorBrush x:Key="AccentLatte" Color="#D4A574"/>
-        <SolidColorBrush x:Key="AccentGold" Color="#C4A778"/>
-        <SolidColorBrush x:Key="AccentGreen" Color="#4CAF50"/>
-        <SolidColorBrush x:Key="ErrorRed" Color="#D32F2F"/>
+        <!-- COFFEEBOTIC Color Palette -->
+        <!-- Primary Colors from Brand -->
+        <SolidColorBrush x:Key="ForestGreen" Color="#39543A"/>
+        <SolidColorBrush x:Key="SageGreen" Color="#769B69"/>
+        <SolidColorBrush x:Key="Espresso" Color="#442B2D"/>
+        <SolidColorBrush x:Key="Latte" Color="#D8CABA"/>
+        <SolidColorBrush x:Key="MetallicGold" Color="#D4AF37"/>
+
+        <!-- Semantic Color Mappings -->
+        <SolidColorBrush x:Key="PrimaryBrown" Color="#39543A"/>      <!-- Forest Green - Primary actions -->
+        <SolidColorBrush x:Key="SecondaryBrown" Color="#769B69"/>    <!-- Sage Green - Secondary actions -->
+        <SolidColorBrush x:Key="DarkBrown" Color="#442B2D"/>         <!-- Espresso - Text & headers -->
+        <SolidColorBrush x:Key="MediumBrown" Color="#39543A"/>       <!-- Forest Green - Medium emphasis -->
+        <SolidColorBrush x:Key="LightCream" Color="#F5F0E8"/>        <!-- Light warm background -->
+        <SolidColorBrush x:Key="Cream" Color="#E8DDD0"/>             <!-- Darker cream for contrast -->
+        <SolidColorBrush x:Key="BackgroundBeige" Color="#FAF7F2"/>   <!-- Subtle warm white -->
+        <SolidColorBrush x:Key="AccentLatte" Color="#D8CABA"/>       <!-- Latte - Buttons & cards -->
+        <SolidColorBrush x:Key="AccentGold" Color="#D4AF37"/>        <!-- Metallic Gold - Premium accents -->
+        <SolidColorBrush x:Key="AccentGreen" Color="#769B69"/>       <!-- Sage Green - Success states -->
+        <SolidColorBrush x:Key="ErrorRed" Color="#C62828"/>          <!-- Slightly darker red for better contrast -->
 
         <!-- Brand Typography -->
         <FontFamily x:Key="BrandFont">Segoe UI</FontFamily>
@@ -41,7 +54,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Thumb">
-                        <Border Background="{StaticResource DarkBrown}"
+                        <Border Background="{StaticResource ForestGreen}"
                                 CornerRadius="8"
                                 Margin="2"/>
                     </ControlTemplate>
@@ -91,8 +104,8 @@
 
         <!-- Primary Button Style -->
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource AccentLatte}"/>
-            <Setter Property="Foreground" Value="{StaticResource DarkBrown}"/>
+            <Setter Property="Background" Value="{StaticResource MetallicGold}"/>
+            <Setter Property="Foreground" Value="{StaticResource Espresso}"/>
             <Setter Property="FontFamily" Value="{StaticResource BrandFont}"/>
             <Setter Property="FontSize" Value="48"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -111,8 +124,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryBrown}"/>
-                                <Setter Property="Foreground" Value="{StaticResource LightCream}"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ForestGreen}"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -144,6 +157,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:PasswordEntryViewModel}">
             <views:PasswordEntryView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BreakTimeViewModel}">
+            <views:BreakTimeView />
         </DataTemplate>
     </Application.Resources>
 </Application>

@@ -19,6 +19,17 @@ namespace IPS.MainApp.Views
             // Subscribe to lifecycle events
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Console.WriteLine("[PasswordEntryView] DataContext changed");
+            if (e.NewValue is PasswordEntryViewModel viewModel)
+            {
+                Console.WriteLine("[PasswordEntryView] New PasswordEntryViewModel set, calling ResetState");
+                viewModel.ResetState();
+            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -51,6 +62,7 @@ namespace IPS.MainApp.Views
             NumericKeypadControl.NumberPressed -= OnNumberPressed;
             NumericKeypadControl.BackspacePressed -= OnBackspacePressed;
             NumericKeypadControl.ClearPressed -= OnClearPressed;
+            DataContextChanged -= OnDataContextChanged;
         }
 
         private void OnNumberPressed(object? sender, string number)

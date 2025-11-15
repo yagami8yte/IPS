@@ -1,0 +1,26 @@
+2025-11-12 22:26:49 - Starting placeOrderWithInvoice - added hex dump
+2025-11-12 22:26:49 - Hex dump of products parameter:
+0000: 63 39 30 30 36 61 33 61 2d 31 61 36 37 2d 34 37 
+0010: 65 30 2d 38 34 37 66 2d 63 33 34 39 35 62 30 64 
+0020: 34 30 64 62 00 00 00 00 00 00 00 00 00 00 00 00 
+0030: 00 00 65 6e 00 00 00 00 00 00 00 00 00 00 00 00 
+0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+0050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+0060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+0070: 30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+2025-11-12 22:26:49 - URI constructed: http://127.0.0.1:5000/orders
+2025-11-12 22:26:49 - HTTP session created with host: 127.0.0.1 and port: 5000
+2025-11-12 22:26:49 - Request path: /orders
+2025-11-12 22:26:49 - HTTP request created with POST method and content type application/json
+2025-11-12 22:26:49 - Creating order JSON object
+2025-11-12 22:26:49 - Number of products: 1
+2025-11-12 22:26:49 - Product 0 menuId: c9006a3a-1a67-47e0-847f-c3495b0d40db
+2025-11-12 22:26:49 - Product 0 numberOfOptions: 0
+2025-11-12 22:26:49 - Invoice details serialized successfully
+2025-11-12 22:26:49 - Serializing product 0
+2025-11-12 22:26:49 - Product details serialized successfully
+2025-11-12 22:26:49 - JSON body created and set with content length: 356
+2025-11-12 22:26:49 - Request sent to server
+2025-11-12 22:26:49 - Response received with status: 200
+2025-11-12 22:26:49 - Order placed successfully
+2025-11-12 22:26:49 - Returning result with booth name: DefaultBooth and error code
