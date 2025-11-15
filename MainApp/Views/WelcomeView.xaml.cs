@@ -33,6 +33,23 @@ namespace IPS.MainApp.Views
         {
             // Start playing video when view is loaded
             VideoPlayer.Play();
+
+            // Handle default cafe image loading
+            if (DefaultCafeImage != null)
+            {
+                DefaultCafeImage.ImageFailed += (s, args) =>
+                {
+                    // If image fails to load, show fallback content
+                    if (DefaultCafeImage != null) DefaultCafeImage.Visibility = Visibility.Collapsed;
+                    if (FallbackContent != null) FallbackContent.Visibility = Visibility.Visible;
+                };
+
+                DefaultCafeImage.Loaded += (s, args) =>
+                {
+                    // If image loads successfully, hide fallback
+                    if (FallbackContent != null) FallbackContent.Visibility = Visibility.Collapsed;
+                };
+            }
         }
 
         private void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
@@ -54,9 +71,15 @@ namespace IPS.MainApp.Views
                 viewModel.AdVideoPath = viewModel.AdVideoPlaylist[_currentVideoIndex];
                 Console.WriteLine($"[WelcomeView] Playing next video ({_currentVideoIndex + 1}/{viewModel.AdVideoPlaylist.Count}): {viewModel.AdVideoPath}");
 
-                // Play the new video
-                VideoPlayer.Position = TimeSpan.Zero;
-                VideoPlayer.Play();
+                // For LoadedBehavior="Manual", we need to stop and allow binding to update before playing
+                VideoPlayer.Stop();
+
+                // Use Dispatcher to ensure the source binding is updated before playing
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    VideoPlayer.Position = TimeSpan.Zero;
+                    VideoPlayer.Play();
+                }), System.Windows.Threading.DispatcherPriority.Loaded);
             }
             else
             {

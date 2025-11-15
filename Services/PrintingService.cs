@@ -237,6 +237,193 @@ namespace IPS.Services
         }
 
         /// <summary>
+        /// Print a test receipt with sample data to verify printer configuration
+        /// </summary>
+        public bool PrintTestReceipt(string printerName)
+        {
+            try
+            {
+                var config = _configService.GetConfiguration();
+
+                // Validate printer
+                PrinterSettings settings = new PrinterSettings
+                {
+                    PrinterName = printerName
+                };
+
+                if (!settings.IsValid)
+                {
+                    Console.WriteLine($"[PrintingService] Printer '{printerName}' is not valid");
+                    return false;
+                }
+
+                // Create test order data
+                var testCartItems = new System.Collections.ObjectModel.ObservableCollection<CartItem>
+                {
+                    new CartItem
+                    {
+                        SystemName = "Test System",
+                        Quantity = 2,
+                        MenuItem = new MenuItem
+                        {
+                            MenuId = "test-001",
+                            Name = "Test Coffee Latte",
+                            Price = 4.50m
+                        }
+                    },
+                    new CartItem
+                    {
+                        SystemName = "Test System",
+                        Quantity = 1,
+                        MenuItem = new MenuItem
+                        {
+                            MenuId = "test-002",
+                            Name = "Test Americano",
+                            Price = 3.00m
+                        }
+                    }
+                };
+
+                var testOrder = new OrderInfo
+                {
+                    OrderId = "TEST-" + DateTime.Now.Ticks,
+                    OrderLabel = "TEST",
+                    Items = new List<OrderItem>
+                    {
+                        new OrderItem { MenuId = "test-001", SystemName = "Test System" },
+                        new OrderItem { MenuId = "test-002", SystemName = "Test System" }
+                    },
+                    TotalAmount = 12.00m,
+                    Timestamp = DateTime.Now
+                };
+
+                // Print using the same logic as PrintReceipt
+                return PrintTestReceiptInternal(printerName, config, testOrder, testCartItems);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PrintingService] Failed to print test receipt: {ex.Message}");
+                return false;
+            }
+        }
+
+        private bool PrintTestReceiptInternal(string printerName, AppConfiguration config, OrderInfo order, System.Collections.ObjectModel.ObservableCollection<CartItem> cartItems)
+        {
+            try
+            {
+                PrintDocument doc = new PrintDocument();
+                doc.PrinterSettings = new PrinterSettings { PrinterName = printerName };
+
+                bool printSuccess = false;
+
+                doc.PrintPage += (sender, e) =>
+                {
+                    try
+                    {
+                        var font = new Font("Courier New", 9, FontStyle.Regular);
+                        var fontBold = new Font("Courier New", 9, FontStyle.Bold);
+                        var fontLarge = new Font("Courier New", 12, FontStyle.Bold);
+                        var brush = Brushes.Black;
+                        float y = 10;
+                        float lineHeight = 15;
+
+                        void DrawLine(string text, Font f = null)
+                        {
+                            e.Graphics.DrawString(text, f ?? font, brush, 10, y);
+                            y += lineHeight;
+                        }
+
+                        void DrawSeparator()
+                        {
+                            DrawLine("========================================");
+                        }
+
+                        // Header - Business Information
+                        if (!string.IsNullOrWhiteSpace(config.BusinessName))
+                        {
+                            DrawLine(CenterText(config.BusinessName, 40), fontLarge);
+                        }
+                        else
+                        {
+                            DrawLine(CenterText("TEST BUSINESS", 40), fontLarge);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(config.BusinessAddressLine1))
+                        {
+                            DrawLine(CenterText(config.BusinessAddressLine1, 40));
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(config.BusinessAddressLine2))
+                        {
+                            DrawLine(CenterText(config.BusinessAddressLine2, 40));
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(config.BusinessPhone))
+                        {
+                            DrawLine(CenterText("Tel: " + config.BusinessPhone, 40));
+                        }
+
+                        DrawSeparator();
+                        DrawLine(CenterText("*** TEST RECEIPT ***", 40), fontBold);
+                        DrawSeparator();
+
+                        // Order Information
+                        DrawLine($"Order #: {order.OrderLabel}");
+                        DrawLine($"Date: {order.Timestamp:yyyy-MM-dd HH:mm:ss}");
+                        DrawSeparator();
+
+                        // Items
+                        foreach (var item in cartItems)
+                        {
+                            DrawLine($"{item.MenuItem.Name}");
+                            DrawLine(PadRight($"  {item.Quantity} x ${item.MenuItem.Price:F2}", $"${item.TotalPrice:F2}", 40));
+                        }
+
+                        DrawSeparator();
+
+                        // Total
+                        DrawLine(PadRight("TOTAL:", $"${order.TotalAmount:F2}", 40), fontBold);
+
+                        DrawSeparator();
+
+                        // Payment info (test data)
+                        DrawLine("Payment: TEST CARD ****1234");
+                        DrawLine("Auth Code: TEST123");
+
+                        DrawSeparator();
+
+                        // Footer
+                        if (!string.IsNullOrWhiteSpace(config.ReceiptFooterMessage))
+                        {
+                            DrawLine(CenterText(config.ReceiptFooterMessage, 40));
+                        }
+                        else
+                        {
+                            DrawLine(CenterText("Thank you for your order!", 40));
+                        }
+
+                        DrawLine(CenterText("This is a test receipt", 40));
+
+                        printSuccess = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[PrintingService] Error in PrintPage: {ex.Message}");
+                    }
+                };
+
+                doc.Print();
+                Console.WriteLine($"[PrintingService] ✓ Test receipt sent to '{printerName}'");
+                return printSuccess;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PrintingService] ✗ Failed to print test receipt: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Center text within a specified width
         /// </summary>
         private string CenterText(string text, int width)

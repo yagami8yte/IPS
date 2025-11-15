@@ -20,12 +20,40 @@
 
         <!-- Header -->
         <Border Grid.Row="0" Background="{StaticResource DarkBrown}">
-            <TextBlock Text="System Configuration"
-                       FontSize="48"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource LightCream}"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+            <Grid>
+                <TextBlock Text="System Configuration"
+                           FontSize="48"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource LightCream}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+
+                <!-- Exit Program button (Power icon) on top right -->
+                <Button Command="{Binding ExitCommand}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="0,0,40,0"
+                        Width="80"
+                        Height="80"
+                        Background="{StaticResource ErrorRed}"
+                        BorderBrush="White"
+                        BorderThickness="2"
+                        Cursor="Hand"
+                        ToolTip="Exit Program">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="40"/>
+                        </Style>
+                    </Button.Resources>
+                    <!-- Power icon SVG path -->
+                    <Viewbox Width="40" Height="40">
+                        <Canvas Width="24" Height="24">
+                            <Path Fill="White"
+                                  Data="M13,3H11V13H13V3M17.83,5.17L16.41,6.59C18.05,7.91 19,9.9 19,12C19,15.87 15.87,19 12,19C8.13,19 5,15.87 5,12C5,9.9 5.95,7.91 7.59,6.59L6.17,5.17C4.12,6.82 3,9.28 3,12C3,16.97 7.03,21 12,21C16.97,21 21,16.97 21,12C21,9.28 19.88,6.82 17.83,5.17Z"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+            </Grid>
         </Border>
 
         <!-- Configuration Section Selector (Horizontal) -->
@@ -261,10 +289,43 @@
                                         </Border.InputBindings>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <!-- Checkbox -->
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <StackPanel Grid.Column="0">
+
+                                            <!-- Checkbox on the left -->
+                                            <Border Grid.Column="0"
+                                                    Width="32"
+                                                    Height="32"
+                                                    BorderBrush="{StaticResource AccentGold}"
+                                                    BorderThickness="3"
+                                                    CornerRadius="6"
+                                                    Margin="0,0,15,0"
+                                                    VerticalAlignment="Center">
+                                                <Border.Background>
+                                                    <MultiBinding Converter="{StaticResource StringEqualityToBrushConverter}">
+                                                        <Binding Path="PrinterName"/>
+                                                        <Binding Path="DataContext.SelectedReceiptPrinter" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                                                    </MultiBinding>
+                                                </Border.Background>
+                                                <TextBlock Text="✓"
+                                                           FontSize="22"
+                                                           FontWeight="Bold"
+                                                           Foreground="{StaticResource DarkBrown}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center">
+                                                    <TextBlock.Visibility>
+                                                        <MultiBinding Converter="{StaticResource StringEqualityConverter}">
+                                                            <Binding Path="PrinterName"/>
+                                                            <Binding Path="DataContext.SelectedReceiptPrinter" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Visibility>
+                                                </TextBlock>
+                                            </Border>
+
+                                            <StackPanel Grid.Column="1">
                                                 <TextBlock Text="{Binding PrinterName}"
                                                            FontSize="20"
                                                            FontWeight="SemiBold"
@@ -287,7 +348,7 @@
                                                 </StackPanel>
                                             </StackPanel>
 
-                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal">
                                                 <!-- Test Print Button -->
                                                 <Button Content="Test Print"
                                                         Command="{Binding DataContext.TestPrinterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -305,20 +366,6 @@
                                                         </Style>
                                                     </Button.Resources>
                                                 </Button>
-
-                                                <!-- Selection indicator (checkmark) -->
-                                                <TextBlock Text="✓"
-                                                           FontSize="28"
-                                                           FontWeight="Bold"
-                                                           Foreground="{StaticResource AccentGreen}"
-                                                           VerticalAlignment="Center">
-                                                    <TextBlock.Visibility>
-                                                        <MultiBinding Converter="{StaticResource StringEqualityConverter}">
-                                                            <Binding Path="PrinterName"/>
-                                                            <Binding Path="DataContext.SelectedReceiptPrinter" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
-                                                        </MultiBinding>
-                                                    </TextBlock.Visibility>
-                                                </TextBlock>
                                             </StackPanel>
                                         </Grid>
                                     </Border>
@@ -1645,7 +1692,8 @@
                     Foreground="White"
                     BorderBrush="{StaticResource ForestGreen}"
                     BorderThickness="2"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    ToolTip="Discard changes and go back">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>
@@ -1654,7 +1702,7 @@
             </Button>
 
             <Button Grid.Column="1"
-                    Content="Save / Go Back"
+                    Content="Save"
                     Command="{Binding SaveCommand}"
                     FontSize="32"
                     FontWeight="Bold"
@@ -1663,7 +1711,8 @@
                     Foreground="{StaticResource DarkBrown}"
                     BorderBrush="{StaticResource DarkBrown}"
                     BorderThickness="2"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    ToolTip="Save changes and stay on this page">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>
@@ -1672,16 +1721,17 @@
             </Button>
 
             <Button Grid.Column="2"
-                    Content="Exit Program"
-                    Command="{Binding ExitCommand}"
+                    Content="Save &amp; Exit"
+                    Command="{Binding SaveAndExitCommand}"
                     FontSize="32"
                     FontWeight="Bold"
                     Margin="40,20"
-                    Background="{StaticResource ErrorRed}"
+                    Background="{StaticResource AccentGreen}"
                     Foreground="White"
-                    BorderBrush="{StaticResource ErrorRed}"
+                    BorderBrush="{StaticResource ForestGreen}"
                     BorderThickness="2"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    ToolTip="Save changes and go back">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>

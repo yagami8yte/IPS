@@ -16,6 +16,7 @@ namespace IPS.MainApp.ViewModels
         private string _currentDate = string.Empty;
         private string _currentTime = string.Empty;
         private string _adVideoPath = string.Empty;
+        private bool _hasVideo = false;
 
         /// <summary>
         /// List of all video files found in Assets/Ads folder
@@ -31,6 +32,19 @@ namespace IPS.MainApp.ViewModels
             set
             {
                 _adVideoPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether there are any videos available
+        /// </summary>
+        public bool HasVideo
+        {
+            get => _hasVideo;
+            set
+            {
+                _hasVideo = value;
                 OnPropertyChanged();
             }
         }
@@ -126,15 +140,18 @@ namespace IPS.MainApp.ViewModels
                 if (AdVideoPlaylist.Count > 0)
                 {
                     AdVideoPath = AdVideoPlaylist[0];
+                    HasVideo = true;
                     Console.WriteLine($"[WelcomeViewModel] Initial video: {AdVideoPath}");
                 }
                 else
                 {
+                    HasVideo = false;
                     Console.WriteLine("[WelcomeViewModel] No video files found in Assets/Ads folder");
                 }
             }
             catch (Exception ex)
             {
+                HasVideo = false;
                 Console.WriteLine($"[WelcomeViewModel] Error loading video playlist: {ex.Message}");
             }
         }

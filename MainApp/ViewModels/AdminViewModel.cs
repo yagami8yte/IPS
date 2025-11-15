@@ -635,9 +635,14 @@ namespace IPS.MainApp.ViewModels
         public IRelayCommand<PrinterScannerService.DiscoveredPrinter> TestPrinterCommand { get; }
 
         /// <summary>
-        /// Command to save configuration
+        /// Command to save configuration (stays on page)
         /// </summary>
         public IRelayCommand SaveCommand { get; }
+
+        /// <summary>
+        /// Command to save configuration and navigate back
+        /// </summary>
+        public IRelayCommand SaveAndExitCommand { get; }
 
         /// <summary>
         /// Command to cancel and navigate back
@@ -960,6 +965,7 @@ namespace IPS.MainApp.ViewModels
             AddDiscoveredDeviceCommand = new RelayCommand<NetworkScannerService.DiscoveredDevice>(OnAddDiscoveredDevice);
             TestPrinterCommand = new RelayCommand<PrinterScannerService.DiscoveredPrinter>(OnTestPrinter);
             SaveCommand = new RelayCommand(OnSave);
+            SaveAndExitCommand = new RelayCommand(OnSaveAndExit);
             CancelCommand = new RelayCommand(OnCancel);
             ExitCommand = new RelayCommand(OnExit);
             ChangePasswordCommand = new RelayCommand(OnChangePassword);
@@ -1179,6 +1185,76 @@ namespace IPS.MainApp.ViewModels
                 Console.WriteLine("[AdminViewModel] Reloading systems...");
                 IPS.App.ReloadSystems();
 
+                // Stay on the page (do NOT navigate back)
+            }
+            else
+            {
+                // TODO: Show error message to user
+                Console.WriteLine("[AdminViewModel] Failed to save configuration");
+            }
+        }
+
+        private void OnSaveAndExit()
+        {
+            // Build configuration from ViewModels
+            var config = new AppConfiguration
+            {
+                DllServerPort = DllServerPort,
+                IsBreakTimeEnabled = IsBreakTimeEnabled,
+                IsInstantBreakActive = IsInstantBreakActive,
+                BreakStartHour = BreakStartHour,
+                BreakStartMinute = BreakStartMinute,
+                BreakEndHour = BreakEndHour,
+                BreakEndMinute = BreakEndMinute,
+                BreakMessage = BreakMessage,
+                ForteApiAccessId = ForteApiAccessId,
+                ForteApiSecureKey = ForteApiSecureKey,
+                ForteOrganizationId = ForteOrganizationId,
+                ForteLocationId = ForteLocationId,
+                ForteSandboxMode = ForteSandboxMode,
+                PaymentEnabled = PaymentEnabled,
+                UseCardTerminal = UseCardTerminal,
+                TerminalType = TerminalType,
+                TerminalConnection = TerminalConnection,
+                TerminalComPort = TerminalComPort,
+                ForteMerchantId = ForteMerchantId,
+                ForteProcessingPassword = ForteProcessingPassword,
+                BusinessName = BusinessName,
+                BusinessAddressLine1 = BusinessAddressLine1,
+                BusinessAddressLine2 = BusinessAddressLine2,
+                BusinessPhone = BusinessPhone,
+                BusinessTaxId = BusinessTaxId,
+                ReceiptFooterMessage = ReceiptFooterMessage,
+                SelectedReceiptPrinter = SelectedReceiptPrinter,
+                AutoPrintReceipt = AutoPrintReceipt,
+                TaxEnabled = TaxEnabled,
+                TaxRate = TaxRate,
+                TaxLabel = TaxLabel,
+                Systems = Systems.Select(vm => new SystemConfiguration
+                {
+                    SystemName = vm.SystemName,
+                    IpAddress = vm.IpAddress,
+                    Port = vm.Port,
+                    IsEnabled = vm.IsEnabled
+                }).ToList()
+            };
+
+            // Preserve password hash
+            var currentConfig = _configService.GetConfiguration();
+            config.AdminPasswordHash = currentConfig.AdminPasswordHash;
+
+            // Save configuration
+            bool success = _configService.SaveConfiguration(config);
+
+            if (success)
+            {
+                // TODO: Show success message to user
+                Console.WriteLine("[AdminViewModel] Configuration saved successfully");
+
+                // Reload systems with new configuration
+                Console.WriteLine("[AdminViewModel] Reloading systems...");
+                IPS.App.ReloadSystems();
+
                 // Navigate back
                 _onNavigateBack?.Invoke();
             }
@@ -1330,28 +1406,30 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
-        /// Test printer by sending a test print
+        /// Test printer by sending a test print with actual receipt format
         /// </summary>
         private void OnTestPrinter(PrinterScannerService.DiscoveredPrinter? printer)
         {
             if (printer == null) return;
 
-            ScanStatus = $"Testing printer '{printer.PrinterName}'...";
+            PrinterScanStatus = $"Testing printer '{printer.PrinterName}'...";
 
             Task.Run(() =>
             {
-                bool success = _printerScanner.TestPrint(printer.PrinterName);
+                // Use PrintingService to print with actual receipt format
+                var printingService = new PrintingService(_configService);
+                bool success = printingService.PrintTestReceipt(printer.PrinterName);
 
                 System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
                     if (success)
                     {
-                        ScanStatus = $"Test print sent to '{printer.PrinterName}'";
+                        PrinterScanStatus = $"Test receipt sent to '{printer.PrinterName}'";
                         SelectedPrinter = printer.PrinterName;
                     }
                     else
                     {
-                        ScanStatus = $"Test print failed for '{printer.PrinterName}'";
+                        PrinterScanStatus = $"Test print failed for '{printer.PrinterName}'";
                     }
                 });
             });

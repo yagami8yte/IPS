@@ -133,7 +133,8 @@
             <!-- Video Advertisement -->
             <Grid Grid.Row="1" Margin="40,40,40,40" IsHitTestVisible="False">
                 <!-- Video Player with rounded corners using OpacityMask -->
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Visibility="{Binding HasVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid.OpacityMask>
                         <VisualBrush Stretch="Fill">
                             <VisualBrush.Visual>
@@ -156,25 +157,57 @@
                                   VerticalAlignment="Center"/>
                 </Grid>
 
-                <!-- Placeholder when no video -->
+                <!-- Placeholder when no video - Default cafe image -->
                 <Border CornerRadius="30"
-                        Background="{StaticResource BackgroundBeige}"
                         x:Name="PlaceholderBorder"
-                        Visibility="Collapsed">
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Path Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,5.5A6.5,6.5 0 0,0 5.5,12A6.5,6.5 0 0,0 12,18.5A6.5,6.5 0 0,0 18.5,12A6.5,6.5 0 0,0 12,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M10.5,8.67V15.33L15.25,12L10.5,8.67Z"
-                              Fill="{StaticResource MetallicGold}"
-                              Width="120" Height="120"
-                              Stretch="Uniform"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-                        <TextBlock Text="Advertisement"
-                                   FontSize="36"
-                                   FontFamily="{StaticResource BrandFont}"
-                                   Foreground="{StaticResource Espresso}"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,30,0,0"/>
-                    </StackPanel>
+                        Visibility="{Binding HasVideo, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <Border.OpacityMask>
+                        <VisualBrush Stretch="Fill">
+                            <VisualBrush.Visual>
+                                <Border Background="Black"
+                                        CornerRadius="30"
+                                        Width="1000"
+                                        Height="1600"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Border.OpacityMask>
+
+                    <!-- Grid to hold both image and fallback -->
+                    <Grid>
+                        <!-- Default cafe image -->
+                        <Image x:Name="DefaultCafeImage"
+                               Source="pack://application:,,,/Assets/Ads/DefaultCafe.jpg"
+                               Stretch="UniformToFill"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                        <!-- Fallback content if image doesn't exist -->
+                        <Grid x:Name="FallbackContent" Visibility="Collapsed">
+                            <Rectangle Fill="{StaticResource BackgroundBeige}"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,5.5A6.5,6.5 0 0,0 5.5,12A6.5,6.5 0 0,0 12,18.5A6.5,6.5 0 0,0 18.5,12A6.5,6.5 0 0,0 12,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M10.5,8.67V15.33L15.25,12L10.5,8.67Z"
+                                      Fill="{StaticResource MetallicGold}"
+                                      Width="120" Height="120"
+                                      Stretch="Uniform"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                                <TextBlock Text="Welcome to COFFEEBOTIC"
+                                           FontSize="42"
+                                           FontWeight="Bold"
+                                           FontFamily="{StaticResource BrandFont}"
+                                           Foreground="{StaticResource Espresso}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,40,0,0"/>
+                                <TextBlock Text="Tap to Start Your Order"
+                                           FontSize="32"
+                                           FontFamily="{StaticResource BrandFont}"
+                                           Foreground="{StaticResource AccentGold}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,20,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
                 </Border>
             </Grid>
 
