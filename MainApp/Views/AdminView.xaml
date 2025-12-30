@@ -1747,5 +1747,51 @@
                       Visibility="Collapsed"
                       Width="0"
                       Height="0"/>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="0"
+              Grid.RowSpan="4"
+              Background="#CC000000"
+              Visibility="{Binding IsSaving, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <!-- Spinning circle loader -->
+                <Viewbox Width="120" Height="120">
+                    <Canvas Width="100" Height="100">
+                        <Ellipse Width="100" Height="100"
+                                 Stroke="{StaticResource AccentGold}"
+                                 StrokeThickness="8"
+                                 StrokeDashArray="70,30"
+                                 Fill="Transparent">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="LoadingRotation" CenterX="50" CenterY="50" Angle="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="LoadingRotation"
+                                                           Storyboard.TargetProperty="Angle"
+                                                           From="0"
+                                                           To="360"
+                                                           Duration="0:0:1.5"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                    </Canvas>
+                </Viewbox>
+
+                <!-- Loading text -->
+                <TextBlock Text="Saving configuration..."
+                           FontSize="32"
+                           FontWeight="SemiBold"
+                           FontFamily="{StaticResource BrandFont}"
+                           Foreground="{StaticResource LightCream}"
+                           HorizontalAlignment="Center"
+                           Margin="0,30,0,0"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

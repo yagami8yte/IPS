@@ -39,7 +39,21 @@
       "Bash(if [ -f \"config.json\" ])",
       "Bash(then cat config.json)",
       "Bash(else echo \"config.json not found\")",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(exit 0)",
+      "WebFetch(domain:www.pexels.com)",
+      "WebFetch(domain:unsplash.com)",
+      "Bash(if [ -f \"Assets/Ads/DefaultCafe.jpg\" ])",
+      "Bash(then git add Assets/Ads/DefaultCafe.jpg)",
+      "Bash(else echo \"DefaultCafe.jpg not found (user needs to add manually per guide)\")",
+      "Bash(git commit:*)",
+      "Bash(findstr:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(cmd /c \"dir /s C:\\Users\\jinho\\DEV\\IPS\\bin\\Release\\net8.0-windows\\win-x64\\publish | findstr Total\")",
+      "Bash(git pull:*)",
+      "Bash(git config:*)",
+      "Bash(git credential-manager:*)"
     ],
     "deny": [],
     "ask": []

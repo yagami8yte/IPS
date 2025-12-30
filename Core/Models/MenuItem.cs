@@ -156,5 +156,43 @@ namespace IPS.Core.Models
         /// Can be null or empty if no options are available
         /// </summary>
         public List<MenuOption>? Options { get; set; }
+
+        // ===== Menu Variant Properties (from extraInformation) =====
+
+        /// <summary>
+        /// Base menu ID for grouping variants together
+        /// If null/empty, this menu is standalone (not a variant)
+        /// Menus with the same BaseMenuId are displayed as one card
+        /// </summary>
+        public string? BaseMenuId { get; set; }
+
+        /// <summary>
+        /// Display name for the grouped menu variants
+        /// Used when BaseMenuId is set, showing the base menu name instead of individual variant names
+        /// </summary>
+        public string? BaseMenuAlias { get; set; }
+
+        /// <summary>
+        /// Temperature variant: "hot" or "ice"
+        /// Used to differentiate temperature options of the same menu
+        /// </summary>
+        public string? MenuTemperature { get; set; }
+
+        /// <summary>
+        /// Menu variant type: "light", "regular", or "extra"
+        /// Used to differentiate strength/intensity options of the same menu
+        /// </summary>
+        public string? MenuVariant { get; set; }
+
+        /// <summary>
+        /// Display name that considers variants
+        /// Returns BaseMenuAlias if this is a variant, otherwise returns Name
+        /// </summary>
+        public string DisplayName => BaseMenuAlias ?? Name;
+
+        /// <summary>
+        /// Whether this menu item is part of a variant group
+        /// </summary>
+        public bool IsVariant => !string.IsNullOrEmpty(BaseMenuId);
     }
 }

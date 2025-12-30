@@ -556,11 +556,12 @@ namespace IPS.MainApp.ViewModels
 
                 foreach (var group in grouped)
                 {
+                    var displayItems = GroupMenuVariants(group.ToList());
                     CategoryGroups.Add(new MenuCategoryGroup
                     {
                         CategoryId = group.Key.CategoryId,
                         CategoryName = group.Key.CategoryName,
-                        Items = new ObservableCollection<MenuItem>(group)
+                        Items = new ObservableCollection<MenuItem>(displayItems)
                     });
                 }
             }
@@ -573,14 +574,82 @@ namespace IPS.MainApp.ViewModels
 
                 if (items.Any())
                 {
+                    var displayItems = GroupMenuVariants(items);
                     CategoryGroups.Add(new MenuCategoryGroup
                     {
                         CategoryId = SelectedCategoryId,
                         CategoryName = items.First().CategoryName,
-                        Items = new ObservableCollection<MenuItem>(items)
+                        Items = new ObservableCollection<MenuItem>(displayItems)
                     });
                 }
             }
+        }
+
+        /// <summary>
+        /// Groups menu items by BaseMenuId to display variants as a single card
+        /// Returns list of representative items to display
+        /// </summary>
+        private List<MenuItem> GroupMenuVariants(List<MenuItem> items)
+        {
+            Console.WriteLine($"[MenuViewModel] GroupMenuVariants called with {items.Count} items");
+
+            // Group by BaseMenuId (use MenuId for non-variants)
+            var variantGroups = items
+                .GroupBy(item => string.IsNullOrEmpty(item.BaseMenuId) ? item.MenuId : item.BaseMenuId)
+                .ToList();
+
+            Console.WriteLine($"[MenuViewModel] Created {variantGroups.Count} groups");
+
+            var displayItems = new List<MenuItem>();
+
+            foreach (var group in variantGroups)
+            {
+                var groupList = group.ToList();
+                Console.WriteLine($"[MenuViewModel] Group '{group.Key}': {groupList.Count} items");
+                foreach (var item in groupList)
+                {
+                    Console.WriteLine($"[MenuViewModel]   - {item.Name} (MenuId={item.MenuId}, BaseMenuId={item.BaseMenuId}, Temp={item.MenuTemperature}, Variant={item.MenuVariant})");
+                }
+
+                // Check if any variant in this group is available
+                var anyVariantAvailable = groupList.Any(x => x.IsAvailable);
+
+                // Select representative item to display
+                // Priority: 1) Item with MenuId == BaseMenuId, 2) First available item, 3) First item
+                var representative = groupList.FirstOrDefault(x => x.MenuId == group.Key)
+                    ?? groupList.FirstOrDefault(x => x.IsAvailable)
+                    ?? groupList.First();
+
+                // Get the BaseMenuAlias from any item in the group (they should all have the same)
+                var baseMenuAlias = groupList.FirstOrDefault(x => !string.IsNullOrEmpty(x.BaseMenuAlias))?.BaseMenuAlias;
+
+                Console.WriteLine($"[MenuViewModel] Representative: {representative.Name}, BaseMenuAlias: {baseMenuAlias}");
+
+                // Override availability with group availability
+                // Create a shallow copy to avoid modifying the original
+                var displayItem = new MenuItem
+                {
+                    MenuId = representative.MenuId,
+                    Name = representative.Name,
+                    Description = representative.Description,
+                    Price = representative.Price,
+                    PriceUnit = representative.PriceUnit,
+                    ImagePath = representative.ImagePath,
+                    IsAvailable = anyVariantAvailable, // Use group availability
+                    CategoryId = representative.CategoryId,
+                    CategoryName = representative.CategoryName,
+                    Options = representative.Options,
+                    BaseMenuId = representative.BaseMenuId,
+                    BaseMenuAlias = baseMenuAlias ?? representative.BaseMenuAlias, // Use any available BaseMenuAlias
+                    MenuTemperature = representative.MenuTemperature,
+                    MenuVariant = representative.MenuVariant
+                };
+
+                displayItems.Add(displayItem);
+            }
+
+            Console.WriteLine($"[MenuViewModel] Returning {displayItems.Count} display items");
+            return displayItems;
         }
 
         private void OnSelectMenuItem(MenuItem? menuItem)
@@ -588,9 +657,19 @@ namespace IPS.MainApp.ViewModels
             if (menuItem == null || !menuItem.IsAvailable)
                 return;
 
+            // Find all variants of this menu item
+            var baseMenuId = string.IsNullOrEmpty(menuItem.BaseMenuId) ? menuItem.MenuId : menuItem.BaseMenuId;
+            var allVariants = _allMenuItemsForCurrentSystem
+                .Where(item =>
+                {
+                    var itemBaseId = string.IsNullOrEmpty(item.BaseMenuId) ? item.MenuId : item.BaseMenuId;
+                    return itemBaseId == baseMenuId;
+                })
+                .ToList();
+
             // Create and show modal
             ModalViewModel = new MenuDetailModalViewModel();
-            ModalViewModel.Initialize(menuItem, SelectedSystemName, OnAddToCart, OnCloseModal);
+            ModalViewModel.Initialize(menuItem, allVariants, SelectedSystemName, OnAddToCart, OnCloseModal);
             IsModalVisible = true;
             NotifyUserInteraction();
         }

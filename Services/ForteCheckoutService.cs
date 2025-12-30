@@ -342,7 +342,7 @@ namespace IPS.Services
        hash_method='sha256'
        signature='{signature}'
        callback='onForteCallback'
-       swipe='dynaflex'
+       swipe='Dynaflex'
        embedded='true'
        style='display: none;'>
         Pay Now

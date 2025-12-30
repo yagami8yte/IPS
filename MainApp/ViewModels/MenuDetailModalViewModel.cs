@@ -14,10 +14,14 @@ namespace IPS.MainApp.ViewModels
     public class MenuDetailModalViewModel : BaseViewModel
     {
         private MenuItem _menuItem = null!;
+        private MenuItem _selectedVariant = null!;
+        private List<MenuItem> _allVariants = new();
         private string _systemName = string.Empty;
         private int _quantity = 1;
         private Action<CartItem>? _onAddToCart;
         private Action? _onClose;
+        private string? _selectedTemperature;
+        private string? _selectedVariantType;
 
         public MenuItem MenuItem
         {
@@ -28,6 +32,23 @@ namespace IPS.MainApp.ViewModels
                 OnPropertyChanged();
                 LoadOptions();
                 CalculateTotalPrice();
+            }
+        }
+
+        /// <summary>
+        /// Currently selected variant (considering temperature and variant type selections)
+        /// </summary>
+        public MenuItem SelectedVariant
+        {
+            get => _selectedVariant;
+            set
+            {
+                if (_selectedVariant != value)
+                {
+                    _selectedVariant = value;
+                    OnPropertyChanged();
+                    MenuItem = value; // Update MenuItem to refresh UI
+                }
             }
         }
 
@@ -59,6 +80,40 @@ namespace IPS.MainApp.ViewModels
 
         public ObservableCollection<OptionCategoryViewModel> OptionCategories { get; } = new();
 
+        // Variant selection properties
+        public bool HasTemperatureVariants { get; private set; }
+        public bool HasVariantTypes { get; private set; }
+        public ObservableCollection<string> AvailableTemperatures { get; } = new();
+        public ObservableCollection<string> AvailableVariantTypes { get; } = new();
+
+        public string? SelectedTemperature
+        {
+            get => _selectedTemperature;
+            set
+            {
+                if (_selectedTemperature != value)
+                {
+                    _selectedTemperature = value;
+                    OnPropertyChanged();
+                    UpdateSelectedVariant();
+                }
+            }
+        }
+
+        public string? SelectedVariantType
+        {
+            get => _selectedVariantType;
+            set
+            {
+                if (_selectedVariantType != value)
+                {
+                    _selectedVariantType = value;
+                    OnPropertyChanged();
+                    UpdateSelectedVariant();
+                }
+            }
+        }
+
         public IRelayCommand IncreaseQuantityCommand { get; }
         public IRelayCommand DecreaseQuantityCommand { get; }
         public IRelayCommand AddToCartCommand { get; }
@@ -72,13 +127,117 @@ namespace IPS.MainApp.ViewModels
             CloseCommand = new RelayCommand(Close);
         }
 
-        public void Initialize(MenuItem menuItem, string systemName, Action<CartItem> onAddToCart, Action onClose)
+        public void Initialize(MenuItem menuItem, List<MenuItem> allVariants, string systemName, Action<CartItem> onAddToCart, Action onClose)
         {
-            MenuItem = menuItem;
+            _allVariants = allVariants ?? new List<MenuItem> { menuItem };
+
+            // Ensure the list always contains at least the clicked menu item
+            if (_allVariants.Count == 0)
+            {
+                _allVariants.Add(menuItem);
+            }
+
             SystemName = systemName;
             _onAddToCart = onAddToCart;
             _onClose = onClose;
             Quantity = 1;
+
+            // Load available variant options
+            LoadVariantOptions();
+
+            // Set initial selection (prefer available items)
+            ChooseDefaultVariant();
+        }
+
+        private void LoadVariantOptions()
+        {
+            AvailableTemperatures.Clear();
+            AvailableVariantTypes.Clear();
+
+            // Get unique temperatures
+            var temperatures = _allVariants
+                .Where(v => !string.IsNullOrEmpty(v.MenuTemperature))
+                .Select(v => v.MenuTemperature!.ToLowerInvariant())
+                .Distinct()
+                .OrderBy(t => t == "hot" ? 0 : 1) // Hot first, then ice
+                .ToList();
+
+            foreach (var temp in temperatures)
+            {
+                AvailableTemperatures.Add(temp);
+            }
+
+            // Get unique variant types
+            var variantTypes = _allVariants
+                .Where(v => !string.IsNullOrEmpty(v.MenuVariant))
+                .Select(v => v.MenuVariant!.ToLowerInvariant())
+                .Distinct()
+                .OrderBy(v => v == "regular" ? 0 : v == "light" ? 1 : 2) // Regular, Light, Extra
+                .ToList();
+
+            foreach (var variant in variantTypes)
+            {
+                AvailableVariantTypes.Add(variant);
+            }
+
+            HasTemperatureVariants = AvailableTemperatures.Count > 0;
+            HasVariantTypes = AvailableVariantTypes.Count > 0;
+
+            OnPropertyChanged(nameof(HasTemperatureVariants));
+            OnPropertyChanged(nameof(HasVariantTypes));
+        }
+
+        private void ChooseDefaultVariant()
+        {
+            if (_allVariants.Count == 0)
+            {
+                Console.WriteLine("[MenuDetailModalViewModel] ChooseDefaultVariant - No variants available!");
+                return;
+            }
+
+            // Find first available variant
+            var defaultVariant = _allVariants.FirstOrDefault(v => v.IsAvailable) ?? _allVariants.First();
+
+            Console.WriteLine($"[MenuDetailModalViewModel] ChooseDefaultVariant - Selected: {defaultVariant.Name}, Temp: {defaultVariant.MenuTemperature}, Variant: {defaultVariant.MenuVariant}");
+
+            // Set default selections
+            SelectedTemperature = defaultVariant.MenuTemperature?.ToLowerInvariant();
+            SelectedVariantType = defaultVariant.MenuVariant?.ToLowerInvariant();
+
+            // For non-variant items (no temperature/variant), directly set the MenuItem
+            if (string.IsNullOrEmpty(SelectedTemperature) && string.IsNullOrEmpty(SelectedVariantType))
+            {
+                Console.WriteLine("[MenuDetailModalViewModel] ChooseDefaultVariant - Non-variant item, setting MenuItem directly");
+                MenuItem = defaultVariant;
+                _selectedVariant = defaultVariant;
+            }
+            // For variant items, UpdateSelectedVariant will be triggered by the property setters
+        }
+
+        private void UpdateSelectedVariant()
+        {
+            // Find variant matching current selections
+            var matchingVariant = _allVariants.FirstOrDefault(v =>
+                (string.IsNullOrEmpty(SelectedTemperature) ||
+                 v.MenuTemperature?.ToLowerInvariant() == SelectedTemperature) &&
+                (string.IsNullOrEmpty(SelectedVariantType) ||
+                 v.MenuVariant?.ToLowerInvariant() == SelectedVariantType)
+            );
+
+            if (matchingVariant != null)
+            {
+                Console.WriteLine($"[MenuDetailModalViewModel] UpdateSelectedVariant - Found match: {matchingVariant.Name}");
+                SelectedVariant = matchingVariant;
+            }
+            else
+            {
+                Console.WriteLine($"[MenuDetailModalViewModel] UpdateSelectedVariant - No match found for Temp={SelectedTemperature}, Variant={SelectedVariantType}");
+                // If no exact match found, use the first item (fallback for non-variant items)
+                if (_allVariants.Count > 0)
+                {
+                    SelectedVariant = _allVariants.First();
+                }
+            }
         }
 
         private void LoadOptions()
@@ -147,7 +306,9 @@ namespace IPS.MainApp.ViewModels
 
         private void AddToCart()
         {
-            if (MenuItem == null) return;
+            // Use SelectedVariant if available, otherwise MenuItem
+            var menuToAdd = _selectedVariant ?? MenuItem;
+            if (menuToAdd == null) return;
 
             var selectedOptions = OptionCategories
                 .SelectMany(c => c.Options)
@@ -158,7 +319,7 @@ namespace IPS.MainApp.ViewModels
             var cartItem = new CartItem
             {
                 SystemName = SystemName,
-                MenuItem = MenuItem,
+                MenuItem = menuToAdd, // Use the selected variant
                 SelectedOptions = selectedOptions,
                 Quantity = Quantity
             };

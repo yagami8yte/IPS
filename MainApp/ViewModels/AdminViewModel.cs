@@ -56,6 +56,7 @@ namespace IPS.MainApp.ViewModels
         private string _paymentTestStatus = string.Empty;
         private bool _hasPaymentTestStatus = false;
         private bool _isPaymentTestSuccess = false;
+        private bool _isSaving = false;
 
         /// <summary>
         /// Payment test logs
@@ -112,6 +113,19 @@ namespace IPS.MainApp.ViewModels
             set
             {
                 _isScanning = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Indicates if save operation is in progress
+        /// </summary>
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set
+            {
+                _isSaving = value;
                 OnPropertyChanged();
             }
         }
@@ -1124,144 +1138,166 @@ namespace IPS.MainApp.ViewModels
             }
         }
 
-        private void OnSave()
+        private async void OnSave()
         {
-            // Build configuration from ViewModels
-            var config = new AppConfiguration
+            IsSaving = true;
+            try
             {
-                DllServerPort = DllServerPort,
-                IsBreakTimeEnabled = IsBreakTimeEnabled,
-                IsInstantBreakActive = IsInstantBreakActive,
-                BreakStartHour = BreakStartHour,
-                BreakStartMinute = BreakStartMinute,
-                BreakEndHour = BreakEndHour,
-                BreakEndMinute = BreakEndMinute,
-                BreakMessage = BreakMessage,
-                ForteApiAccessId = ForteApiAccessId,
-                ForteApiSecureKey = ForteApiSecureKey,
-                ForteOrganizationId = ForteOrganizationId,
-                ForteLocationId = ForteLocationId,
-                ForteSandboxMode = ForteSandboxMode,
-                PaymentEnabled = PaymentEnabled,
-                UseCardTerminal = UseCardTerminal,
-                TerminalType = TerminalType,
-                TerminalConnection = TerminalConnection,
-                TerminalComPort = TerminalComPort,
-                ForteMerchantId = ForteMerchantId,
-                ForteProcessingPassword = ForteProcessingPassword,
-                BusinessName = BusinessName,
-                BusinessAddressLine1 = BusinessAddressLine1,
-                BusinessAddressLine2 = BusinessAddressLine2,
-                BusinessPhone = BusinessPhone,
-                BusinessTaxId = BusinessTaxId,
-                ReceiptFooterMessage = ReceiptFooterMessage,
-                SelectedReceiptPrinter = SelectedReceiptPrinter,
-                AutoPrintReceipt = AutoPrintReceipt,
-                TaxEnabled = TaxEnabled,
-                TaxRate = TaxRate,
-                TaxLabel = TaxLabel,
-                Systems = Systems.Select(vm => new SystemConfiguration
+                await Task.Run(() =>
                 {
-                    SystemName = vm.SystemName,
-                    IpAddress = vm.IpAddress,
-                    Port = vm.Port,
-                    IsEnabled = vm.IsEnabled
-                }).ToList()
-            };
+                    // Build configuration from ViewModels
+                    var config = new AppConfiguration
+                    {
+                        DllServerPort = DllServerPort,
+                        IsBreakTimeEnabled = IsBreakTimeEnabled,
+                        IsInstantBreakActive = IsInstantBreakActive,
+                        BreakStartHour = BreakStartHour,
+                        BreakStartMinute = BreakStartMinute,
+                        BreakEndHour = BreakEndHour,
+                        BreakEndMinute = BreakEndMinute,
+                        BreakMessage = BreakMessage,
+                        ForteApiAccessId = ForteApiAccessId,
+                        ForteApiSecureKey = ForteApiSecureKey,
+                        ForteOrganizationId = ForteOrganizationId,
+                        ForteLocationId = ForteLocationId,
+                        ForteSandboxMode = ForteSandboxMode,
+                        PaymentEnabled = PaymentEnabled,
+                        UseCardTerminal = UseCardTerminal,
+                        TerminalType = TerminalType,
+                        TerminalConnection = TerminalConnection,
+                        TerminalComPort = TerminalComPort,
+                        ForteMerchantId = ForteMerchantId,
+                        ForteProcessingPassword = ForteProcessingPassword,
+                        BusinessName = BusinessName,
+                        BusinessAddressLine1 = BusinessAddressLine1,
+                        BusinessAddressLine2 = BusinessAddressLine2,
+                        BusinessPhone = BusinessPhone,
+                        BusinessTaxId = BusinessTaxId,
+                        ReceiptFooterMessage = ReceiptFooterMessage,
+                        SelectedReceiptPrinter = SelectedReceiptPrinter,
+                        AutoPrintReceipt = AutoPrintReceipt,
+                        TaxEnabled = TaxEnabled,
+                        TaxRate = TaxRate,
+                        TaxLabel = TaxLabel,
+                        Systems = Systems.Select(vm => new SystemConfiguration
+                        {
+                            SystemName = vm.SystemName,
+                            IpAddress = vm.IpAddress,
+                            Port = vm.Port,
+                            IsEnabled = vm.IsEnabled
+                        }).ToList()
+                    };
 
-            // Preserve password hash
-            var currentConfig = _configService.GetConfiguration();
-            config.AdminPasswordHash = currentConfig.AdminPasswordHash;
+                    // Preserve password hash
+                    var currentConfig = _configService.GetConfiguration();
+                    config.AdminPasswordHash = currentConfig.AdminPasswordHash;
 
-            // Save configuration
-            bool success = _configService.SaveConfiguration(config);
+                    // Save configuration
+                    bool success = _configService.SaveConfiguration(config);
 
-            if (success)
-            {
-                // TODO: Show success message to user
-                Console.WriteLine("[AdminViewModel] Configuration saved successfully");
+                    if (success)
+                    {
+                        // TODO: Show success message to user
+                        Console.WriteLine("[AdminViewModel] Configuration saved successfully");
 
-                // Reload systems with new configuration
-                Console.WriteLine("[AdminViewModel] Reloading systems...");
-                IPS.App.ReloadSystems();
+                        // Reload systems with new configuration
+                        Console.WriteLine("[AdminViewModel] Reloading systems...");
+                        IPS.App.ReloadSystems();
 
-                // Stay on the page (do NOT navigate back)
+                        // Stay on the page (do NOT navigate back)
+                    }
+                    else
+                    {
+                        // TODO: Show error message to user
+                        Console.WriteLine("[AdminViewModel] Failed to save configuration");
+                    }
+                });
             }
-            else
+            finally
             {
-                // TODO: Show error message to user
-                Console.WriteLine("[AdminViewModel] Failed to save configuration");
+                IsSaving = false;
             }
         }
 
-        private void OnSaveAndExit()
+        private async void OnSaveAndExit()
         {
-            // Build configuration from ViewModels
-            var config = new AppConfiguration
+            IsSaving = true;
+            try
             {
-                DllServerPort = DllServerPort,
-                IsBreakTimeEnabled = IsBreakTimeEnabled,
-                IsInstantBreakActive = IsInstantBreakActive,
-                BreakStartHour = BreakStartHour,
-                BreakStartMinute = BreakStartMinute,
-                BreakEndHour = BreakEndHour,
-                BreakEndMinute = BreakEndMinute,
-                BreakMessage = BreakMessage,
-                ForteApiAccessId = ForteApiAccessId,
-                ForteApiSecureKey = ForteApiSecureKey,
-                ForteOrganizationId = ForteOrganizationId,
-                ForteLocationId = ForteLocationId,
-                ForteSandboxMode = ForteSandboxMode,
-                PaymentEnabled = PaymentEnabled,
-                UseCardTerminal = UseCardTerminal,
-                TerminalType = TerminalType,
-                TerminalConnection = TerminalConnection,
-                TerminalComPort = TerminalComPort,
-                ForteMerchantId = ForteMerchantId,
-                ForteProcessingPassword = ForteProcessingPassword,
-                BusinessName = BusinessName,
-                BusinessAddressLine1 = BusinessAddressLine1,
-                BusinessAddressLine2 = BusinessAddressLine2,
-                BusinessPhone = BusinessPhone,
-                BusinessTaxId = BusinessTaxId,
-                ReceiptFooterMessage = ReceiptFooterMessage,
-                SelectedReceiptPrinter = SelectedReceiptPrinter,
-                AutoPrintReceipt = AutoPrintReceipt,
-                TaxEnabled = TaxEnabled,
-                TaxRate = TaxRate,
-                TaxLabel = TaxLabel,
-                Systems = Systems.Select(vm => new SystemConfiguration
+                await Task.Run(() =>
                 {
-                    SystemName = vm.SystemName,
-                    IpAddress = vm.IpAddress,
-                    Port = vm.Port,
-                    IsEnabled = vm.IsEnabled
-                }).ToList()
-            };
+                    // Build configuration from ViewModels
+                    var config = new AppConfiguration
+                    {
+                        DllServerPort = DllServerPort,
+                        IsBreakTimeEnabled = IsBreakTimeEnabled,
+                        IsInstantBreakActive = IsInstantBreakActive,
+                        BreakStartHour = BreakStartHour,
+                        BreakStartMinute = BreakStartMinute,
+                        BreakEndHour = BreakEndHour,
+                        BreakEndMinute = BreakEndMinute,
+                        BreakMessage = BreakMessage,
+                        ForteApiAccessId = ForteApiAccessId,
+                        ForteApiSecureKey = ForteApiSecureKey,
+                        ForteOrganizationId = ForteOrganizationId,
+                        ForteLocationId = ForteLocationId,
+                        ForteSandboxMode = ForteSandboxMode,
+                        PaymentEnabled = PaymentEnabled,
+                        UseCardTerminal = UseCardTerminal,
+                        TerminalType = TerminalType,
+                        TerminalConnection = TerminalConnection,
+                        TerminalComPort = TerminalComPort,
+                        ForteMerchantId = ForteMerchantId,
+                        ForteProcessingPassword = ForteProcessingPassword,
+                        BusinessName = BusinessName,
+                        BusinessAddressLine1 = BusinessAddressLine1,
+                        BusinessAddressLine2 = BusinessAddressLine2,
+                        BusinessPhone = BusinessPhone,
+                        BusinessTaxId = BusinessTaxId,
+                        ReceiptFooterMessage = ReceiptFooterMessage,
+                        SelectedReceiptPrinter = SelectedReceiptPrinter,
+                        AutoPrintReceipt = AutoPrintReceipt,
+                        TaxEnabled = TaxEnabled,
+                        TaxRate = TaxRate,
+                        TaxLabel = TaxLabel,
+                        Systems = Systems.Select(vm => new SystemConfiguration
+                        {
+                            SystemName = vm.SystemName,
+                            IpAddress = vm.IpAddress,
+                            Port = vm.Port,
+                            IsEnabled = vm.IsEnabled
+                        }).ToList()
+                    };
 
-            // Preserve password hash
-            var currentConfig = _configService.GetConfiguration();
-            config.AdminPasswordHash = currentConfig.AdminPasswordHash;
+                    // Preserve password hash
+                    var currentConfig = _configService.GetConfiguration();
+                    config.AdminPasswordHash = currentConfig.AdminPasswordHash;
 
-            // Save configuration
-            bool success = _configService.SaveConfiguration(config);
+                    // Save configuration
+                    bool success = _configService.SaveConfiguration(config);
 
-            if (success)
-            {
-                // TODO: Show success message to user
-                Console.WriteLine("[AdminViewModel] Configuration saved successfully");
+                    if (success)
+                    {
+                        // TODO: Show success message to user
+                        Console.WriteLine("[AdminViewModel] Configuration saved successfully");
 
-                // Reload systems with new configuration
-                Console.WriteLine("[AdminViewModel] Reloading systems...");
-                IPS.App.ReloadSystems();
+                        // Reload systems with new configuration
+                        Console.WriteLine("[AdminViewModel] Reloading systems...");
+                        IPS.App.ReloadSystems();
+                    }
+                    else
+                    {
+                        // TODO: Show error message to user
+                        Console.WriteLine("[AdminViewModel] Failed to save configuration");
+                    }
+                });
 
-                // Navigate back
+                // Navigate back after saving (on UI thread)
                 _onNavigateBack?.Invoke();
             }
-            else
+            finally
             {
-                // TODO: Show error message to user
-                Console.WriteLine("[AdminViewModel] Failed to save configuration");
+                IsSaving = false;
             }
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using IPS.Core.Interfaces;
@@ -139,8 +140,6 @@ namespace IPS.Adapters.Coffee
                     return new List<MenuItem>();
                 }
 
-                Console.WriteLine($"[CoffeeSystemAdapter] JSON content: {json.Substring(0, Math.Min(200, json.Length))}...");
-
                 // Parse JSON into menu items
                 var items = ParseMenuItems(json);
                 Console.WriteLine($"[CoffeeSystemAdapter] Parsed {items.Count} menu items");
@@ -199,6 +198,9 @@ namespace IPS.Adapters.Coffee
                             Options = ParseOptions(productElement)
                         };
 
+                        // Parse extraInformation for variant properties
+                        ParseExtraInformation(productElement, menuItem);
+
                         menuItems.Add(menuItem);
                     }
                     catch (Exception ex)
@@ -249,6 +251,69 @@ namespace IPS.Adapters.Coffee
             }
 
             return options.Count > 0 ? options : null;
+        }
+
+        private void ParseExtraInformation(JsonElement productElement, MenuItem menuItem)
+        {
+            try
+            {
+                if (!productElement.TryGetProperty("extraInformation", out JsonElement extraInfo))
+                    return;
+
+                // The Kiosk property contains a JSON STRING that needs to be parsed
+                JsonElement sourceElement;
+
+                if (extraInfo.TryGetProperty("Kiosk", out JsonElement kioskElement))
+                {
+                    // Kiosk is a JSON string - need to parse it
+                    if (kioskElement.ValueKind == JsonValueKind.String)
+                    {
+                        string? kioskJsonString = kioskElement.GetString();
+                        if (string.IsNullOrEmpty(kioskJsonString))
+                            return;
+
+                        // Parse the nested JSON string
+                        using JsonDocument kioskDoc = JsonDocument.Parse(kioskJsonString);
+                        sourceElement = kioskDoc.RootElement.Clone();
+                    }
+                    else if (kioskElement.ValueKind == JsonValueKind.Object)
+                    {
+                        // Already an object (shouldn't happen based on actual data, but handle it)
+                        sourceElement = kioskElement;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    // Direct format: extraInformation contains baseMenu, menuTemperature directly
+                    sourceElement = extraInfo;
+                }
+
+                // Parse menuTemperature (hot/ice)
+                menuItem.MenuTemperature = GetStringProperty(sourceElement, "menuTemperature");
+
+                // Parse menuVariant (light/regular/extra)
+                menuItem.MenuVariant = GetStringProperty(sourceElement, "menuVariant");
+
+                // Parse baseMenu for grouping
+                if (sourceElement.TryGetProperty("baseMenu", out JsonElement baseMenu))
+                {
+                    menuItem.BaseMenuId = GetStringProperty(baseMenu, "menuId");
+                    menuItem.BaseMenuAlias = GetStringProperty(baseMenu, "menuAlias");
+
+                    if (!string.IsNullOrEmpty(menuItem.BaseMenuId))
+                    {
+                        Console.WriteLine($"[CoffeeSystemAdapter] Parsed variant: {menuItem.Name} -> BaseMenuId={menuItem.BaseMenuId}, Alias={menuItem.BaseMenuAlias}, Temp={menuItem.MenuTemperature}, Variant={menuItem.MenuVariant}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[CoffeeSystemAdapter] Error parsing extraInformation: {ex.Message}");
+            }
         }
 
         public bool SendOrder(OrderInfo order)

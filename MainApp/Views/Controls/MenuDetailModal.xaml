@@ -115,6 +115,180 @@
                                        Margin="8,0,0,6"/>
                         </StackPanel>
 
+                        <!-- Temperature Selection -->
+                        <StackPanel Margin="0,30,0,0"
+                                    Visibility="{Binding HasTemperatureVariants, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="Temperature"
+                                       FontSize="28"
+                                       FontWeight="SemiBold"
+                                       FontFamily="{StaticResource BrandFont}"
+                                       Foreground="{StaticResource DarkBrown}"
+                                       Margin="0,0,0,10"/>
+
+                            <!-- Hot/Ice buttons as simple toggle -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Hot Button -->
+                                <Border Grid.Column="0"
+                                        BorderBrush="{StaticResource AccentGold}"
+                                        BorderThickness="3"
+                                        CornerRadius="15"
+                                        Padding="20,15"
+                                        Margin="0,0,5,0"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="OnTemperatureHotClicked">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedTemperature}" Value="hot">
+                                                    <Setter Property="Background" Value="{StaticResource AccentGold}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="HOT ☕"
+                                               HorizontalAlignment="Center"
+                                               FontSize="26"
+                                               FontWeight="SemiBold"
+                                               FontFamily="{StaticResource BrandFont}"
+                                               Foreground="{StaticResource DarkBrown}"/>
+                                </Border>
+
+                                <!-- Ice Button -->
+                                <Border Grid.Column="1"
+                                        BorderBrush="{StaticResource AccentGold}"
+                                        BorderThickness="3"
+                                        CornerRadius="15"
+                                        Padding="20,15"
+                                        Margin="5,0,0,0"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="OnTemperatureIceClicked">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedTemperature}" Value="ice">
+                                                    <Setter Property="Background" Value="{StaticResource AccentGold}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="ICED ❄"
+                                               HorizontalAlignment="Center"
+                                               FontSize="26"
+                                               FontWeight="SemiBold"
+                                               FontFamily="{StaticResource BrandFont}"
+                                               Foreground="{StaticResource DarkBrown}"/>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Variant Type Selection -->
+                        <StackPanel Margin="0,30,0,0"
+                                    Visibility="{Binding HasVariantTypes, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="Strength"
+                                       FontSize="28"
+                                       FontWeight="SemiBold"
+                                       FontFamily="{StaticResource BrandFont}"
+                                       Foreground="{StaticResource DarkBrown}"
+                                       Margin="0,0,0,10"/>
+
+                            <!-- Light/Regular/Extra buttons -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Light Button -->
+                                <Border Grid.Column="0"
+                                        BorderBrush="{StaticResource AccentGold}"
+                                        BorderThickness="3"
+                                        CornerRadius="15"
+                                        Padding="20,15"
+                                        Margin="0,0,5,0"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="OnVariantLightClicked">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedVariantType}" Value="light">
+                                                    <Setter Property="Background" Value="{StaticResource AccentGold}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="LIGHT"
+                                               HorizontalAlignment="Center"
+                                               FontSize="26"
+                                               FontWeight="SemiBold"
+                                               FontFamily="{StaticResource BrandFont}"
+                                               Foreground="{StaticResource DarkBrown}"/>
+                                </Border>
+
+                                <!-- Regular Button -->
+                                <Border Grid.Column="1"
+                                        BorderBrush="{StaticResource AccentGold}"
+                                        BorderThickness="3"
+                                        CornerRadius="15"
+                                        Padding="20,15"
+                                        Margin="5,0"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="OnVariantRegularClicked">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedVariantType}" Value="regular">
+                                                    <Setter Property="Background" Value="{StaticResource AccentGold}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="REGULAR"
+                                               HorizontalAlignment="Center"
+                                               FontSize="26"
+                                               FontWeight="SemiBold"
+                                               FontFamily="{StaticResource BrandFont}"
+                                               Foreground="{StaticResource DarkBrown}"/>
+                                </Border>
+
+                                <!-- Extra Button -->
+                                <Border Grid.Column="2"
+                                        BorderBrush="{StaticResource AccentGold}"
+                                        BorderThickness="3"
+                                        CornerRadius="15"
+                                        Padding="20,15"
+                                        Margin="5,0,0,0"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="OnVariantExtraClicked">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedVariantType}" Value="extra">
+                                                    <Setter Property="Background" Value="{StaticResource AccentGold}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="EXTRA"
+                                               HorizontalAlignment="Center"
+                                               FontSize="26"
+                                               FontWeight="SemiBold"
+                                               FontFamily="{StaticResource BrandFont}"
+                                               Foreground="{StaticResource DarkBrown}"/>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+
                         <!-- Options Section -->
                         <ItemsControl ItemsSource="{Binding OptionCategories}"
                                       Margin="0,30,0,0">
