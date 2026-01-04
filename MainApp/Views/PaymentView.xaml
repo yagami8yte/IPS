@@ -38,7 +38,7 @@
         <Border Grid.Row="0"
                 Background="{StaticResource PrimaryBrown}"
                 Padding="40,20">
-            <TextBlock Text="Review Your Order"
+            <TextBlock Text="Payment"
                        FontSize="48"
                        FontWeight="Bold"
                        FontFamily="{StaticResource BrandFont}"
@@ -46,169 +46,287 @@
                        VerticalAlignment="Center"/>
         </Border>
 
-        <!-- Content: Cart Items or Payment WebView -->
+        <!-- Content: Payment WebView Only -->
         <Grid Grid.Row="1">
-            <!-- Cart Items List (when not in payment mode) -->
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          Margin="40,20"
-                          Visibility="{Binding CheckoutHtml, Converter={StaticResource InverseStringToVisibilityConverter}}">
-                <ItemsControl ItemsSource="{Binding CartItems}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="White"
-                                    CornerRadius="15"
-                                    Padding="20"
-                                    Margin="0,0,0,15"
-                                    BorderBrush="{StaticResource AccentLatte}"
-                                    BorderThickness="2">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+            <!-- Full-screen Loading Overlay (when loading checkout) -->
+            <Border Background="{StaticResource BackgroundBeige}"
+                    Visibility="{Binding IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Panel.ZIndex="100">
+                <StackPanel VerticalAlignment="Center"
+                           HorizontalAlignment="Center">
 
-                                    <!-- Item Details -->
-                                    <StackPanel Grid.Column="0">
-                                        <TextBlock Text="{Binding MenuItem.Name}"
-                                                   FontSize="24"
-                                                   FontWeight="SemiBold"
-                                                   FontFamily="{StaticResource BrandFont}"
-                                                   Foreground="{StaticResource DarkBrown}"/>
-                                        <TextBlock FontSize="18"
-                                                   Foreground="{StaticResource MediumBrown}"
-                                                   Margin="0,5,0,0">
-                                            <Run Text="Options: "/>
-                                            <Run Text="{Binding OptionsText, Mode=OneWay}"/>
-                                        </TextBlock>
-                                        <TextBlock Text="{Binding UnitPrice, StringFormat={}Unit Price: {0:C}}"
-                                                   FontSize="18"
-                                                   Foreground="{StaticResource MediumBrown}"
-                                                   Margin="0,5,0,0"/>
-                                    </StackPanel>
+                    <!-- Multi-ring spinner with pulse effect -->
+                    <Grid Width="150" Height="150" Margin="0,0,0,40">
+                        <!-- Outer pulsing ring -->
+                        <Ellipse Width="150" Height="150"
+                                Stroke="{StaticResource ForestGreen}"
+                                StrokeThickness="3"
+                                Opacity="0.2"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <ScaleTransform x:Name="OuterPulseScale" ScaleX="1" ScaleY="1"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="OuterPulseScale"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           From="0.8" To="1.1"
+                                                           Duration="0:0:1.5"
+                                                           AutoReverse="True"/>
+                                            <DoubleAnimation Storyboard.TargetName="OuterPulseScale"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           From="0.8" To="1.1"
+                                                           Duration="0:0:1.5"
+                                                           AutoReverse="True"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
 
-                                    <!-- Quantity Controls -->
-                                    <StackPanel Grid.Column="1"
-                                                Orientation="Horizontal"
-                                                VerticalAlignment="Center"
-                                                Margin="20,0">
-                                        <Button Content="-"
-                                                Width="50"
-                                                Height="50"
-                                                FontSize="24"
-                                                FontWeight="Bold"
-                                                Background="{StaticResource AccentLatte}"
-                                                Foreground="{StaticResource DarkBrown}"
-                                                BorderThickness="0"
-                                                Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}"/>
-                                        <TextBlock Text="{Binding Quantity}"
-                                                   FontSize="28"
-                                                   FontWeight="Bold"
-                                                   VerticalAlignment="Center"
-                                                   Margin="20,0"
-                                                   MinWidth="40"
-                                                   TextAlignment="Center"/>
-                                        <Button Content="+"
-                                                Width="50"
-                                                Height="50"
-                                                FontSize="24"
-                                                FontWeight="Bold"
-                                                Background="{StaticResource AccentLatte}"
-                                                Foreground="{StaticResource DarkBrown}"
-                                                BorderThickness="0"
-                                                Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}"/>
-                                    </StackPanel>
+                        <!-- Middle rotating ring -->
+                        <Ellipse Width="120" Height="120"
+                                Stroke="{StaticResource ForestGreen}"
+                                StrokeThickness="6"
+                                StrokeDashArray="40,20"
+                                Opacity="0.5"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="MiddleRingRotation" Angle="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="MiddleRingRotation"
+                                                           Storyboard.TargetProperty="Angle"
+                                                           From="360" To="0"
+                                                           Duration="0:0:3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
 
-                                    <!-- Price and Remove -->
-                                    <StackPanel Grid.Column="2"
-                                                VerticalAlignment="Center"
-                                                Margin="20,0,0,0">
-                                        <TextBlock Text="{Binding TotalPrice, StringFormat={}{0:C}}"
-                                                   FontSize="28"
-                                                   FontWeight="Bold"
-                                                   Foreground="{StaticResource PrimaryBrown}"
-                                                   TextAlignment="Right"/>
-                                        <Button Content="Remove"
-                                                Margin="0,10,0,0"
-                                                Padding="15,8"
-                                                Background="{StaticResource ErrorRed}"
-                                                Foreground="White"
-                                                BorderThickness="0"
-                                                FontSize="16"
-                                                Command="{Binding DataContext.RemoveFromCartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                        <!-- Inner fast rotating ring -->
+                        <Ellipse Width="90" Height="90"
+                                Stroke="{StaticResource ForestGreen}"
+                                StrokeThickness="8"
+                                StrokeDashArray="60,30"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="InnerRingRotation" Angle="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="InnerRingRotation"
+                                                           Storyboard.TargetProperty="Angle"
+                                                           From="0" To="360"
+                                                           Duration="0:0:1.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
 
-            <!-- Payment WebView (when in payment mode) -->
+                        <!-- Center pulsing dot -->
+                        <Ellipse Width="20" Height="20"
+                                Fill="{StaticResource ForestGreen}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <ScaleTransform x:Name="CenterDotScale" ScaleX="1" ScaleY="1"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="CenterDotScale"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           From="0.6" To="1.4"
+                                                           Duration="0:0:0.8"
+                                                           AutoReverse="True"/>
+                                            <DoubleAnimation Storyboard.TargetName="CenterDotScale"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           From="0.6" To="1.4"
+                                                           Duration="0:0:0.8"
+                                                           AutoReverse="True"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                    </Grid>
+
+                    <!-- Main text with subtle pulse -->
+                    <TextBlock Text="Preparing Payment"
+                              FontSize="38"
+                              FontWeight="SemiBold"
+                              FontFamily="{StaticResource BrandFont}"
+                              Foreground="{StaticResource DarkBrown}"
+                              HorizontalAlignment="Center"
+                              RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <ScaleTransform x:Name="MainTextScale" ScaleX="1" ScaleY="1"/>
+                        </TextBlock.RenderTransform>
+                        <TextBlock.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetName="MainTextScale"
+                                                       Storyboard.TargetProperty="ScaleX"
+                                                       From="1" To="1.03"
+                                                       Duration="0:0:1.5"
+                                                       AutoReverse="True"/>
+                                        <DoubleAnimation Storyboard.TargetName="MainTextScale"
+                                                       Storyboard.TargetProperty="ScaleY"
+                                                       From="1" To="1.03"
+                                                       Duration="0:0:1.5"
+                                                       AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </TextBlock.Triggers>
+                    </TextBlock>
+
+                    <!-- Bouncing dots -->
+                    <StackPanel Orientation="Horizontal"
+                               HorizontalAlignment="Center"
+                               Margin="0,20,0,0">
+                        <Ellipse x:Name="Dot1" Width="12" Height="12"
+                                Fill="{StaticResource ForestGreen}"
+                                Margin="5,0"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform x:Name="Dot1Translate" Y="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dot1Translate"
+                                                                          Storyboard.TargetProperty="Y">
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-15">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseOut"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <BounceEase EasingMode="EaseOut" Bounces="2" Bounciness="3"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+
+                        <Ellipse x:Name="Dot2" Width="12" Height="12"
+                                Fill="{StaticResource ForestGreen}"
+                                Margin="5,0"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform x:Name="Dot2Translate" Y="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" BeginTime="0:0:0.15">
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dot2Translate"
+                                                                          Storyboard.TargetProperty="Y">
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-15">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseOut"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <BounceEase EasingMode="EaseOut" Bounces="2" Bounciness="3"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+
+                        <Ellipse x:Name="Dot3" Width="12" Height="12"
+                                Fill="{StaticResource ForestGreen}"
+                                Margin="5,0"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform x:Name="Dot3Translate" Y="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" BeginTime="0:0:0.3">
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dot3Translate"
+                                                                          Storyboard.TargetProperty="Y">
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-15">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <QuadraticEase EasingMode="EaseOut"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0">
+                                                    <EasingDoubleKeyFrame.EasingFunction>
+                                                        <BounceEase EasingMode="EaseOut" Bounces="2" Bounciness="3"/>
+                                                    </EasingDoubleKeyFrame.EasingFunction>
+                                                </EasingDoubleKeyFrame>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                    </StackPanel>
+
+                    <!-- Subtitle with fade animation -->
+                    <TextBlock Text="Connecting to payment terminal"
+                              FontSize="22"
+                              Foreground="{StaticResource MediumBrown}"
+                              HorizontalAlignment="Center"
+                              Margin="0,25,0,0">
+                        <TextBlock.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                       From="0.5" To="1"
+                                                       Duration="0:0:1"
+                                                       AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </TextBlock.Triggers>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Payment WebView -->
             <Border Background="White"
-                    Padding="20"
-                    Visibility="{Binding CheckoutHtml, Converter={StaticResource StringToVisibilityConverter}}">
+                    Padding="20">
                 <Border Background="White"
                         CornerRadius="10"
                         BorderBrush="{StaticResource ForestGreen}"
                         BorderThickness="2">
-                    <Grid>
-                        <!-- WebView2 - Full Height -->
-                        <wv2:WebView2 x:Name="ForteCheckoutWebView"
-                                      Loaded="ForteCheckoutWebView_Loaded"/>
-
-                        <!-- Loading Overlay -->
-                        <Border Background="#F0FAF7F2"
-                                Visibility="{Binding IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <StackPanel VerticalAlignment="Center"
-                                       HorizontalAlignment="Center">
-                                <Viewbox Width="80" Height="80" Margin="0,0,0,20">
-                                    <Canvas Width="100" Height="100">
-                                        <Ellipse Width="100" Height="100"
-                                                Stroke="{StaticResource ForestGreen}"
-                                                StrokeThickness="8"
-                                                StrokeDashArray="70,30"
-                                                Opacity="0.3"/>
-                                        <Ellipse Width="100" Height="100"
-                                                Stroke="{StaticResource ForestGreen}"
-                                                StrokeThickness="8"
-                                                StrokeDashArray="70,30"
-                                                RenderTransformOrigin="0.5,0.5">
-                                            <Ellipse.RenderTransform>
-                                                <RotateTransform x:Name="SpinnerRotation" Angle="0"/>
-                                            </Ellipse.RenderTransform>
-                                            <Ellipse.Triggers>
-                                                <EventTrigger RoutedEvent="Loaded">
-                                                    <BeginStoryboard>
-                                                        <Storyboard RepeatBehavior="Forever">
-                                                            <DoubleAnimation Storyboard.TargetName="SpinnerRotation"
-                                                                           Storyboard.TargetProperty="Angle"
-                                                                           From="0"
-                                                                           To="360"
-                                                                           Duration="0:0:1.5"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger>
-                                            </Ellipse.Triggers>
-                                        </Ellipse>
-                                    </Canvas>
-                                </Viewbox>
-                                <TextBlock Text="Preparing Payment..."
-                                          FontSize="28"
-                                          FontWeight="SemiBold"
-                                          Foreground="{StaticResource DarkBrown}"
-                                          HorizontalAlignment="Center"/>
-                                <TextBlock Text="Please wait a moment"
-                                          FontSize="18"
-                                          Foreground="{StaticResource MediumBrown}"
-                                          HorizontalAlignment="Center"
-                                          Margin="0,10,0,0"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
+                    <!-- WebView2 - Full Height -->
+                    <wv2:WebView2 x:Name="ForteCheckoutWebView"
+                                  Loaded="ForteCheckoutWebView_Loaded"/>
                 </Border>
             </Border>
         </Grid>
@@ -238,9 +356,9 @@
                                Foreground="{StaticResource PrimaryBrown}"/>
                 </StackPanel>
 
-                <!-- Go Back Button -->
+                <!-- Cancel Button -->
                 <Button Grid.Column="1"
-                        Content="← Go Back"
+                        Content="Cancel"
                         Width="200"
                         Height="80"
                         FontSize="24"
@@ -250,28 +368,9 @@
                         BorderThickness="0"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        Margin="0,0,20,0"
                         Command="{Binding GoBackCommand}"/>
 
-                <!-- Go to Payment / Process Order Button -->
-                <Button Grid.Column="2"
-                        Width="280"
-                        Height="80"
-                        FontSize="24"
-                        FontWeight="SemiBold"
-                        Background="{StaticResource ForestGreen}"
-                        Foreground="White"
-                        BorderThickness="0"
-                        VerticalAlignment="Center"
-                        Command="{Binding PayCommand}"
-                        Visibility="{Binding CheckoutHtml, Converter={StaticResource InverseStringToVisibilityConverter}}">
-                    <TextBlock TextAlignment="Center">
-                        <Run Text="💳"/><LineBreak/>
-                        <Run Text="{Binding IsPaymentEnabled, Mode=OneWay, Converter={StaticResource BoolToPaymentTextConverter}, FallbackValue='Process Order'}"/>
-                    </TextBlock>
-                </Button>
-
-                <!-- Status Message (when in payment mode) -->
+                <!-- Status Message -->
                 <TextBlock Grid.Column="2"
                            Text="{Binding PaymentStatusMessage}"
                            FontSize="20"
@@ -280,8 +379,8 @@
                            VerticalAlignment="Center"
                            TextWrapping="Wrap"
                            MaxWidth="280"
-                           TextAlignment="Center"
-                           Visibility="{Binding CheckoutHtml, Converter={StaticResource StringToVisibilityConverter}}"/>
+                           Margin="20,0,0,0"
+                           TextAlignment="Center"/>
             </Grid>
         </Border>
     </Grid>

@@ -314,10 +314,15 @@ namespace IPS.Services
         }}
         body {{
             font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: white;
+            background-color: transparent;
             width: 100%;
             height: 100vh;
             overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }}
+        body.forte-ready {{
+            opacity: 1;
         }}
         #fco-embedded {{
             width: 100%;
@@ -472,7 +477,142 @@ namespace IPS.Services
         // Debug: Check jQuery and button
         console.log('[Forte Checkout] jQuery loaded:', typeof $ !== 'undefined');
 
-        // Wait for Forte to load and initialize, then auto-click
+        var forteReady = false;
+
+        // Use MutationObserver to detect when Forte shows its loading screen
+        function setupForteObserver() {{
+            var embeddedContainer = document.getElementById('fco-embedded');
+            if (!embeddedContainer) return;
+
+            var observer = new MutationObserver(function(mutations) {{
+                if (forteReady) return;
+
+                // Get all text content from the container
+                var containerText = embeddedContainer.innerText || embeddedContainer.textContent || '';
+
+                // ONLY trigger when we detect Loading! with exclamation mark (Forte shows Loading!!!)
+                // This ensures we wait for the actual loading screen, not just any element
+                var hasLoadingText = containerText.indexOf('Loading!') >= 0;
+
+                if (hasLoadingText) {{
+                    console.log('[Forte Checkout] Loading screen detected! Text:', containerText.substring(0, 100));
+                    forteReady = true;
+                    observer.disconnect();
+
+                    // Wait a bit more to ensure the loading screen is fully rendered
+                    setTimeout(function() {{
+                        showForteContent();
+                    }}, 200);
+                }}
+            }});
+
+            observer.observe(embeddedContainer, {{
+                childList: true,
+                subtree: true,
+                characterData: true
+            }});
+
+            // Fallback timeout in case MutationObserver doesn't detect Loading text
+            setTimeout(function() {{
+                if (!forteReady) {{
+                    console.log('[Forte Checkout] Fallback timeout (10s) - showing content');
+                    forteReady = true;
+                    observer.disconnect();
+                    showForteContent();
+                }}
+            }}, 10000);
+        }}
+
+        function showForteContent() {{
+            // Show content now that Forte Loading screen is visible
+            document.body.classList.add('forte-ready');
+
+            // Wait for CSS opacity transition to complete + extra buffer
+            // Total delay: 200ms (after detection) + 500ms (here) = 700ms
+            setTimeout(function() {{
+                if (window.chrome && window.chrome.webview) {{
+                    console.log('[Forte Checkout] Sending ready message - Forte Loading screen fully visible');
+                    window.chrome.webview.postMessage({{
+                        type: 'ready',
+                        orderLabel: '{orderLabel}'
+                    }});
+                }}
+            }}, 500);
+
+            // Continue monitoring for errors after Forte fully loads
+            setTimeout(function() {{
+                checkForteStatusAndNotify();
+            }}, 5000);
+        }}
+
+        function checkForteStatusAndNotify() {{
+            console.log('[Forte Checkout] Checking initialization result...');
+
+            var embeddedContainer = document.getElementById('fco-embedded');
+            var hasError = false;
+            var errorMessage = '';
+
+            if (embeddedContainer) {{
+                var containerText = embeddedContainer.innerText || embeddedContainer.textContent || '';
+                console.log('[Forte Checkout] Container text:', containerText);
+
+                // Check for common error indicators
+                if (containerText.includes('error') ||
+                    containerText.includes('Error') ||
+                    containerText.includes('invalid') ||
+                    containerText.includes('Invalid') ||
+                    containerText.includes('failed') ||
+                    containerText.includes('Failed') ||
+                    containerText.includes('incorrect') ||
+                    containerText.includes('Incorrect')) {{
+                    hasError = true;
+                    errorMessage = containerText.substring(0, 200);
+                    console.error('[Forte Checkout] ERROR DETECTED:', errorMessage);
+                }}
+
+                // Also check for Forte's specific error elements
+                var allElements = embeddedContainer.querySelectorAll('*');
+                for (var i = 0; i < allElements.length; i++) {{
+                    var elem = allElements[i];
+                    var className = elem.className || '';
+                    if (className.toLowerCase().indexOf('error') >= 0 ||
+                        className.toLowerCase().indexOf('alert') >= 0 ||
+                        className.toLowerCase().indexOf('message') >= 0) {{
+                        hasError = true;
+                        var elemText = elem.innerText || elem.textContent || '';
+                        console.error('[Forte Checkout] ERROR ELEMENT FOUND:', className, elemText);
+                        if (elemText && errorMessage.indexOf(elemText) < 0) {{
+                            errorMessage += elemText + ' ';
+                        }}
+                    }}
+                }}
+            }}
+
+            // Show content now that Forte is ready
+            document.body.classList.add('forte-ready');
+
+            if (window.chrome && window.chrome.webview) {{
+                if (hasError) {{
+                    console.error('[Forte Checkout] Sending error message to C#');
+                    window.chrome.webview.postMessage({{
+                        type: 'error',
+                        error: errorMessage || 'Forte Checkout initialization failed',
+                        orderLabel: '{orderLabel}'
+                    }});
+                }} else {{
+                    console.log('[Forte Checkout] Forte is ready, sending ready message');
+                    window.chrome.webview.postMessage({{
+                        type: 'ready',
+                        orderLabel: '{orderLabel}'
+                    }});
+                }}
+            }}
+        }}
+
+        // Start observing for Forte content
+        setupForteObserver();
+
+        // Wait for Forte script to load, then click button
         setTimeout(function() {{
             var button = document.getElementById('forte-checkout-button');
 
@@ -481,81 +621,9 @@ namespace IPS.Services
                 return;
             }}
 
-            console.log('[Forte Checkout] Button found, checking initialization...');
-            console.log('[Forte Checkout] Button HTML:', button.outerHTML.substring(0, 200));
-
-            // Check if jQuery attached any data
-            if (typeof $ !== 'undefined') {{
-                console.log('[Forte Checkout] jQuery data on button:', $(button).data());
-            }}
-
-            // Just click it - Forte should have set up event handlers
-            console.log('[Forte Checkout] Clicking button...');
+            console.log('[Forte Checkout] Button found, clicking...');
             button.click();
-
-            // Wait for Forte Checkout to render, then check for errors
-            setTimeout(function() {{
-                console.log('[Forte Checkout] Checking initialization result...');
-
-                // Check if there's an error message in the embedded container
-                var embeddedContainer = document.getElementById('fco-embedded');
-                var hasError = false;
-                var errorMessage = '';
-
-                if (embeddedContainer) {{
-                    var containerText = embeddedContainer.innerText || embeddedContainer.textContent || '';
-                    console.log('[Forte Checkout] Container text:', containerText);
-
-                    // Check for common error indicators
-                    if (containerText.includes('error') ||
-                        containerText.includes('Error') ||
-                        containerText.includes('invalid') ||
-                        containerText.includes('Invalid') ||
-                        containerText.includes('failed') ||
-                        containerText.includes('Failed') ||
-                        containerText.includes('incorrect') ||
-                        containerText.includes('Incorrect')) {{
-                        hasError = true;
-                        errorMessage = containerText.substring(0, 200); // First 200 chars
-                        console.error('[Forte Checkout] ERROR DETECTED:', errorMessage);
-                    }}
-
-                    // Also check for Forte's specific error elements
-                    var allElements = embeddedContainer.querySelectorAll('*');
-                    for (var i = 0; i < allElements.length; i++) {{
-                        var elem = allElements[i];
-                        var className = elem.className || '';
-                        if (className.toLowerCase().indexOf('error') >= 0 ||
-                            className.toLowerCase().indexOf('alert') >= 0 ||
-                            className.toLowerCase().indexOf('message') >= 0) {{
-                            hasError = true;
-                            var elemText = elem.innerText || elem.textContent || '';
-                            console.error('[Forte Checkout] ERROR ELEMENT FOUND:', className, elemText);
-                            if (elemText && errorMessage.indexOf(elemText) < 0) {{
-                                errorMessage += elemText + ' ';
-                            }}
-                        }}
-                    }}
-                }}
-
-                if (window.chrome && window.chrome.webview) {{
-                    if (hasError) {{
-                        console.error('[Forte Checkout] Sending error message to C#');
-                        window.chrome.webview.postMessage({{
-                            type: 'error',
-                            error: errorMessage || 'Forte Checkout initialization failed',
-                            orderLabel: '{orderLabel}'
-                        }});
-                    }} else {{
-                        console.log('[Forte Checkout] No errors detected, sending ready message');
-                        window.chrome.webview.postMessage({{
-                            type: 'ready',
-                            orderLabel: '{orderLabel}'
-                        }});
-                    }}
-                }}
-            }}, 3000); // Wait 3 seconds for Forte to render
-        }}, 2000);
+        }}, 1500);
     </script>
 </body>
 </html>";

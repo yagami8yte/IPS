@@ -97,15 +97,33 @@ namespace IPS.MainApp.ViewModels
             PayCommand = new RelayCommand(async () => await OnPayAsync(), CanPay);
 
             Console.WriteLine($"[PaymentViewModel] Initialized - Payment Enabled: {IsPaymentEnabled}");
-            Console.WriteLine($"[PaymentViewModel] Cart Review mode - CheckoutHtml is empty, will show cart items first");
 
-            // CheckoutHtml starts empty, so Cart Review screen shows first
-            // User clicks "Go to Payment" button to trigger OnPayAsync() which loads Forte Checkout
-
-            // Pre-load checkout HTML in background to reduce wait time when user clicks "Go to Payment"
+            // Go directly to payment screen (no cart review)
             if (IsPaymentEnabled)
             {
-                _ = PreloadCheckoutHtmlAsync();
+                Console.WriteLine($"[PaymentViewModel] Loading Forte Checkout directly...");
+                IsProcessing = true;
+                _ = LoadCheckoutDirectlyAsync();
+            }
+        }
+
+        /// <summary>
+        /// Loads Forte Checkout directly on initialization (skips cart review)
+        /// </summary>
+        private async Task LoadCheckoutDirectlyAsync()
+        {
+            try
+            {
+                var orderLabel = GenerateOrderLabel();
+                Console.WriteLine($"[PaymentViewModel] Generating Forte Checkout HTML for ${CartTotalPrice}, Order: {orderLabel}");
+                CheckoutHtml = await _forteCheckoutService!.GetCheckoutHtmlAsync(CartTotalPrice, orderLabel);
+                Console.WriteLine("[PaymentViewModel] Forte Checkout loaded - waiting for payment...");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentViewModel] Failed to load checkout: {ex.Message}");
+                PaymentStatusMessage = $"Failed to load payment: {ex.Message}";
+                IsProcessing = false;
             }
         }
 

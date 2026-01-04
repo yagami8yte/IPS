@@ -53,7 +53,8 @@
       "Bash(cmd /c \"dir /s C:\\Users\\jinho\\DEV\\IPS\\bin\\Release\\net8.0-windows\\win-x64\\publish | findstr Total\")",
       "Bash(git pull:*)",
       "Bash(git config:*)",
-      "Bash(git credential-manager:*)"
+      "Bash(git credential-manager:*)",
+      "Bash(cmd //c \"del \\\\?\\\\C:\\\\Users\\\\jinho\\\\DEV\\\\IPS\\\\nul\")"
     ],
     "deny": [],
     "ask": []

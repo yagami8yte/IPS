@@ -519,7 +519,7 @@
                                         CornerRadius="15"
                                         Padding="20">
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Checkout"
+                                        <TextBlock Text="Submit Order"
                                                    FontSize="28"
                                                    FontWeight="Bold"
                                                    FontFamily="{StaticResource BrandFont}"

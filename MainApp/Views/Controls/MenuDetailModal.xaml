@@ -417,8 +417,9 @@
                                 Content="ADD TO CART"
                                 Command="{Binding AddToCartCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
-                                FontSize="32"
-                                Padding="60,30"
+                                FontSize="28"
+                                Padding="40,25"
+                                MinWidth="280"
                                 VerticalAlignment="Center"/>
                     </Grid>
                 </Border>

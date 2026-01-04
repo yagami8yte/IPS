@@ -1,0 +1,805 @@
+﻿[
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Weak Americano",
+                          "menuVariant":  null,
+                          "baseMenuId":  "2f4ea101-6851-4428-9220-7efd3e98fc8d",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Weak Americano",
+        "menuId":  "76b208c2-9d59-401c-b91b-3b9d9db84801",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Caramel Latte",
+                          "menuVariant":  null,
+                          "baseMenuId":  "8b58b991-adbd-4c59-9ce4-51155a30b310",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Caramel Latte",
+        "menuId":  "8b58b991-adbd-4c59-9ce4-51155a30b310",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Cafe Latte",
+                          "menuVariant":  null,
+                          "baseMenuId":  "3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Cafe Latte",
+        "menuId":  "3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Cortado",
+                          "menuVariant":  null,
+                          "baseMenuId":  "79e1ecb9-abad-4a69-8b33-36c70ed80dc4",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Cortado",
+        "menuId":  "79e1ecb9-abad-4a69-8b33-36c70ed80dc4",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Flat White",
+                          "menuVariant":  null,
+                          "baseMenuId":  "8f72997c-c078-4673-b1ec-2659d647b9ae",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Flat White",
+        "menuId":  "a44e1fca-7718-42a8-889d-4a7bf0e4c62c",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Caramel Milk",
+                          "menuVariant":  null,
+                          "baseMenuId":  "5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Caramel Milk",
+        "menuId":  "5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Red Eye",
+                          "menuVariant":  null,
+                          "baseMenuId":  "8e6eb323-29c9-40c6-802c-883a899ec799",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Red Eye",
+        "menuId":  "8e6eb323-29c9-40c6-802c-883a899ec799",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Dead Eye",
+                          "menuVariant":  null,
+                          "baseMenuId":  "f0223184-1278-47b6-9ae8-a6652d5c6930",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Dead Eye",
+        "menuId":  "f0223184-1278-47b6-9ae8-a6652d5c6930",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Flat White",
+                          "menuVariant":  null,
+                          "baseMenuId":  "8f72997c-c078-4673-b1ec-2659d647b9ae",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Flat White",
+        "menuId":  "8f72997c-c078-4673-b1ec-2659d647b9ae",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Black Eye",
+                          "menuVariant":  null,
+                          "baseMenuId":  "584d6816-6cdd-420d-80b7-a496c9f63317",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Black Eye",
+        "menuId":  "24dc3226-a77b-4588-9b69-5e06a19305c6",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Caramel Macchiato",
+                          "menuVariant":  null,
+                          "baseMenuId":  "4d01c11c-b3e1-4bc9-bed4-974687741417",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Caramel Macchiato",
+        "menuId":  "63cb28e2-de9f-4e06-97e6-e77ae8d94928",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Dead Eye",
+                          "menuVariant":  null,
+                          "baseMenuId":  "f0223184-1278-47b6-9ae8-a6652d5c6930",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Dead Eye",
+        "menuId":  "c11b5847-303d-4901-9f13-b2e232049c85",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Caramel Latte",
+                          "menuVariant":  null,
+                          "baseMenuId":  "8b58b991-adbd-4c59-9ce4-51155a30b310",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Caramel Latte",
+        "menuId":  "318a68cf-cb0c-4f3a-95a3-cc5a82e552ea",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Cappuccino",
+                          "menuVariant":  null,
+                          "baseMenuId":  "45122cdb-4131-4b84-889c-abf9ccfc9a26",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Cappuccino",
+        "menuId":  "f310fdf1-cdf5-4d73-b36b-1be517383fc6",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Caramel Macchiato",
+                          "menuVariant":  null,
+                          "baseMenuId":  "4d01c11c-b3e1-4bc9-bed4-974687741417",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Caramel Macchiato",
+        "menuId":  "4d01c11c-b3e1-4bc9-bed4-974687741417",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Lemonade",
+                          "menuVariant":  null,
+                          "baseMenuId":  "5973b7c2-d430-4ea6-a82b-1f6a8e641b6d",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Energy 1",
+        "menuId":  "5973b7c2-d430-4ea6-a82b-1f6a8e641b6d",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Vanila Latte",
+                          "menuVariant":  null,
+                          "baseMenuId":  "04cbaf79-118f-49b2-8360-4394413a600a",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Vanilla Latte",
+        "menuId":  "04cbaf79-118f-49b2-8360-4394413a600a",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Cafe Latte",
+                          "menuVariant":  null,
+                          "baseMenuId":  "3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Cafe Latte",
+        "menuId":  "a5dd68a7-cd38-4263-993f-93fb5f1f6f29",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Cortado",
+                          "menuVariant":  null,
+                          "baseMenuId":  "79e1ecb9-abad-4a69-8b33-36c70ed80dc4",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Cortado",
+        "menuId":  "a979f18b-36d5-45b0-92a2-c0e3d53377ff",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Cappuccino",
+                          "menuVariant":  null,
+                          "baseMenuId":  "45122cdb-4131-4b84-889c-abf9ccfc9a26",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Cappuccino",
+        "menuId":  "45122cdb-4131-4b84-889c-abf9ccfc9a26",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Red Eye",
+                          "menuVariant":  null,
+                          "baseMenuId":  "8e6eb323-29c9-40c6-802c-883a899ec799",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Red Eye",
+        "menuId":  "d806602c-662a-4a74-ae38-cb97a485b74d",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Mocha Macchiato",
+                          "menuVariant":  null,
+                          "baseMenuId":  "93ef258a-0482-44b1-a028-689e65d7a11d",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Mocha Macchiato",
+        "menuId":  "26571b56-eb2c-4cc8-bb59-47383c1c36dd",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Caramel Milk",
+                          "menuVariant":  null,
+                          "baseMenuId":  "5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Caramel Milk",
+        "menuId":  "f32233a9-c036-4dc7-8efa-96c0b2107fcd",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Grapefruit Ade",
+                          "menuVariant":  null,
+                          "baseMenuId":  "d5abcc15-ebec-4f93-a768-a2550852a7fa",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Energy 3",
+        "menuId":  "d5abcc15-ebec-4f93-a768-a2550852a7fa",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Chocolate Milk",
+                          "menuVariant":  null,
+                          "baseMenuId":  "4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Chocolate Milk",
+        "menuId":  "4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Strong Americano",
+                          "menuVariant":  null,
+                          "baseMenuId":  "2e61f863-8371-465d-bc39-e88d77d43935",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Strong Americano",
+        "menuId":  "2e61f863-8371-465d-bc39-e88d77d43935",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Weak Americano",
+                          "menuVariant":  null,
+                          "baseMenuId":  "2f4ea101-6851-4428-9220-7efd3e98fc8d",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Weak Americano",
+        "menuId":  "2f4ea101-6851-4428-9220-7efd3e98fc8d",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Vanilla Macchiato",
+                          "menuVariant":  null,
+                          "baseMenuId":  "bc54a131-4bb7-40a0-9c81-e9027e5123eb",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Vanilla Macchiato",
+        "menuId":  "bc54a131-4bb7-40a0-9c81-e9027e5123eb",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Cafe Mocha",
+                          "menuVariant":  null,
+                          "baseMenuId":  "101195ed-f7c0-4968-bed7-23732ba79a34",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Cafe Mocha",
+        "menuId":  "c6b039b0-808b-4dad-a127-4a02dce80659",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Vanila Latte",
+                          "menuVariant":  null,
+                          "baseMenuId":  "04cbaf79-118f-49b2-8360-4394413a600a",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Vanilla Latte",
+        "menuId":  "2c7acfd8-99fd-40f8-b18d-2f1375f2849c",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Green Grape Ade",
+                          "menuVariant":  null,
+                          "baseMenuId":  "793703d0-0050-46b6-8c79-48290d49d1c0",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Energy 2",
+        "menuId":  "793703d0-0050-46b6-8c79-48290d49d1c0",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Black Eye",
+                          "menuVariant":  null,
+                          "baseMenuId":  "584d6816-6cdd-420d-80b7-a496c9f63317",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Black Eye",
+        "menuId":  "584d6816-6cdd-420d-80b7-a496c9f63317",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Cafe Mocha",
+                          "menuVariant":  null,
+                          "baseMenuId":  "101195ed-f7c0-4968-bed7-23732ba79a34",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Cafe Mocha",
+        "menuId":  "101195ed-f7c0-4968-bed7-23732ba79a34",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Strong Americano",
+                          "menuVariant":  null,
+                          "baseMenuId":  "2e61f863-8371-465d-bc39-e88d77d43935",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Strong Americano",
+        "menuId":  "8c35ece8-517f-44b1-900f-8f4308698c17",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Mocha Macchiato",
+                          "menuVariant":  null,
+                          "baseMenuId":  "93ef258a-0482-44b1-a028-689e65d7a11d",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Mocha Macchiato",
+        "menuId":  "93ef258a-0482-44b1-a028-689e65d7a11d",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Vanilla Macchiato",
+                          "menuVariant":  null,
+                          "baseMenuId":  "bc54a131-4bb7-40a0-9c81-e9027e5123eb",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Vanilla Macchiato",
+        "menuId":  "46809889-af40-4cd1-bf76-3cdfb4437828",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Chocolate Milk",
+                          "menuVariant":  null,
+                          "baseMenuId":  "4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Chocolate Milk",
+        "menuId":  "820e0c10-ff2b-471d-8903-7744e4687646",
+        "available":  true
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Cortado (Light)",
+        "menuId":  "ea9e6c65-621f-47ee-a452-a4b1ad2e956d",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Cortado (Extra)",
+        "menuId":  "28095d9b-944e-4f96-a5dd-a60832625cfb",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Cortado (Light)",
+        "menuId":  "c2951376-a7bf-4be1-a297-16ca5d31a2d7",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Cortado (Extra)",
+        "menuId":  "f7c01cb0-ff83-44ce-8683-6e2eab2a51e1",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Flat White (Light)",
+        "menuId":  "a4e062d7-ff3e-4f12-8b97-149bd1592060",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Flat White (Extra)",
+        "menuId":  "4cb3c98c-9695-4320-991a-9a5664c95099",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Flat White (Light)",
+        "menuId":  "f509de26-2dba-47a7-8ba9-98ba4836168b",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Flat White (Extra)",
+        "menuId":  "0ff240e9-b50e-4947-84d0-7deb157a9847",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Vanilla Latte (Light)",
+        "menuId":  "b1494651-61fe-44ca-b530-027e0d680ba1",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Vanilla Latte (Extra)",
+        "menuId":  "7d3963cf-a93c-4818-b600-d0869e81bbab",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Vanilla Latte (Light)",
+        "menuId":  "cddc8057-f72e-45ae-b11c-3276c733b94d",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Vanilla Latte (Extra)",
+        "menuId":  "8a60efd7-f60a-41b7-a2ba-aa25ae4d22bc",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Caramel Latte (Extra)",
+        "menuId":  "75f2cc1e-34ba-4359-b85e-cc135e64f5cc",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Caramel Latte (Light)",
+        "menuId":  "08e28edf-905f-4559-b666-de3cd78ef6ae",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Caramel Latte (Light)",
+        "menuId":  "f8e2741e-28ad-4ec4-b463-97428a6c609e",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Caramel Latte (Extra)",
+        "menuId":  "8729b00b-acbe-40e0-8189-5e183a27b6ad",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Cafe Mocha (Light)",
+        "menuId":  "d2a15210-6ae4-44d0-be47-54d6e3b50ce3",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Cafe Mocha (Extra)",
+        "menuId":  "02edbdff-9f88-48b9-a914-b78fd1bc1d8d",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Cafe Mocha (Light)",
+        "menuId":  "618bef1f-6e8c-4293-9d2d-71f160a34787",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Cafe Mocha (Extra)",
+        "menuId":  "dc4b5327-bcbd-4d22-a926-1124f27fedca",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Cappuccino (Light)",
+        "menuId":  "874d8e24-f3b5-434c-aa62-89bbfa78f165",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Cappuccino (Extra)",
+        "menuId":  "461b7ba5-c2fb-41ad-aa4e-176ebae3a4c7",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Cappuccino (Extra)",
+        "menuId":  "d96f2660-b329-40c3-b67e-e57f817fdef6",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Cappuccino (Light)",
+        "menuId":  "db9a1af7-065f-4f3b-a46e-e497e015d461",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Caramel Macchiato (Light)",
+        "menuId":  "be0f1983-4d92-452d-a297-fe4d3de7e53a",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Caramel Macchiato (Extra)",
+        "menuId":  "06a37635-a8c0-48f9-b9f1-2d4b7ecd4e39",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Caramel Macchiato (Light)",
+        "menuId":  "b4bb9ee9-52ee-4708-9842-c3bc935dc6a7",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Caramel Macchiato (Extra)",
+        "menuId":  "0e19d5e9-fd3e-44b0-b5bb-3d7e8250fd4a",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Mocha Macchiato (Light)",
+        "menuId":  "f123c4f8-9f77-49b3-9a01-bdf07ff14162",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Hot Mocha Macchiato (Extra)",
+        "menuId":  "d809f78e-2f13-47d0-a068-883cdefb6725",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Mocha Macchiato (Light)",
+        "menuId":  "c068c73e-ec97-4849-b565-039214b3bd6a",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  null,
+                          "menuVariant":  null,
+                          "baseMenuId":  null,
+                          "menuTemperature":  null
+                      },
+        "alias":  "Iced Mocha Macchiato (Extra)",
+        "menuId":  "6ed307c2-2fb2-4b24-b73c-394056024f0f",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Vanilla Macchiato",
+                          "menuVariant":  "extra",
+                          "baseMenuId":  "bc54a131-4bb7-40a0-9c81-e9027e5123eb",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Vanilla Macchiato (Extra)",
+        "menuId":  "3cd83bc7-a036-4cb9-a3ff-5129171621f9",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Vanilla Macchiato",
+                          "menuVariant":  "light",
+                          "baseMenuId":  "bc54a131-4bb7-40a0-9c81-e9027e5123eb",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Vanilla Macchiato (Light)",
+        "menuId":  "3ed92de1-58e5-4cb3-8068-c5146d61fc04",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Vanilla Macchiato",
+                          "menuVariant":  "extra",
+                          "baseMenuId":  "bc54a131-4bb7-40a0-9c81-e9027e5123eb",
+                          "menuTemperature":  "hot"
+                      },
+        "alias":  "Hot Vanilla Macchiato (Extra)",
+        "menuId":  "4ab8d930-343b-4667-a39c-a96eb797947a",
+        "available":  false
+    },
+    {
+        "extraInfo":  {
+                          "baseMenuAlias":  "Vanilla Macchiato",
+                          "menuVariant":  "light",
+                          "baseMenuId":  "bc54a131-4bb7-40a0-9c81-e9027e5123eb",
+                          "menuTemperature":  "ice"
+                      },
+        "alias":  "Iced Vanilla Macchiato (Light)",
+        "menuId":  "f950fae8-0a48-4a29-9b62-f2f64d597bd6",
+        "available":  false
+    }
+]

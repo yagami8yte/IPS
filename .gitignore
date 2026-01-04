@@ -130,3 +130,4 @@ bin/**/productImages/
 !Adapters/**/Poco*.dll
 !Adapters/**/pcre2-8.dll
 !Adapters/**/zlib1.dll
+nul

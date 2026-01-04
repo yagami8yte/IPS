@@ -158,7 +158,7 @@ namespace IPS.MainApp.ViewModels
 
             try
             {
-                var menuViewModel = new MenuViewModel(_systemManager, _pollingService, ExecuteNavigateToWelcome, ExecuteNavigateToPayment);
+                var menuViewModel = new MenuViewModel(_systemManager, _pollingService, ExecuteNavigateToWelcome, ExecuteNavigateToPayment, ExecuteSubmitOrderDirectly);
                 Console.WriteLine("[MainViewModel] ExecuteNavigateToMenu - MenuViewModel created successfully");
 
                 _currentMenuViewModel = menuViewModel;
@@ -215,6 +215,23 @@ namespace IPS.MainApp.ViewModels
 
             CurrentViewModel = paymentViewModel;
             Console.WriteLine("[MainViewModel] ExecuteNavigateToPayment - PaymentViewModel set as CurrentViewModel");
+        }
+
+        /// <summary>
+        /// Directly submits order without payment (for $0 orders)
+        /// Skips PaymentView entirely and goes straight to order processing
+        /// </summary>
+        private void ExecuteSubmitOrderDirectly(string orderLabel)
+        {
+            Console.WriteLine($"[MainViewModel] ExecuteSubmitOrderDirectly - Submitting $0 order directly: {orderLabel}");
+
+            // Set payment details as N/A for $0 orders
+            LastPaymentTransactionId = "N/A";
+            LastPaymentAuthorizationCode = "N/A";
+            LastPaymentCardLast4Digits = "";
+
+            // Call the same order processing as after successful payment
+            ExecuteProcessPaymentAndOrder(true, orderLabel);
         }
 
         private void ExecuteNavigateBackToMenu()

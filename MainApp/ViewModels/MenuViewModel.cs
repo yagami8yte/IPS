@@ -250,8 +250,9 @@ namespace IPS.MainApp.ViewModels
 
         private readonly Action? _onNavigateToWelcome;
         private readonly Action? _onNavigateToPayment;
+        private readonly Action<string>? _onSubmitOrderDirectly;
 
-        public MenuViewModel(SystemManagerService systemManager, SystemPollingService pollingService, Action? onNavigateToWelcome = null, Action? onNavigateToPayment = null)
+        public MenuViewModel(SystemManagerService systemManager, SystemPollingService pollingService, Action? onNavigateToWelcome = null, Action? onNavigateToPayment = null, Action<string>? onSubmitOrderDirectly = null)
         {
             Console.WriteLine("[MenuViewModel] Constructor - START");
 
@@ -260,6 +261,7 @@ namespace IPS.MainApp.ViewModels
             _pollingService = pollingService ?? throw new ArgumentNullException(nameof(pollingService));
             _onNavigateToWelcome = onNavigateToWelcome;
             _onNavigateToPayment = onNavigateToPayment;
+            _onSubmitOrderDirectly = onSubmitOrderDirectly;
             Console.WriteLine("[MenuViewModel] Parameters validated");
 
             Console.WriteLine("[MenuViewModel] Creating commands...");
@@ -777,8 +779,23 @@ namespace IPS.MainApp.ViewModels
             // Stop inactivity timer during checkout
             _inactivityTimer.Stop();
 
+            // If cart total is $0, skip payment and submit order directly
+            if (CartTotalPrice <= 0 && _onSubmitOrderDirectly != null)
+            {
+                Console.WriteLine("[MenuViewModel] Cart total is $0 - skipping payment, submitting order directly");
+                string orderLabel = GenerateOrderLabel();
+                _onSubmitOrderDirectly(orderLabel);
+                return;
+            }
+
             // Navigate to payment screen
             _onNavigateToPayment?.Invoke();
+        }
+
+        private string GenerateOrderLabel()
+        {
+            // Generate order label like A01, A02, etc.
+            return $"A{DateTime.Now:mmss}";
         }
 
         private void OnStartOver()
