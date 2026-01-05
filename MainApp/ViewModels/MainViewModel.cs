@@ -206,6 +206,22 @@ namespace IPS.MainApp.ViewModels
                 return;
             }
 
+            // Check if payment is disabled - skip payment screen entirely
+            var config = _configService.GetConfiguration();
+            if (!config.PaymentEnabled)
+            {
+                Console.WriteLine("[MainViewModel] Payment is DISABLED - skipping payment screen, submitting order directly");
+                string orderLabel = $"A-{DateTime.Now:mmss}";
+
+                // Set payment details as N/A for non-payment orders
+                LastPaymentTransactionId = "N/A (Payment Disabled)";
+                LastPaymentAuthorizationCode = "N/A";
+                LastPaymentCardLast4Digits = "";
+
+                ExecuteProcessPaymentAndOrder(true, orderLabel);
+                return;
+            }
+
             var paymentViewModel = new PaymentViewModel(
                 _currentMenuViewModel.CartItems,
                 _configService,

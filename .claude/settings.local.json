@@ -54,7 +54,11 @@
       "Bash(git pull:*)",
       "Bash(git config:*)",
       "Bash(git credential-manager:*)",
-      "Bash(cmd //c \"del \\\\?\\\\C:\\\\Users\\\\jinho\\\\DEV\\\\IPS\\\\nul\")"
+      "Bash(cmd //c \"del \\\\?\\\\C:\\\\Users\\\\jinho\\\\DEV\\\\IPS\\\\nul\")",
+      "WebFetch(domain:www.magtek.com)",
+      "WebFetch(domain:h10032.www1.hp.com)",
+      "WebFetch(domain:www.manualslib.com)",
+      "WebFetch(domain:escpos.readthedocs.io)"
     ],
     "deny": [],
     "ask": []

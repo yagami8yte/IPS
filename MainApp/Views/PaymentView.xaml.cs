@@ -247,5 +247,18 @@ namespace IPS.MainApp.Views
             public string? cardLast4 { get; set; }
             public string? cardType { get; set; }
         }
+
+        private void CopyLogsToClipboard_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is PaymentViewModel viewModel)
+            {
+                var logsText = string.Join(Environment.NewLine, viewModel.RestApiLogs);
+                if (!string.IsNullOrEmpty(logsText))
+                {
+                    Clipboard.SetText(logsText);
+                    MessageBox.Show("Logs copied to clipboard!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
     }
 }

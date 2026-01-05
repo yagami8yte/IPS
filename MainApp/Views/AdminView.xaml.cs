@@ -224,5 +224,21 @@ namespace IPS.MainApp.Views
                 }
             }
         }
+
+        private void OnPaymentModeCheckoutClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (DataContext is AdminViewModel viewModel)
+            {
+                viewModel.SetPaymentMode(IPS.Core.Models.FortePaymentMode.Checkout);
+            }
+        }
+
+        private void OnPaymentModeRestApiClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (DataContext is AdminViewModel viewModel)
+            {
+                viewModel.SetPaymentMode(IPS.Core.Models.FortePaymentMode.RestApi);
+            }
+        }
     }
 }

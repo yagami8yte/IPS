@@ -4,6 +4,22 @@ using System.Collections.Generic;
 namespace IPS.Core.Models
 {
     /// <summary>
+    /// Forte payment integration mode
+    /// </summary>
+    public enum FortePaymentMode
+    {
+        /// <summary>
+        /// Use Forte Checkout v2 (hosted modal with Dynaflex support)
+        /// </summary>
+        Checkout = 0,
+
+        /// <summary>
+        /// Use Forte REST API (direct API calls)
+        /// </summary>
+        RestApi = 1
+    }
+
+    /// <summary>
     /// Configuration for an unmanned system (IP address and port)
     /// </summary>
     public class SystemConfiguration
@@ -109,6 +125,11 @@ namespace IPS.Core.Models
         /// Use Forte Sandbox environment for testing
         /// </summary>
         public bool ForteSandboxMode { get; set; } = true;
+
+        /// <summary>
+        /// Forte payment integration mode (Checkout v2 or REST API)
+        /// </summary>
+        public FortePaymentMode FortePaymentMode { get; set; } = FortePaymentMode.Checkout;
 
         /// <summary>
         /// Enable payment processing (disable for testing without payment)

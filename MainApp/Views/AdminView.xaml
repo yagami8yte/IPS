@@ -1123,10 +1123,11 @@
                                 </Grid.ColumnDefinitions>
 
                                 <CheckBox Grid.Column="0"
-                                          IsChecked="{Binding PaymentEnabled}"
+                                          IsChecked="{Binding PaymentEnabled, Mode=TwoWay}"
                                           VerticalAlignment="Center"
                                           Margin="0,0,20,0"
-                                          Cursor="Hand">
+                                          Cursor="Hand"
+                                          IsEnabled="True">
                                     <CheckBox.LayoutTransform>
                                         <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
                                     </CheckBox.LayoutTransform>
@@ -1182,6 +1183,110 @@
                                                TextWrapping="Wrap"/>
                                 </StackPanel>
                             </Grid>
+                        </Border>
+
+                        <!-- Payment Mode Selection -->
+                        <Border Background="{StaticResource BackgroundBeige}"
+                                BorderBrush="{StaticResource ForestGreen}"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                IsEnabled="{Binding PaymentEnabled}">
+                            <StackPanel>
+                                <TextBlock Text="Payment Mode"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource Espresso}"
+                                           Margin="0,0,0,10"/>
+                                <TextBlock Text="Choose how to process payments with Forte"
+                                           FontSize="16"
+                                           Foreground="{StaticResource MediumBrown}"
+                                           Margin="0,0,0,15"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Checkout v2 Option -->
+                                    <Border Grid.Column="0"
+                                            BorderBrush="{StaticResource ForestGreen}"
+                                            BorderThickness="3"
+                                            CornerRadius="10"
+                                            Padding="15"
+                                            Margin="0,0,10,0"
+                                            Cursor="Hand"
+                                            MouseLeftButtonDown="OnPaymentModeCheckoutClicked">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="White"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsCheckoutMode}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SageGreen}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock Text="🌐"
+                                                       FontSize="32"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,0,0,8"/>
+                                            <TextBlock Text="Checkout v2"
+                                                       FontSize="20"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource DarkBrown}"
+                                                       HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Hosted modal with Dynaflex"
+                                                       FontSize="14"
+                                                       Foreground="{StaticResource MediumBrown}"
+                                                       HorizontalAlignment="Center"
+                                                       TextWrapping="Wrap"
+                                                       TextAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- REST API Option -->
+                                    <Border Grid.Column="1"
+                                            BorderBrush="{StaticResource ForestGreen}"
+                                            BorderThickness="3"
+                                            CornerRadius="10"
+                                            Padding="15"
+                                            Margin="10,0,0,0"
+                                            Cursor="Hand"
+                                            MouseLeftButtonDown="OnPaymentModeRestApiClicked">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="White"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsRestApiMode}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SageGreen}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock Text="🔌"
+                                                       FontSize="32"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,0,0,8"/>
+                                            <TextBlock Text="REST API"
+                                                       FontSize="20"
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource DarkBrown}"
+                                                       HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Direct API (test cards)"
+                                                       FontSize="14"
+                                                       Foreground="{StaticResource MediumBrown}"
+                                                       HorizontalAlignment="Center"
+                                                       TextWrapping="Wrap"
+                                                       TextAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
                         </Border>
 
                         <!-- API Credentials -->
@@ -1321,19 +1426,31 @@
                                            Foreground="{StaticResource DarkBrown}"
                                            Margin="0,0,0,15"/>
 
-                                <TextBlock Text="Click the button below to verify that your Forte payment credentials are working correctly."
+                                <!-- Checkout Mode Description -->
+                                <TextBlock Text="Click the button below to verify that your Forte Checkout credentials are working correctly."
                                            FontSize="18"
                                            Foreground="{StaticResource Espresso}"
                                            TextWrapping="Wrap"
-                                           Margin="0,0,0,20"/>
+                                           Margin="0,0,0,20"
+                                           Visibility="{Binding IsCheckoutMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
+                                <!-- REST API Mode Description -->
+                                <TextBlock Text="Click the button below to test your Forte REST API connection and fetch organization/location info."
+                                           FontSize="18"
+                                           Foreground="{StaticResource Espresso}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,20"
+                                           Visibility="{Binding IsRestApiMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                <!-- Checkout Test Button -->
                                 <Button Command="{Binding TestPaymentCommand}"
                                         Background="{StaticResource ForestGreen}"
                                         BorderBrush="{StaticResource DarkBrown}"
                                         BorderThickness="2"
                                         Padding="30,15"
                                         Cursor="Hand"
-                                        Margin="0,0,0,20">
+                                        Margin="0,0,0,20"
+                                        Visibility="{Binding IsCheckoutMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Template">
@@ -1362,9 +1479,182 @@
                                     <TextBlock FontSize="22"
                                                FontWeight="Bold"
                                                Foreground="White">
-                                        <Run Text="🔍 Test Payment Connection"/>
+                                        <Run Text="🔍 Test Checkout Connection"/>
                                     </TextBlock>
                                 </Button>
+
+                                <!-- REST API Test Button -->
+                                <Button Command="{Binding TestRestApiCommand}"
+                                        Background="{StaticResource MetallicGold}"
+                                        BorderBrush="{StaticResource DarkBrown}"
+                                        BorderThickness="2"
+                                        Padding="30,15"
+                                        Cursor="Hand"
+                                        Margin="0,0,0,20"
+                                        Visibility="{Binding IsRestApiMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="8"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="{StaticResource AccentGold}"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter Property="Background" Value="{StaticResource DarkBrown}"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                    <TextBlock FontSize="22"
+                                               FontWeight="Bold"
+                                               Foreground="{StaticResource Espresso}">
+                                        <Run Text="🔌 Test REST API Connection"/>
+                                    </TextBlock>
+                                </Button>
+
+                                <!-- Card Reader Test Button (for REST API mode) -->
+                                <Button Command="{Binding TestCardReaderCommand}"
+                                        Background="{StaticResource PrimaryBrown}"
+                                        BorderBrush="{StaticResource DarkBrown}"
+                                        BorderThickness="2"
+                                        Padding="30,15"
+                                        Cursor="Hand"
+                                        Margin="0,0,0,20"
+                                        Visibility="{Binding IsRestApiMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="8"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="{StaticResource MediumBrown}"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter Property="Background" Value="{StaticResource DarkBrown}"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                    <TextBlock FontSize="22"
+                                               FontWeight="Bold"
+                                               Foreground="White">
+                                        <Run Text="💳 Test Card Reader (Dynaflex)"/>
+                                    </TextBlock>
+                                </Button>
+
+                                <!-- Card Reader Test Status Message -->
+                                <Border Visibility="{Binding HasCardReaderTestStatus, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Padding="20"
+                                        CornerRadius="8"
+                                        Margin="0,0,0,15">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="{StaticResource LightCream}"/>
+                                            <Setter Property="BorderBrush" Value="#E74C3C"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCardReaderTestSuccess}" Value="True">
+                                                    <Setter Property="Background" Value="#D4EDDA"/>
+                                                    <Setter Property="BorderBrush" Value="#28A745"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding CardReaderTestStatus}"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="#C0392B"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsCardReaderTestSuccess}" Value="True">
+                                                        <Setter Property="Foreground" Value="#155724"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+
+                                <!-- Card Reader Test Loading Indicator -->
+                                <Border Visibility="{Binding IsTestingCardReader, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Background="{StaticResource BackgroundBeige}"
+                                        BorderBrush="{StaticResource PrimaryBrown}"
+                                        BorderThickness="2"
+                                        Padding="20"
+                                        CornerRadius="8"
+                                        Margin="0,0,0,15">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                                            <TextBlock Text="🔄" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0">
+                                                <TextBlock.RenderTransform>
+                                                    <RotateTransform x:Name="CardReaderSpinTransform" Angle="0" CenterX="12" CenterY="12"/>
+                                                </TextBlock.RenderTransform>
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard RepeatBehavior="Forever">
+                                                                <DoubleAnimation Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)"
+                                                                                 From="0" To="360"
+                                                                                 Duration="0:0:1"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>
+                                            </TextBlock>
+                                            <TextBlock Text="Testing Card Reader..."
+                                                       FontSize="20"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource DarkBrown}"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- Card Reader Test Logs -->
+                                        <Border Background="{StaticResource Espresso}"
+                                                CornerRadius="6"
+                                                Padding="15"
+                                                MaxHeight="250">
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <ItemsControl ItemsSource="{Binding CardReaderTestLogs}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding}"
+                                                                       FontSize="12"
+                                                                       FontFamily="Consolas"
+                                                                       Foreground="{StaticResource LightCream}"
+                                                                       TextWrapping="Wrap"
+                                                                       Margin="0,2"/>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
 
                                 <!-- Test Status Message -->
                                 <Border Visibility="{Binding HasPaymentTestStatus, Converter={StaticResource BooleanToVisibilityConverter}}"

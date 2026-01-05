@@ -242,4 +242,41 @@ namespace IPS.Services
         [JsonPropertyName("country")]
         public string Country { get; set; } = string.Empty;
     }
+
+    /// <summary>
+    /// Forte Dynaflex transaction request (uses encrypted card data)
+    /// </summary>
+    public class ForteDynaflexTransactionRequest
+    {
+        [JsonPropertyName("action")]
+        public string Action { get; set; } = "sale";
+
+        [JsonPropertyName("authorization_amount")]
+        public decimal AuthorizationAmount { get; set; }
+
+        [JsonPropertyName("billing_address")]
+        public ForteBillingAddress? BillingAddress { get; set; }
+
+        [JsonPropertyName("card")]
+        public ForteDynaflexCard? Card { get; set; }
+    }
+
+    /// <summary>
+    /// Forte Dynaflex card information (encrypted swipe/tap data)
+    /// </summary>
+    public class ForteDynaflexCard
+    {
+        /// <summary>
+        /// Card reader type - should be "dynaflex2go" for Dynaflex II Go hardware
+        /// </summary>
+        [JsonPropertyName("card_reader")]
+        public string CardReader { get; set; } = "dynaflex2go";
+
+        /// <summary>
+        /// Encrypted card data from Dynaflex reader (swipe or tap)
+        /// This is the encrypted track data or EMV data
+        /// </summary>
+        [JsonPropertyName("card_data")]
+        public string CardData { get; set; } = string.Empty;
+    }
 }

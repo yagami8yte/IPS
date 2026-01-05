@@ -45,6 +45,7 @@ namespace IPS.MainApp.ViewModels
         private string _forteOrganizationId = string.Empty;
         private string _forteLocationId = string.Empty;
         private bool _forteSandboxMode = true;
+        private Core.Models.FortePaymentMode _fortePaymentMode = Core.Models.FortePaymentMode.Checkout;
         private bool _paymentEnabled = false;
         private bool _useCardTerminal = false;
         private string _terminalType = "Verifone V400C Plus";
@@ -457,6 +458,40 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
+        /// Forte Payment Mode (Checkout v2 or REST API)
+        /// </summary>
+        public Core.Models.FortePaymentMode FortePaymentMode
+        {
+            get => _fortePaymentMode;
+            set
+            {
+                _fortePaymentMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsCheckoutMode));
+                OnPropertyChanged(nameof(IsRestApiMode));
+            }
+        }
+
+        /// <summary>
+        /// Helper property for UI binding - true when Checkout mode is selected
+        /// </summary>
+        public bool IsCheckoutMode => _fortePaymentMode == Core.Models.FortePaymentMode.Checkout;
+
+        /// <summary>
+        /// Helper property for UI binding - true when REST API mode is selected
+        /// </summary>
+        public bool IsRestApiMode => _fortePaymentMode == Core.Models.FortePaymentMode.RestApi;
+
+        /// <summary>
+        /// Set the payment mode (called from code-behind)
+        /// </summary>
+        public void SetPaymentMode(Core.Models.FortePaymentMode mode)
+        {
+            FortePaymentMode = mode;
+            Console.WriteLine($"[AdminViewModel] Payment mode changed to: {mode}");
+        }
+
+        /// <summary>
         /// Enable payment processing
         /// </summary>
         public bool PaymentEnabled
@@ -679,9 +714,14 @@ namespace IPS.MainApp.ViewModels
         public IRelayCommand<string> SelectSectionCommand { get; }
 
         /// <summary>
-        /// Command to test payment integration
+        /// Command to test payment integration (Checkout mode)
         /// </summary>
         public IRelayCommand TestPaymentCommand { get; }
+
+        /// <summary>
+        /// Command to test REST API connection
+        /// </summary>
+        public IRelayCommand TestRestApiCommand { get; }
 
         /// <summary>
         /// Command to fetch store information from Forte
@@ -692,6 +732,11 @@ namespace IPS.MainApp.ViewModels
         /// Command to select a receipt printer
         /// </summary>
         public IRelayCommand<string> SelectReceiptPrinterCommand { get; }
+
+        /// <summary>
+        /// Command to test card reader connection
+        /// </summary>
+        public IRelayCommand TestCardReaderCommand { get; }
 
         // Section visibility properties
         private bool _isSystemsSectionVisible = true;
@@ -945,6 +990,56 @@ namespace IPS.MainApp.ViewModels
             }
         }
 
+        // Card Reader Test Properties
+        private bool _isTestingCardReader = false;
+        public bool IsTestingCardReader
+        {
+            get => _isTestingCardReader;
+            set
+            {
+                _isTestingCardReader = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _cardReaderTestStatus = string.Empty;
+        public string CardReaderTestStatus
+        {
+            get => _cardReaderTestStatus;
+            set
+            {
+                _cardReaderTestStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _hasCardReaderTestStatus = false;
+        public bool HasCardReaderTestStatus
+        {
+            get => _hasCardReaderTestStatus;
+            set
+            {
+                _hasCardReaderTestStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isCardReaderTestSuccess = false;
+        public bool IsCardReaderTestSuccess
+        {
+            get => _isCardReaderTestSuccess;
+            set
+            {
+                _isCardReaderTestSuccess = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Card reader test logs
+        /// </summary>
+        public ObservableCollection<string> CardReaderTestLogs { get; } = new();
+
         /// <summary>
         /// Sales ViewModel for sales dashboard
         /// </summary>
@@ -985,6 +1080,8 @@ namespace IPS.MainApp.ViewModels
             ChangePasswordCommand = new RelayCommand(OnChangePassword);
             SelectSectionCommand = new RelayCommand<string>(OnSelectSection);
             TestPaymentCommand = new RelayCommand(async () => await OnTestPaymentAsync());
+            TestRestApiCommand = new RelayCommand(async () => await OnTestRestApiAsync());
+            TestCardReaderCommand = new RelayCommand(async () => await OnTestCardReaderAsync());
             FetchFromForteCommand = new RelayCommand(async () => await OnFetchFromForteAsync());
             SelectReceiptPrinterCommand = new RelayCommand<string>(OnSelectReceiptPrinter);
 
@@ -1083,6 +1180,7 @@ namespace IPS.MainApp.ViewModels
             ForteOrganizationId = config.ForteOrganizationId;
             ForteLocationId = config.ForteLocationId;
             ForteSandboxMode = config.ForteSandboxMode;
+            FortePaymentMode = config.FortePaymentMode;
             PaymentEnabled = config.PaymentEnabled;
 
             // Load terminal settings
@@ -1161,6 +1259,7 @@ namespace IPS.MainApp.ViewModels
                         ForteOrganizationId = ForteOrganizationId,
                         ForteLocationId = ForteLocationId,
                         ForteSandboxMode = ForteSandboxMode,
+                        FortePaymentMode = FortePaymentMode,
                         PaymentEnabled = PaymentEnabled,
                         UseCardTerminal = UseCardTerminal,
                         TerminalType = TerminalType,
@@ -1242,6 +1341,7 @@ namespace IPS.MainApp.ViewModels
                         ForteOrganizationId = ForteOrganizationId,
                         ForteLocationId = ForteLocationId,
                         ForteSandboxMode = ForteSandboxMode,
+                        FortePaymentMode = FortePaymentMode,
                         PaymentEnabled = PaymentEnabled,
                         UseCardTerminal = UseCardTerminal,
                         TerminalType = TerminalType,
@@ -1635,6 +1735,227 @@ namespace IPS.MainApp.ViewModels
                 IsTestingPayment = false;
                 _paymentTestCancellation?.Dispose();
                 _paymentTestCancellation = null;
+            }
+        }
+
+        /// <summary>
+        /// Test REST API connection by calling Forte API directly
+        /// </summary>
+        private async Task OnTestRestApiAsync()
+        {
+            if (IsTestingPayment) return;
+
+            Console.WriteLine("[AdminViewModel] REST API test requested");
+
+            // Clear previous messages and logs
+            HasPaymentTestStatus = false;
+            PaymentTestStatus = string.Empty;
+            IsPaymentTestSuccess = false;
+            PaymentTestLogs.Clear();
+            IsTestingPayment = true;
+
+            try
+            {
+                PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] FORTE REST API CONNECTION TEST");
+                PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                PaymentTestLogs.Add("");
+
+                // Create a temporary FortePaymentService instance
+                var paymentService = new Services.FortePaymentService(_configService);
+
+                PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Testing connection to Forte REST API...");
+                PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Mode: {(ForteSandboxMode ? "SANDBOX" : "PRODUCTION")}");
+                PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Organization ID: {ForteOrganizationId}");
+                PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Location ID: {ForteLocationId}");
+                PaymentTestLogs.Add("");
+
+                // Test connection
+                var startTime = DateTime.Now;
+                var connectionSuccess = await paymentService.TestConnectionAsync();
+                var elapsed = (DateTime.Now - startTime).TotalSeconds;
+
+                if (connectionSuccess)
+                {
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ✅ Connection successful ({elapsed:F2}s)");
+                    PaymentTestLogs.Add("");
+
+                    // Fetch organization info
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Fetching organization info...");
+                    var orgInfo = await paymentService.GetOrganizationInfoAsync();
+                    if (orgInfo != null)
+                    {
+                        PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ✅ Organization: {orgInfo.OrganizationName}");
+                    }
+                    else
+                    {
+                        PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ⚠️ Could not fetch organization info");
+                    }
+
+                    // Fetch location info
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Fetching location info...");
+                    var locInfo = await paymentService.GetLocationInfoAsync();
+                    if (locInfo != null)
+                    {
+                        PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ✅ Location: {locInfo.DbaName}");
+                    }
+                    else
+                    {
+                        PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ⚠️ Could not fetch location info");
+                    }
+
+                    PaymentTestLogs.Add("");
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ✅ REST API CONNECTION SUCCESSFUL");
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+
+                    HasPaymentTestStatus = true;
+                    IsPaymentTestSuccess = true;
+                    PaymentTestStatus = $"✅ REST API connection successful! ({elapsed:F1}s)";
+                }
+                else
+                {
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ❌ Connection failed ({elapsed:F2}s)");
+                    PaymentTestLogs.Add("");
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Please check:");
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   - API Access ID and Secure Key are correct");
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   - Organization ID is correct");
+                    PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   - Network connectivity");
+
+                    HasPaymentTestStatus = true;
+                    IsPaymentTestSuccess = false;
+                    PaymentTestStatus = "❌ REST API connection failed. Check credentials.";
+                }
+            }
+            catch (Exception ex)
+            {
+                PaymentTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ❌ ERROR: {ex.Message}");
+                HasPaymentTestStatus = true;
+                IsPaymentTestSuccess = false;
+                PaymentTestStatus = $"❌ Error: {ex.Message}";
+                Console.WriteLine($"[AdminViewModel] REST API test error: {ex.Message}");
+            }
+            finally
+            {
+                IsTestingPayment = false;
+            }
+        }
+
+        /// <summary>
+        /// Test card reader (Dynaflex) - full test including beep and card reading
+        /// </summary>
+        private async Task OnTestCardReaderAsync()
+        {
+            if (IsTestingCardReader) return;
+
+            Console.WriteLine("[AdminViewModel] Card reader full test requested");
+
+            // Clear previous messages and logs
+            HasCardReaderTestStatus = false;
+            CardReaderTestStatus = string.Empty;
+            IsCardReaderTestSuccess = false;
+            CardReaderTestLogs.Clear();
+            IsTestingCardReader = true;
+
+            try
+            {
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] DYNAFLEX CARD READER FULL TEST");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                CardReaderTestLogs.Add("");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] This test will:");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   1. Scan for USB HID devices");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   2. Connect to Dynaflex card reader");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   3. Send beep command");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   4. Start card reading transaction");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   5. Wait for card insertion (30 seconds)");
+                CardReaderTestLogs.Add("");
+
+                // Create DynaflexService
+                using var dynaflexService = new DynaflexService();
+
+                // Subscribe to log messages
+                dynaflexService.LogMessage += (sender, message) =>
+                {
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CardReaderTestLogs.Add(message);
+                    });
+                };
+
+                // Use the full TestCardReaderAsync method
+                var result = await dynaflexService.TestCardReaderAsync(timeoutSeconds: 30);
+
+                // Add all logs from the result
+                foreach (var log in result.Logs)
+                {
+                    CardReaderTestLogs.Add(log);
+                }
+
+                if (result.Success)
+                {
+                    CardReaderTestLogs.Add("");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ✅ FULL CARD READER TEST PASSED");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Device connected, beep confirmed, card read successfully!");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] The card reader is fully operational.");
+
+                    if (result.CardData != null)
+                    {
+                        CardReaderTestLogs.Add("");
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Card data captured:");
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Type: {result.CardData.CardType}");
+                        if (!string.IsNullOrEmpty(result.CardData.CardLast4))
+                        {
+                            CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Last 4: ****{result.CardData.CardLast4}");
+                        }
+                        if (!string.IsNullOrEmpty(result.CardData.KSN))
+                        {
+                            CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • KSN: {result.CardData.KSN.Substring(0, Math.Min(16, result.CardData.KSN.Length))}...");
+                        }
+                    }
+
+                    HasCardReaderTestStatus = true;
+                    IsCardReaderTestSuccess = true;
+                    CardReaderTestStatus = "✅ Full card reader test PASSED!";
+                }
+                else
+                {
+                    CardReaderTestLogs.Add("");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ⚠️ CARD READER TEST: {result.ErrorMessage}");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+
+                    if (result.ErrorMessage?.Contains("Timeout") == true)
+                    {
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] The device is connected and working,");
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] but no card was inserted within 30 seconds.");
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Run the test again and insert a card when prompted.");
+
+                        HasCardReaderTestStatus = true;
+                        IsCardReaderTestSuccess = false;
+                        CardReaderTestStatus = "⚠️ No card inserted (timeout). Device is working.";
+                    }
+                    else
+                    {
+                        HasCardReaderTestStatus = true;
+                        IsCardReaderTestSuccess = false;
+                        CardReaderTestStatus = $"❌ {result.ErrorMessage}";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ❌ ERROR: {ex.Message}");
+                HasCardReaderTestStatus = true;
+                IsCardReaderTestSuccess = false;
+                CardReaderTestStatus = $"❌ Error: {ex.Message}";
+                Console.WriteLine($"[AdminViewModel] Card reader test error: {ex.Message}");
+            }
+            finally
+            {
+                IsTestingCardReader = false;
             }
         }
 
