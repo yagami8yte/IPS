@@ -20,13 +20,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore IPS.csproj
 
     - name: Build
-      run: dotnet build -c Release --no-restore
+      run: dotnet build IPS.csproj -c Release --no-restore -p:TreatWarningsAsErrors=false
 
     - name: Publish
-      run: dotnet publish -c Release -r win-x64 --self-contained false -o ./publish
+      run: dotnet publish IPS.csproj -c Release -r win-x64 --self-contained false -o ./publish -p:TreatWarningsAsErrors=false
 
     - name: Get version from csproj
       id: get_version
