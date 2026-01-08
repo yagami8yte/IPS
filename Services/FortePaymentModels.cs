@@ -142,6 +142,13 @@ namespace IPS.Services
 
         [JsonPropertyName("cvv_result")]
         public string? CvvResult { get; set; }
+
+        /// <summary>
+        /// EMV receipt data for card-present transactions
+        /// Format: "application_label:Visa Debit|entry_mode:CHIP|CVM:5E0000|AID:A0000000031010|..."
+        /// </summary>
+        [JsonPropertyName("emv_receipt_data")]
+        public string? EmvReceiptData { get; set; }
     }
 
     /// <summary>
@@ -279,4 +286,47 @@ namespace IPS.Services
         [JsonPropertyName("card_data")]
         public string CardData { get; set; } = string.Empty;
     }
+
+    /// <summary>
+    /// Forte card information for EMV transactions (using card_emv_data)
+    /// </summary>
+    public class ForteEmvCard
+    {
+        /// <summary>
+        /// Card reader type - "dynaflex2go" for Dynaflex II Go
+        /// </summary>
+        [JsonPropertyName("card_reader")]
+        public string CardReader { get; set; } = "dynaflex2go";
+
+        /// <summary>
+        /// EMV card data in JSON format: {"TransactionOutput":{"KSN":"...","DeviceSerialNumber":"...","EMVSREDData":"...","CardType":"..."}}
+        /// </summary>
+        [JsonPropertyName("card_emv_data")]
+        public string? CardEmvData { get; set; }
+
+        /// <summary>
+        /// Whether this is a fallback swipe (chip couldn't be read)
+        /// </summary>
+        [JsonPropertyName("fallback_swipe")]
+        public bool? FallbackSwipe { get; set; }
+    }
+
+    /// <summary>
+    /// Forte EMV transaction request
+    /// </summary>
+    public class ForteEmvTransactionRequest
+    {
+        [JsonPropertyName("action")]
+        public string Action { get; set; } = "sale";
+
+        [JsonPropertyName("authorization_amount")]
+        public decimal AuthorizationAmount { get; set; }
+
+        [JsonPropertyName("billing_address")]
+        public ForteBillingAddress? BillingAddress { get; set; }
+
+        [JsonPropertyName("card")]
+        public ForteEmvCard? Card { get; set; }
+    }
+
 }

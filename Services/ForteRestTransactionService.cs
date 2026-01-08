@@ -105,7 +105,8 @@ namespace IPS.Services
 
                 // Setup HTTP request
                 var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
-                request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                request.Content = new StringContent(jsonBody, Encoding.UTF8);
+                request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
                 // Add authentication header (Basic Auth)
                 var authString = $"{config.ForteApiAccessId}:{config.ForteApiSecureKey}";
