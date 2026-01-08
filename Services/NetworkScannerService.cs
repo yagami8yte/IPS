@@ -68,8 +68,8 @@ namespace IPS.Services
         public async Task<List<DiscoveredDevice>> ScanNetworkAsync(
             int startRange = 1,
             int endRange = 254,
-            int[] portsToScan = null,
-            IProgress<int> progress = null)
+            int[]? portsToScan = null,
+            IProgress<int>? progress = null)
         {
             if (portsToScan == null)
             {
