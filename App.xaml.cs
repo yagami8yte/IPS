@@ -69,6 +69,9 @@ namespace IPS
         {
             base.OnStartup(e);
 
+            // Start diagnostic log capture immediately
+            DiagnosticService.StartCapturing();
+
             // Display startup banner
             Console.WriteLine("========================================");
             Console.WriteLine("  IPS - Integrated POS Solution");
@@ -138,18 +141,33 @@ namespace IPS
                     Console.WriteLine($"[App]   DLL Server: 127.0.0.1:{config.DllServerPort}");
                     Console.WriteLine($"[App]   Booth: {systemConfig.IpAddress}:{systemConfig.Port}");
 
-                    var adapter = new Adapters.Coffee.CoffeeSystemAdapter(
-                        systemName: systemConfig.SystemName,
-                        boothId: $"booth_{systemConfig.SystemName}".ToLower(),
-                        serverIp: "127.0.0.1",  // DLL internal server
-                        serverPort: config.DllServerPort,
-                        boothIp: systemConfig.IpAddress,  // Booth (coffee machine)
-                        boothPort: systemConfig.Port
-                    );
+                    // Create adapter with timeout to prevent hanging forever
+                    Adapters.Coffee.CoffeeSystemAdapter? adapter = null;
+                    var adapterTask = Task.Run(() =>
+                    {
+                        return new Adapters.Coffee.CoffeeSystemAdapter(
+                            systemName: systemConfig.SystemName,
+                            boothId: $"booth_{systemConfig.SystemName}".ToLower(),
+                            serverIp: "127.0.0.1",  // DLL internal server
+                            serverPort: config.DllServerPort,
+                            boothIp: systemConfig.IpAddress,  // Booth (coffee machine)
+                            boothPort: systemConfig.Port
+                        );
+                    });
 
-                    _systemManager!.RegisterSystem(adapter);
-                    Console.WriteLine($"[App] ✓ Successfully registered: {systemConfig.SystemName}");
-                    registeredCount++;
+                    // Wait max 15 seconds for connection
+                    if (await Task.WhenAny(adapterTask, Task.Delay(15000)) == adapterTask)
+                    {
+                        adapter = await adapterTask;
+                        _systemManager!.RegisterSystem(adapter);
+                        Console.WriteLine($"[App] ✓ Successfully registered: {systemConfig.SystemName}");
+                        registeredCount++;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[App] ✗ Timeout connecting to {systemConfig.SystemName} (15s) - skipping");
+                        progress.Report(($"Timeout: {systemConfig.SystemName} - skipping...", progressPercent));
+                    }
 
                     // Small delay to show progress
                     await Task.Delay(500);
@@ -162,12 +180,15 @@ namespace IPS
 
             if (registeredCount == 0)
             {
-                progress.Report(("No systems registered", 0));
-                Console.WriteLine($"[App] ✗ No systems registered - initialization failed");
-                return false;
+                progress.Report(("No systems connected - starting anyway...", 80));
+                Console.WriteLine($"[App] ⚠ No systems registered - starting in limited mode");
+                Console.WriteLine($"[App] You can configure systems in Admin > Systems");
+                await Task.Delay(1500); // Show message briefly
             }
-
-            Console.WriteLine($"[App] Registration complete: {registeredCount} system(s) registered");
+            else
+            {
+                Console.WriteLine($"[App] Registration complete: {registeredCount} system(s) registered");
+            }
 
             // Start polling service (must be called on UI thread for DispatcherTimer)
             progress.Report(("Starting polling service...", 85));

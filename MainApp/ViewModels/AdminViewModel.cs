@@ -58,6 +58,8 @@ namespace IPS.MainApp.ViewModels
         private bool _hasPaymentTestStatus = false;
         private bool _isPaymentTestSuccess = false;
         private bool _isSaving = false;
+        private string _diagnosticExportStatus = string.Empty;
+        private bool _hasDiagnosticExportStatus = false;
 
         /// <summary>
         /// Payment test logs
@@ -738,6 +740,116 @@ namespace IPS.MainApp.ViewModels
         /// </summary>
         public IRelayCommand TestCardReaderCommand { get; }
 
+        /// <summary>
+        /// Command to export diagnostic logs to Desktop
+        /// </summary>
+        public IRelayCommand ExportDiagnosticsCommand { get; }
+
+        /// <summary>
+        /// Command to clear card reader test logs
+        /// </summary>
+        public IRelayCommand ClearCardReaderLogsCommand { get; }
+
+        /// <summary>
+        /// Command to check for application updates
+        /// </summary>
+        public IRelayCommand CheckForUpdatesCommand { get; }
+
+        /// <summary>
+        /// Command to download and apply update
+        /// </summary>
+        public IRelayCommand ApplyUpdateCommand { get; }
+
+        // ========================================
+        // Auto-Update Properties
+        // ========================================
+
+        private string _gitHubOwner = string.Empty;
+        public string GitHubOwner
+        {
+            get => _gitHubOwner;
+            set { _gitHubOwner = value; OnPropertyChanged(); }
+        }
+
+        private string _gitHubRepo = string.Empty;
+        public string GitHubRepo
+        {
+            get => _gitHubRepo;
+            set { _gitHubRepo = value; OnPropertyChanged(); }
+        }
+
+        private bool _autoCheckUpdates = false;
+        public bool AutoCheckUpdates
+        {
+            get => _autoCheckUpdates;
+            set { _autoCheckUpdates = value; OnPropertyChanged(); }
+        }
+
+        private string _currentAppVersion = "0.0.0";
+        public string CurrentAppVersion
+        {
+            get => _currentAppVersion;
+            set { _currentAppVersion = value; OnPropertyChanged(); }
+        }
+
+        private bool _isCheckingForUpdates = false;
+        public bool IsCheckingForUpdates
+        {
+            get => _isCheckingForUpdates;
+            set { _isCheckingForUpdates = value; OnPropertyChanged(); }
+        }
+
+        private bool _isUpdateAvailable = false;
+        public bool IsUpdateAvailable
+        {
+            get => _isUpdateAvailable;
+            set { _isUpdateAvailable = value; OnPropertyChanged(); }
+        }
+
+        private string _latestVersion = string.Empty;
+        public string LatestVersion
+        {
+            get => _latestVersion;
+            set { _latestVersion = value; OnPropertyChanged(); }
+        }
+
+        private string _updateStatus = string.Empty;
+        public string UpdateStatus
+        {
+            get => _updateStatus;
+            set { _updateStatus = value; OnPropertyChanged(); }
+        }
+
+        private bool _hasUpdateStatus = false;
+        public bool HasUpdateStatus
+        {
+            get => _hasUpdateStatus;
+            set { _hasUpdateStatus = value; OnPropertyChanged(); }
+        }
+
+        private bool _isApplyingUpdate = false;
+        public bool IsApplyingUpdate
+        {
+            get => _isApplyingUpdate;
+            set { _isApplyingUpdate = value; OnPropertyChanged(); }
+        }
+
+        private int _updateProgress = 0;
+        public int UpdateProgress
+        {
+            get => _updateProgress;
+            set { _updateProgress = value; OnPropertyChanged(); }
+        }
+
+        private string _updateProgressMessage = string.Empty;
+        public string UpdateProgressMessage
+        {
+            get => _updateProgressMessage;
+            set { _updateProgressMessage = value; OnPropertyChanged(); }
+        }
+
+        private GitHubReleaseInfo? _pendingUpdate = null;
+
         // Section visibility properties
         private bool _isSystemsSectionVisible = true;
         private bool _isSalesSectionVisible = false;
@@ -1041,6 +1153,32 @@ namespace IPS.MainApp.ViewModels
         public ObservableCollection<string> CardReaderTestLogs { get; } = new();
 
         /// <summary>
+        /// Diagnostic export status message
+        /// </summary>
+        public string DiagnosticExportStatus
+        {
+            get => _diagnosticExportStatus;
+            set
+            {
+                _diagnosticExportStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Whether there is a diagnostic export status to show
+        /// </summary>
+        public bool HasDiagnosticExportStatus
+        {
+            get => _hasDiagnosticExportStatus;
+            set
+            {
+                _hasDiagnosticExportStatus = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Sales ViewModel for sales dashboard
         /// </summary>
         public SalesViewModel SalesViewModel { get; }
@@ -1082,8 +1220,17 @@ namespace IPS.MainApp.ViewModels
             TestPaymentCommand = new RelayCommand(async () => await OnTestPaymentAsync());
             TestRestApiCommand = new RelayCommand(async () => await OnTestRestApiAsync());
             TestCardReaderCommand = new RelayCommand(async () => await OnTestCardReaderAsync());
+            ExportDiagnosticsCommand = new RelayCommand(OnExportDiagnostics);
+            ClearCardReaderLogsCommand = new RelayCommand(OnClearCardReaderLogs);
             FetchFromForteCommand = new RelayCommand(async () => await OnFetchFromForteAsync());
             SelectReceiptPrinterCommand = new RelayCommand<string>(OnSelectReceiptPrinter);
+            CheckForUpdatesCommand = new RelayCommand(async () => await OnCheckForUpdatesAsync());
+            ApplyUpdateCommand = new RelayCommand(async () => await OnApplyUpdateAsync());
+
+            // Get current app version
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var version = assembly.GetName().Version;
+            CurrentAppVersion = version != null ? $"{version.Major}.{version.Minor}.{version.Build}" : "0.0.0";
 
             InitializeConfigSections();
             LoadConfiguration();
@@ -1204,6 +1351,11 @@ namespace IPS.MainApp.ViewModels
             TaxRate = config.TaxRate;
             TaxLabel = config.TaxLabel;
 
+            // GitHub Auto-Update settings
+            GitHubOwner = config.GitHubOwner;
+            GitHubRepo = config.GitHubRepo;
+            AutoCheckUpdates = config.AutoCheckUpdates;
+
             Systems.Clear();
             foreach (var system in config.Systems)
             {
@@ -1278,6 +1430,9 @@ namespace IPS.MainApp.ViewModels
                         TaxEnabled = TaxEnabled,
                         TaxRate = TaxRate,
                         TaxLabel = TaxLabel,
+                        GitHubOwner = GitHubOwner,
+                        GitHubRepo = GitHubRepo,
+                        AutoCheckUpdates = AutoCheckUpdates,
                         Systems = Systems.Select(vm => new SystemConfiguration
                         {
                             SystemName = vm.SystemName,
@@ -1360,6 +1515,9 @@ namespace IPS.MainApp.ViewModels
                         TaxEnabled = TaxEnabled,
                         TaxRate = TaxRate,
                         TaxLabel = TaxLabel,
+                        GitHubOwner = GitHubOwner,
+                        GitHubRepo = GitHubRepo,
+                        AutoCheckUpdates = AutoCheckUpdates,
                         Systems = Systems.Select(vm => new SystemConfiguration
                         {
                             SystemName = vm.SystemName,
@@ -1842,40 +2000,51 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
-        /// Test card reader (Dynaflex) - full test including beep and card reading
+        /// Test card reader (Dynaflex) using SDK - EXACTLY SAME FLOW AS PaymentViewModel
+        /// This uses the same async patterns and fire-and-forget approach to verify the implementation
         /// </summary>
         private async Task OnTestCardReaderAsync()
         {
             if (IsTestingCardReader) return;
 
-            Console.WriteLine("[AdminViewModel] Card reader full test requested");
+            Console.WriteLine("[AdminViewModel] Card reader SDK test requested (PaymentViewModel flow)");
 
-            // Clear previous messages and logs
+            // Clear status but KEEP previous logs (add separator instead of clearing)
             HasCardReaderTestStatus = false;
             CardReaderTestStatus = string.Empty;
             IsCardReaderTestSuccess = false;
-            CardReaderTestLogs.Clear();
             IsTestingCardReader = true;
+
+            // Add separator if there are previous logs
+            if (CardReaderTestLogs.Count > 0)
+            {
+                CardReaderTestLogs.Add("");
+                CardReaderTestLogs.Add("════════════════════════════════════════════════════════════════");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] NEW TEST STARTED");
+                CardReaderTestLogs.Add("════════════════════════════════════════════════════════════════");
+                CardReaderTestLogs.Add("");
+            }
+
+            DynaflexSdkService? dynaflexSdkService = null;
 
             try
             {
                 CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
-                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] DYNAFLEX CARD READER FULL TEST");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] DYNAFLEX TEST (PaymentViewModel Flow)");
                 CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
                 CardReaderTestLogs.Add("");
-                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] This test will:");
-                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   1. Scan for USB HID devices");
-                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   2. Connect to Dynaflex card reader");
-                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   3. Send beep command");
-                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   4. Start card reading transaction");
-                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   5. Wait for card insertion (30 seconds)");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] This test uses the EXACT SAME code path");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] as the actual payment flow:");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • ScanDevicesAsync() (async)");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • ConnectAsync()");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • StartTransactionAsync() with fire-and-forget");
                 CardReaderTestLogs.Add("");
 
-                // Create DynaflexService
-                using var dynaflexService = new DynaflexService();
+                // Create SDK-based DynaflexService (same as PaymentViewModel constructor)
+                dynaflexSdkService = new DynaflexSdkService();
 
-                // Subscribe to log messages
-                dynaflexService.LogMessage += (sender, message) =>
+                // Subscribe to ALL events (same as PaymentViewModel)
+                dynaflexSdkService.LogMessage += (sender, message) =>
                 {
                     System.Windows.Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -1883,66 +2052,122 @@ namespace IPS.MainApp.ViewModels
                     });
                 };
 
-                // Use the full TestCardReaderAsync method
-                var result = await dynaflexService.TestCardReaderAsync(timeoutSeconds: 30);
-
-                // Add all logs from the result
-                foreach (var log in result.Logs)
+                dynaflexSdkService.ConnectionStateChanged += (sender, e) =>
                 {
-                    CardReaderTestLogs.Add(log);
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] [Connection] {(e.IsConnected ? "CONNECTED" : "DISCONNECTED")}");
+                    });
+                };
+
+                dynaflexSdkService.TransactionStatusChanged += (sender, e) =>
+                {
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] [TxnStatus] {e.Status}: {e.Message}");
+                    });
+                };
+
+                dynaflexSdkService.DisplayMessageReceived += (sender, message) =>
+                {
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] [Display] {message}");
+                    });
+                };
+
+                dynaflexSdkService.ArqcDataReceived += (sender, arqc) =>
+                {
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] [ARQC] Card: {arqc.CardTypeName}, Valid: {arqc.IsValid}");
+                    });
+                };
+
+                // Step 1: Scan for devices using ASYNC method (same as PaymentViewModel)
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Step 1: ScanDevicesAsync()...");
+                var devices = await dynaflexSdkService.ScanDevicesAsync();  // ASYNC like PaymentViewModel
+
+                if (devices.Count == 0)
+                {
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ❌ No MagTek devices found!");
+                    HasCardReaderTestStatus = true;
+                    IsCardReaderTestSuccess = false;
+                    CardReaderTestStatus = "❌ No devices found. Is MagneFlex service running?";
+                    return;
                 }
 
-                if (result.Success)
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Found {devices.Count} device(s)");
+
+                // Step 2: Connect (same as PaymentViewModel)
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Step 2: ConnectAsync()...");
+                bool connected = await dynaflexSdkService.ConnectAsync();
+
+                if (!connected)
+                {
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ❌ Failed to connect to device");
+                    HasCardReaderTestStatus = true;
+                    IsCardReaderTestSuccess = false;
+                    CardReaderTestStatus = "❌ Failed to connect to Dynaflex";
+                    return;
+                }
+
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ✓ Connected!");
+
+                // Step 3: Start transaction using FIRE-AND-FORGET pattern (EXACTLY like PaymentViewModel)
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Step 3: StartTransactionAsync() (fire-and-forget)...");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Amount: $0.01, Timeout: 60 seconds");
+                CardReaderTestLogs.Add("");
+
+                // THIS IS THE KEY DIFFERENCE - PaymentViewModel does NOT await directly
+                // It starts the task and processes result in background
+                var arqcTask = dynaflexSdkService.StartTransactionAsync(0.01m, timeoutSeconds: 60);
+
+                // Wait 200ms then show "waiting" (same as PaymentViewModel)
+                await Task.Delay(200);
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] >>> UI would now show 'Insert Card' screen <<<");
+                CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Waiting for card (60 seconds)...");
+                CardReaderTestLogs.Add("");
+
+                // Now wait for the result (same as ProcessSdkTransactionResultAsync)
+                var arqcData = await arqcTask;
+
+                if (arqcData != null && arqcData.IsValid)
                 {
                     CardReaderTestLogs.Add("");
                     CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
-                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ✅ FULL CARD READER TEST PASSED");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ✅ CARD READER TEST PASSED!");
                     CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
-                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Device connected, beep confirmed, card read successfully!");
-                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] The card reader is fully operational.");
-
-                    if (result.CardData != null)
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Card data captured:");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Card Type: {arqcData.CardTypeName}");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Device: {arqcData.DeviceSerialNumber}");
+                    if (!string.IsNullOrEmpty(arqcData.KSN))
                     {
-                        CardReaderTestLogs.Add("");
-                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Card data captured:");
-                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Type: {result.CardData.CardType}");
-                        if (!string.IsNullOrEmpty(result.CardData.CardLast4))
-                        {
-                            CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Last 4: ****{result.CardData.CardLast4}");
-                        }
-                        if (!string.IsNullOrEmpty(result.CardData.KSN))
-                        {
-                            CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • KSN: {result.CardData.KSN.Substring(0, Math.Min(16, result.CardData.KSN.Length))}...");
-                        }
+                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • KSN: {arqcData.KSN.Substring(0, Math.Min(16, arqcData.KSN.Length))}...");
                     }
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • EMVSREDData: {arqcData.EMVSREDData?.Length ?? 0} chars");
 
                     HasCardReaderTestStatus = true;
                     IsCardReaderTestSuccess = true;
-                    CardReaderTestStatus = "✅ Full card reader test PASSED!";
+                    CardReaderTestStatus = $"✅ Test PASSED! ({arqcData.CardTypeName})";
                 }
                 else
                 {
                     CardReaderTestLogs.Add("");
                     CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
-                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ⚠️ CARD READER TEST: {result.ErrorMessage}");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ⚠️ TIMEOUT - No card inserted");
                     CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] ═══════════════════════════════════════");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Check above logs:");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Did you see [Transaction Started]?");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Did you see [Display] TAP, INSERT...?");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]   • Did device beep?");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}]");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] If YES to above - SDK works correctly!");
+                    CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] If NO - there may be an SDK issue.");
 
-                    if (result.ErrorMessage?.Contains("Timeout") == true)
-                    {
-                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] The device is connected and working,");
-                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] but no card was inserted within 30 seconds.");
-                        CardReaderTestLogs.Add($"[{DateTime.Now:HH:mm:ss}] Run the test again and insert a card when prompted.");
-
-                        HasCardReaderTestStatus = true;
-                        IsCardReaderTestSuccess = false;
-                        CardReaderTestStatus = "⚠️ No card inserted (timeout). Device is working.";
-                    }
-                    else
-                    {
-                        HasCardReaderTestStatus = true;
-                        IsCardReaderTestSuccess = false;
-                        CardReaderTestStatus = $"❌ {result.ErrorMessage}";
-                    }
+                    HasCardReaderTestStatus = true;
+                    IsCardReaderTestSuccess = false;
+                    CardReaderTestStatus = "⚠️ Timeout - check logs for details";
                 }
             }
             catch (Exception ex)
@@ -1955,6 +2180,12 @@ namespace IPS.MainApp.ViewModels
             }
             finally
             {
+                // Cleanup (same as PaymentViewModel.Dispose)
+                if (dynaflexSdkService != null)
+                {
+                    dynaflexSdkService.Disconnect();
+                    dynaflexSdkService.Dispose();
+                }
                 IsTestingCardReader = false;
             }
         }
@@ -2041,6 +2272,17 @@ namespace IPS.MainApp.ViewModels
             public string? orderLabel { get; set; }
             public string? error { get; set; }
             public decimal? amount { get; set; }
+        }
+
+        /// <summary>
+        /// Clear card reader test logs
+        /// </summary>
+        private void OnClearCardReaderLogs()
+        {
+            CardReaderTestLogs.Clear();
+            HasCardReaderTestStatus = false;
+            CardReaderTestStatus = string.Empty;
+            Console.WriteLine("[AdminViewModel] Card reader logs cleared");
         }
 
         /// <summary>
@@ -2194,6 +2436,46 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
+        /// Export diagnostic logs to Desktop for debugging
+        /// </summary>
+        private void OnExportDiagnostics()
+        {
+            try
+            {
+                Console.WriteLine("[AdminViewModel] Exporting diagnostic logs...");
+
+                // Get current configuration info
+                var config = _configService.GetConfiguration();
+                var additionalInfo = $@"Selected Printer: {config.SelectedReceiptPrinter ?? "None"}
+Auto Print Receipt: {config.AutoPrintReceipt}
+Payment Mode: {config.FortePaymentMode}
+Sandbox Mode: {config.ForteSandboxMode}
+Payment Enabled: {config.PaymentEnabled}";
+
+                string filePath = DiagnosticService.ExportToFile(additionalInfo);
+
+                if (filePath.StartsWith("ERROR:"))
+                {
+                    DiagnosticExportStatus = filePath;
+                    Console.WriteLine($"[AdminViewModel] Export failed: {filePath}");
+                }
+                else
+                {
+                    DiagnosticExportStatus = $"Logs saved to Desktop: {System.IO.Path.GetFileName(filePath)}";
+                    Console.WriteLine($"[AdminViewModel] Logs exported to: {filePath}");
+                }
+
+                HasDiagnosticExportStatus = true;
+            }
+            catch (Exception ex)
+            {
+                DiagnosticExportStatus = $"Error: {ex.Message}";
+                HasDiagnosticExportStatus = true;
+                Console.WriteLine($"[AdminViewModel] Export error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Handle PIN change request
         /// </summary>
         private void OnChangePassword()
@@ -2274,6 +2556,111 @@ namespace IPS.MainApp.ViewModels
                 IsPasswordChangeSuccess = false;
                 PasswordChangeMessage = "Failed to save new PIN. Please try again.";
                 Console.WriteLine("[AdminViewModel] Failed to save new PIN");
+            }
+        }
+
+        // ========================================
+        // Auto-Update Methods
+        // ========================================
+
+        /// <summary>
+        /// Check for application updates from GitHub
+        /// </summary>
+        private async Task OnCheckForUpdatesAsync()
+        {
+            if (IsCheckingForUpdates) return;
+
+            IsCheckingForUpdates = true;
+            HasUpdateStatus = false;
+            IsUpdateAvailable = false;
+            _pendingUpdate = null;
+
+            try
+            {
+                Console.WriteLine("[AdminViewModel] Checking for updates...");
+
+                var updateService = new GitHubUpdateService();
+                var releaseInfo = await updateService.CheckForUpdatesAsync();
+
+                if (releaseInfo == null)
+                {
+                    HasUpdateStatus = true;
+                    UpdateStatus = "Failed to check for updates. Check GitHub settings and network connection.";
+                    Console.WriteLine("[AdminViewModel] Failed to get release info");
+                    return;
+                }
+
+                HasUpdateStatus = true;
+                LatestVersion = releaseInfo.LatestVersion;
+
+                if (releaseInfo.IsUpdateAvailable)
+                {
+                    IsUpdateAvailable = true;
+                    _pendingUpdate = releaseInfo;
+                    UpdateStatus = $"Update available: v{releaseInfo.LatestVersion} ({releaseInfo.AssetSizeFormatted})";
+                    Console.WriteLine($"[AdminViewModel] Update available: {releaseInfo.LatestVersion}");
+                }
+                else
+                {
+                    UpdateStatus = $"You are running the latest version (v{CurrentAppVersion})";
+                    Console.WriteLine("[AdminViewModel] Already on latest version");
+                }
+            }
+            catch (Exception ex)
+            {
+                HasUpdateStatus = true;
+                UpdateStatus = $"Error checking for updates: {ex.Message}";
+                Console.WriteLine($"[AdminViewModel] Update check error: {ex.Message}");
+            }
+            finally
+            {
+                IsCheckingForUpdates = false;
+            }
+        }
+
+        /// <summary>
+        /// Download and apply the pending update
+        /// </summary>
+        private async Task OnApplyUpdateAsync()
+        {
+            if (_pendingUpdate == null || IsApplyingUpdate) return;
+
+            IsApplyingUpdate = true;
+            UpdateProgress = 0;
+            UpdateProgressMessage = "Starting update...";
+
+            try
+            {
+                Console.WriteLine($"[AdminViewModel] Applying update to v{_pendingUpdate.LatestVersion}");
+
+                var updateService = new GitHubUpdateService();
+
+                var progress = new Progress<(string message, int percent)>(p =>
+                {
+                    UpdateProgressMessage = p.message;
+                    UpdateProgress = p.percent;
+                });
+
+                // This will download, extract, launch updater, and exit the app
+                bool success = await updateService.DownloadAndApplyUpdateAsync(_pendingUpdate, progress);
+
+                if (!success)
+                {
+                    HasUpdateStatus = true;
+                    UpdateStatus = "Failed to apply update. Please try again.";
+                    Console.WriteLine("[AdminViewModel] Update failed");
+                }
+                // If successful, the app will have exited by now
+            }
+            catch (Exception ex)
+            {
+                HasUpdateStatus = true;
+                UpdateStatus = $"Update failed: {ex.Message}";
+                Console.WriteLine($"[AdminViewModel] Update error: {ex.Message}");
+            }
+            finally
+            {
+                IsApplyingUpdate = false;
             }
         }
     }

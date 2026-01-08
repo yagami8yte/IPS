@@ -16,9 +16,12 @@ namespace IPS.MainApp.ViewModels
         private readonly ConfigurationService _configService;
         private readonly ForteCheckoutService? _forteCheckoutService;
         private readonly FortePaymentService? _fortePaymentService;
-        private readonly DynaflexService? _dynaflexService;
+        private readonly ForteRestTransactionService? _forteRestTransactionService;  // For card-present transactions
+        private readonly DynaflexService? _dynaflexService;  // Legacy HID-based service
+        private readonly DynaflexSdkService? _dynaflexSdkService;  // New SDK-based service
         private readonly MainViewModel? _mainViewModel;  // For storing payment details
         private bool _isDisposed = false;
+        private bool _useSdkService = true;  // Use SDK-based service by default
 
         private bool _isProcessing = false;
         private string _paymentStatusMessage = string.Empty;
@@ -243,19 +246,26 @@ namespace IPS.MainApp.ViewModels
                 else
                 {
                     _fortePaymentService = new FortePaymentService(_configService);
+                    _forteRestTransactionService = new ForteRestTransactionService(_configService);
 
-                    // Initialize Dynaflex service for card reader detection (both sandbox and production)
+                    // Initialize Dynaflex SDK service for card reader (requires MagneFlex Powder V2 API service)
                     // Show "Connecting to card reader" screen first
                     IsConnectingToCardReader = true;
                     IsWaitingForCard = false;
 
-                    _dynaflexService = new DynaflexService();
-                    _dynaflexService.ConnectionStateChanged += OnDynaflexConnectionChanged;
-                    _dynaflexService.CardDataReceived += OnDynaflexCardDataReceived;
-                    _dynaflexService.LogMessage += OnDynaflexLogMessage;
+                    // Use the new SDK-based service
+                    _useSdkService = true;
+                    _dynaflexSdkService = new DynaflexSdkService();
+                    _dynaflexSdkService.ConnectionStateChanged += OnDynaflexSdkConnectionChanged;
+                    _dynaflexSdkService.ArqcDataReceived += OnDynaflexSdkArqcDataReceived;
+                    _dynaflexSdkService.TransactionStatusChanged += OnDynaflexSdkTransactionStatusChanged;
+                    _dynaflexSdkService.DisplayMessageReceived += OnDynaflexSdkDisplayMessage;
+                    _dynaflexSdkService.LogMessage += OnDynaflexSdkLogMessage;
+
+                    Console.WriteLine("[PaymentViewModel] Using SDK-based Dynaflex service (requires MagneFlex Powder V2 API)");
 
                     // Start connecting to Dynaflex in background
-                    _ = ConnectToDynaflexAsync();
+                    _ = ConnectToDynaflexSdkAsync();
                 }
             }
 
@@ -750,7 +760,478 @@ namespace IPS.MainApp.ViewModels
             }
         }
 
-        #region Dynaflex Integration
+        #region Dynaflex SDK Integration (New)
+
+        private int _sdkConnectionAttempts = 0;
+        private const int MAX_SDK_CONNECTION_ATTEMPTS = 3;
+
+        private bool _isConnectingToSdk = false; // Guard against double-press
+
+        /// <summary>
+        /// Connect to Dynaflex card reader using the SDK-based service
+        /// </summary>
+        private async Task ConnectToDynaflexSdkAsync()
+        {
+            if (_dynaflexSdkService == null) return;
+
+            // Prevent double-press issues
+            if (_isConnectingToSdk)
+            {
+                Console.WriteLine("[PaymentViewModel] Already connecting to SDK - ignoring duplicate request");
+                return;
+            }
+            _isConnectingToSdk = true;
+
+            try
+            {
+                _sdkConnectionAttempts++;
+                CardReaderConnectionFailed = false;
+
+                DynaflexStatus = $"Searching for card reader... (Attempt {_sdkConnectionAttempts}/{MAX_SDK_CONNECTION_ATTEMPTS})";
+                Console.WriteLine($"[PaymentViewModel] Searching for Dynaflex via SDK (Attempt {_sdkConnectionAttempts})...");
+
+                // Scan for devices first (async to not block UI)
+                var devices = await _dynaflexSdkService.ScanDevicesAsync();
+
+                if (devices.Count == 0)
+                {
+                    Console.WriteLine("[PaymentViewModel] No Dynaflex device found via SDK");
+                    Console.WriteLine("[PaymentViewModel] Ensure MagneFlex Powder V2 API service is running");
+
+                    if (_sdkConnectionAttempts >= MAX_SDK_CONNECTION_ATTEMPTS)
+                    {
+                        // Max attempts reached
+                        if (_isSandboxMode)
+                        {
+                            // In sandbox mode, proceed to Insert Card screen with test buttons
+                            DynaflexStatus = "No card reader (test mode)";
+                            CardReaderConnectionFailed = false;
+                            IsConnectingToCardReader = false;
+                            IsPreparingTerminal = false;
+                            IsWaitingForCard = true;
+                            Console.WriteLine("[PaymentViewModel] Sandbox mode - proceeding without card reader");
+                        }
+                        else
+                        {
+                            // Production mode - show error
+                            DynaflexStatus = "No card reader detected. Is MagneFlex service running?";
+                            CardReaderConnectionFailed = true;
+                            IsConnectingToCardReader = false;
+                            IsPreparingTerminal = false;
+                            Console.WriteLine("[PaymentViewModel] Max connection attempts reached - showing error");
+                        }
+                        return;
+                    }
+
+                    DynaflexStatus = $"No device found, retrying... ({_sdkConnectionAttempts}/{MAX_SDK_CONNECTION_ATTEMPTS})";
+
+                    // Retry in 3 seconds
+                    await Task.Delay(3000);
+                    if (!_isDisposed && !_dynaflexSdkService.IsConnected)
+                    {
+                        _ = ConnectToDynaflexSdkAsync();
+                    }
+                    return;
+                }
+
+                DynaflexStatus = "Connecting to card reader...";
+
+                bool connected = await _dynaflexSdkService.ConnectAsync();
+
+                if (connected)
+                {
+                    Console.WriteLine("[PaymentViewModel] Connected to Dynaflex via SDK successfully!");
+                    IsDynaflexConnected = true;
+                    DynaflexStatus = "Card reader connected";
+
+                    // Transition to "Preparing Terminal" screen
+                    IsConnectingToCardReader = false;
+                    IsPreparingTerminal = true;
+                    IsWaitingForCard = false;
+
+                    Console.WriteLine("[PaymentViewModel] Transitioned to 'Preparing Terminal' screen");
+
+                    // Start EMV transaction
+                    await StartSdkTransactionAsync();
+                }
+                else
+                {
+                    Console.WriteLine("[PaymentViewModel] Failed to connect to Dynaflex via SDK");
+
+                    if (_sdkConnectionAttempts >= MAX_SDK_CONNECTION_ATTEMPTS)
+                    {
+                        if (_isSandboxMode)
+                        {
+                            DynaflexStatus = "Connection failed (test mode)";
+                            CardReaderConnectionFailed = false;
+                            IsConnectingToCardReader = false;
+                            IsPreparingTerminal = false;
+                            IsWaitingForCard = true;
+                            Console.WriteLine("[PaymentViewModel] Sandbox mode - proceeding without card reader");
+                        }
+                        else
+                        {
+                            DynaflexStatus = "Failed to connect to card reader";
+                            CardReaderConnectionFailed = true;
+                            IsConnectingToCardReader = false;
+                            IsPreparingTerminal = false;
+                        }
+                        return;
+                    }
+
+                    DynaflexStatus = $"Connection failed, retrying... ({_sdkConnectionAttempts}/{MAX_SDK_CONNECTION_ATTEMPTS})";
+
+                    // Retry in 3 seconds
+                    await Task.Delay(3000);
+                    _isConnectingToSdk = false; // Reset before retry
+                    if (!_isDisposed && !_dynaflexSdkService.IsConnected)
+                    {
+                        _ = ConnectToDynaflexSdkAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentViewModel] SDK connection error: {ex.Message}");
+                DynaflexStatus = $"Error: {ex.Message}";
+
+                if (_sdkConnectionAttempts >= MAX_SDK_CONNECTION_ATTEMPTS)
+                {
+                    if (_isSandboxMode)
+                    {
+                        CardReaderConnectionFailed = false;
+                        IsConnectingToCardReader = false;
+                        IsPreparingTerminal = false;
+                        IsWaitingForCard = true;
+                    }
+                    else
+                    {
+                        CardReaderConnectionFailed = true;
+                        IsConnectingToCardReader = false;
+                        IsPreparingTerminal = false;
+                    }
+                }
+            }
+            finally
+            {
+                // Reset flag when done (unless we're retrying)
+                if (_sdkConnectionAttempts >= MAX_SDK_CONNECTION_ATTEMPTS || _dynaflexSdkService?.IsConnected == true)
+                {
+                    _isConnectingToSdk = false;
+                }
+            }
+        }
+
+        private bool _isTransactionInProgress = false; // Guard against duplicate transactions
+
+        /// <summary>
+        /// Start EMV transaction using SDK
+        /// EXACTLY like demo - just call startTransaction and wait for events
+        /// </summary>
+        private async Task StartSdkTransactionAsync()
+        {
+            if (_dynaflexSdkService == null || !_dynaflexSdkService.IsConnected)
+            {
+                Console.WriteLine("[PaymentViewModel] Cannot start SDK transaction - not connected");
+                if (_isSandboxMode)
+                {
+                    IsPreparingTerminal = false;
+                    IsWaitingForCard = true;
+                    DynaflexStatus = "Test mode - use buttons below";
+                }
+                return;
+            }
+
+            // Prevent duplicate transactions
+            if (_isTransactionInProgress)
+            {
+                Console.WriteLine("[PaymentViewModel] Transaction already in progress - ignoring duplicate request");
+                return;
+            }
+            _isTransactionInProgress = true;
+
+            try
+            {
+                DynaflexStatus = "Preparing terminal...";
+                Console.WriteLine($"[PaymentViewModel] Starting SDK transaction for ${CartTotalPrice:F2}...");
+
+                // EXACTLY like demo - just start transaction and show Insert Card screen
+                // The demo doesn't have a separate TransactionStarted event
+                // When startTransaction() returns true, the transaction has been accepted
+
+                // Start transaction asynchronously - this returns when ARQC data is received or timeout
+                var arqcTask = _dynaflexSdkService.StartTransactionAsync(CartTotalPrice, timeoutSeconds: 60);
+
+                // Give a brief moment for the startTransaction to be accepted
+                await Task.Delay(200);
+
+                // Show Insert Card screen immediately after starting transaction
+                // The device will display "TAP, INSERT OR SWIPE CARD" when ready
+                Console.WriteLine("[PaymentViewModel] Transaction started - showing 'Insert Card' screen");
+                DynaflexStatus = "Ready - Insert, tap, or swipe card";
+                IsPreparingTerminal = false;
+                IsWaitingForCard = true;
+
+                // Wait for ARQC data in background
+                _ = ProcessSdkTransactionResultAsync(arqcTask);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentViewModel] Error starting SDK transaction: {ex.Message}");
+                DynaflexStatus = "Card reader ready";
+                IsPreparingTerminal = false;
+                IsWaitingForCard = true;
+                _isTransactionInProgress = false;
+            }
+        }
+
+        /// <summary>
+        /// Process the SDK transaction result (ARQC data)
+        /// </summary>
+        private async Task ProcessSdkTransactionResultAsync(Task<DynaflexArqcData?> arqcTask)
+        {
+            try
+            {
+                var arqcData = await arqcTask;
+
+                if (arqcData != null && arqcData.IsValid)
+                {
+                    Console.WriteLine("[PaymentViewModel] ARQC data received from SDK, processing payment...");
+                    _isTransactionInProgress = false; // Reset before processing payment
+                    await ProcessSdkPaymentAsync(arqcData);
+                }
+                else
+                {
+                    Console.WriteLine("[PaymentViewModel] SDK transaction timed out or was cancelled");
+                    _isTransactionInProgress = false; // Reset to allow retry
+
+                    // Transaction timed out or was cancelled - let user try again
+                    if (!_isDisposed && IsWaitingForCard && !IsProcessing)
+                    {
+                        DynaflexStatus = "Transaction timed out - please try again";
+                        await Task.Delay(2000);
+                        if (!_isDisposed)
+                        {
+                            DynaflexStatus = "Ready - Insert, tap, or swipe card";
+                            // Restart transaction
+                            await StartSdkTransactionAsync();
+                        }
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine("[PaymentViewModel] SDK transaction was cancelled");
+                _isTransactionInProgress = false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentViewModel] SDK transaction error: {ex.Message}");
+                _isTransactionInProgress = false;
+            }
+        }
+
+        /// <summary>
+        /// Process payment with ARQC data from SDK
+        /// </summary>
+        private async Task ProcessSdkPaymentAsync(DynaflexArqcData arqcData)
+        {
+            if (_forteRestTransactionService == null)
+            {
+                Console.WriteLine("[PaymentViewModel] REST transaction service not initialized");
+                return;
+            }
+
+            await System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                try
+                {
+                    // Hide "Insert Card" screen and show processing
+                    IsWaitingForCard = false;
+                    IsProcessing = true;
+                    DynaflexStatus = "Card detected - processing payment...";
+                    PaymentStatusMessage = "Processing payment...";
+                    RestApiLogs.Clear();
+                    OnPropertyChanged(nameof(HasRestApiLogs));
+
+                    string orderLabel = GenerateOrderLabel();
+
+                    RestApiLogs.Add($"═══════════════════════════════════════════");
+                    RestApiLogs.Add($"CARD DETECTED: {arqcData.CardTypeName}");
+                    RestApiLogs.Add($"═══════════════════════════════════════════");
+                    RestApiLogs.Add($"Order Label: {orderLabel}");
+                    RestApiLogs.Add($"Amount: ${CartTotalPrice:F2}");
+                    RestApiLogs.Add($"Device Serial: {arqcData.DeviceSerialNumber}");
+                    RestApiLogs.Add($"Card Type Code: {arqcData.CardType}");
+                    if (!string.IsNullOrEmpty(arqcData.KSN))
+                    {
+                        RestApiLogs.Add($"KSN: {arqcData.KSN.Substring(0, Math.Min(20, arqcData.KSN.Length))}...");
+                    }
+                    RestApiLogs.Add($"");
+                    RestApiLogs.Add($"Sending to Forte REST API...");
+                    OnPropertyChanged(nameof(HasRestApiLogs));
+
+                    // Process payment via Forte REST API with ARQC data
+                    var result = await _forteRestTransactionService.ProcessSaleAsync(CartTotalPrice, arqcData, orderLabel);
+
+                    if (result.Success)
+                    {
+                        RestApiLogs.Add($"");
+                        RestApiLogs.Add($"✓ Payment APPROVED");
+                        RestApiLogs.Add($"Transaction ID: {result.TransactionId}");
+                        RestApiLogs.Add($"Auth Code: {result.AuthorizationCode}");
+                        OnPropertyChanged(nameof(HasRestApiLogs));
+
+                        PaymentStatusMessage = $"Payment approved!";
+                        DynaflexStatus = "Payment successful!";
+
+                        // Store payment details for receipt printing
+                        if (_mainViewModel != null)
+                        {
+                            _mainViewModel.LastPaymentTransactionId = result.TransactionId;
+                            _mainViewModel.LastPaymentAuthorizationCode = result.AuthorizationCode;
+                            _mainViewModel.LastPaymentCardLast4Digits = "";  // Card last 4 from EMV receipt data if available
+                            Console.WriteLine("[PaymentViewModel] SDK payment details stored in MainViewModel");
+                        }
+
+                        // Delay to show success message
+                        await Task.Delay(1500);
+
+                        IsProcessing = false;
+                        _onPaymentComplete(true, orderLabel);
+                    }
+                    else
+                    {
+                        RestApiLogs.Add($"");
+                        RestApiLogs.Add($"✗ Payment FAILED");
+                        RestApiLogs.Add($"Error: {result.ErrorMessage}");
+                        OnPropertyChanged(nameof(HasRestApiLogs));
+
+                        PaymentStatusMessage = $"Payment failed: {result.ErrorMessage}";
+                        DynaflexStatus = "Payment failed - try again";
+                        IsProcessing = false;
+                        IsWaitingForCard = true;
+
+                        // Reset status and restart transaction after delay
+                        await Task.Delay(3000);
+                        if (!_isDisposed)
+                        {
+                            DynaflexStatus = "Ready - Insert, tap, or swipe card";
+                            await StartSdkTransactionAsync();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[PaymentViewModel] SDK payment error: {ex.Message}");
+                    RestApiLogs.Add($"EXCEPTION: {ex.Message}");
+                    OnPropertyChanged(nameof(HasRestApiLogs));
+                    PaymentStatusMessage = $"Error: {ex.Message}";
+                    DynaflexStatus = "Error - try again";
+                    IsProcessing = false;
+                    IsWaitingForCard = true;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Handle SDK connection state changes
+        /// </summary>
+        private void OnDynaflexSdkConnectionChanged(object? sender, DynaflexSdkConnectionEventArgs e)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                IsDynaflexConnected = e.IsConnected;
+
+                if (e.IsConnected)
+                {
+                    DynaflexStatus = "Card reader connected";
+                    Console.WriteLine($"[PaymentViewModel] SDK Dynaflex connected: {e.DeviceSerialNumber}");
+                }
+                else
+                {
+                    DynaflexStatus = "Card reader disconnected";
+                    Console.WriteLine("[PaymentViewModel] SDK Dynaflex disconnected");
+
+                    // If we were waiting for card or preparing, go back to connecting screen
+                    if ((IsWaitingForCard || IsPreparingTerminal) && !IsProcessing && !_isDisposed)
+                    {
+                        IsWaitingForCard = false;
+                        IsPreparingTerminal = false;
+                        IsConnectingToCardReader = true;
+                        _sdkConnectionAttempts = 0;
+
+                        // Try to reconnect
+                        _ = ConnectToDynaflexSdkAsync();
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Handle ARQC data received from SDK (alternative to task-based approach)
+        /// </summary>
+        private async void OnDynaflexSdkArqcDataReceived(object? sender, DynaflexArqcData e)
+        {
+            Console.WriteLine($"[PaymentViewModel] SDK ARQC event received - Valid: {e.IsValid}, Card: {e.CardTypeName}");
+
+            if (!e.IsValid || IsProcessing)
+            {
+                return;
+            }
+
+            await ProcessSdkPaymentAsync(e);
+        }
+
+        /// <summary>
+        /// Handle transaction status changes from SDK
+        /// </summary>
+        private void OnDynaflexSdkTransactionStatusChanged(object? sender, DynaflexSdkTransactionEventArgs e)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                Console.WriteLine($"[PaymentViewModel] SDK Transaction status: {e.Status} - {e.Message}");
+
+                if (!IsProcessing)
+                {
+                    DynaflexStatus = e.Message;
+                }
+
+                RestApiLogs.Add($"[Device] {e.Message}");
+                OnPropertyChanged(nameof(HasRestApiLogs));
+            });
+        }
+
+        /// <summary>
+        /// Handle display messages from SDK
+        /// </summary>
+        private void OnDynaflexSdkDisplayMessage(object? sender, string message)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                Console.WriteLine($"[PaymentViewModel] SDK Display: {message}");
+                if (!string.IsNullOrWhiteSpace(message) && !IsProcessing)
+                {
+                    DynaflexStatus = message;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Handle log messages from SDK service
+        /// </summary>
+        private void OnDynaflexSdkLogMessage(object? sender, string message)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                RestApiLogs.Add(message);
+                OnPropertyChanged(nameof(HasRestApiLogs));
+            });
+        }
+
+        #endregion
+
+        #region Dynaflex Legacy Integration (HID-based)
 
         private int _connectionAttempts = 0;
         private const int MAX_CONNECTION_ATTEMPTS = 5;
@@ -912,7 +1393,8 @@ namespace IPS.MainApp.ViewModels
 
         /// <summary>
         /// Start card reading on the Dynaflex device
-        /// This sends the StartTransaction command which makes the device beep and ready to accept cards
+        /// Many Dynaflex devices work in passive mode - they're always ready and
+        /// will automatically beep/send data when a card is presented
         /// </summary>
         private async Task StartCardReadingAsync()
         {
@@ -932,50 +1414,64 @@ namespace IPS.MainApp.ViewModels
             try
             {
                 DynaflexStatus = "Preparing terminal...";
+                Console.WriteLine("[PaymentViewModel] Preparing terminal for card reading...");
 
-                // Start EMV transaction with the cart total amount
-                bool started = await _dynaflexService.StartTransactionAsync(CartTotalPrice);
+                // Try to send commands, but don't fail if they don't work
+                // Many Dynaflex devices work in passive mode and don't need commands
+                bool commandWorked = false;
 
-                if (started)
+                try
                 {
-                    Console.WriteLine("[PaymentViewModel] Card reading started - device should beep");
-                    DynaflexStatus = "Terminal ready";
+                    // Try StartTransaction command (may not work on all devices)
+                    commandWorked = await _dynaflexService.StartTransactionAsync(CartTotalPrice);
+                    if (commandWorked)
+                    {
+                        Console.WriteLine("[PaymentViewModel] StartTransaction command accepted");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[PaymentViewModel] StartTransaction failed: {ex.Message}");
+                }
 
-                    // NOW transition to "Insert Card" screen - terminal is ready!
-                    IsPreparingTerminal = false;
-                    IsWaitingForCard = true;
-                    Console.WriteLine("[PaymentViewModel] Terminal ready - showing 'Insert Card' screen");
+                if (!commandWorked)
+                {
+                    try
+                    {
+                        // Try RequestCard as fallback
+                        commandWorked = await _dynaflexService.RequestCardAsync();
+                        if (commandWorked)
+                        {
+                            Console.WriteLine("[PaymentViewModel] RequestCard command accepted");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[PaymentViewModel] RequestCard failed: {ex.Message}");
+                    }
+                }
+
+                // Regardless of whether commands worked, proceed to Insert Card screen
+                // The device may work in passive mode (auto-detects card insertion)
+                if (commandWorked)
+                {
+                    DynaflexStatus = "Terminal ready";
+                    Console.WriteLine("[PaymentViewModel] Commands accepted - terminal ready");
                 }
                 else
                 {
-                    // Try RequestCard as fallback (for non-EMV mode)
-                    Console.WriteLine("[PaymentViewModel] StartTransaction not supported, trying RequestCard...");
-                    bool requested = await _dynaflexService.RequestCardAsync();
-
-                    if (requested)
-                    {
-                        Console.WriteLine("[PaymentViewModel] Card request sent - device should beep");
-                        DynaflexStatus = "Terminal ready";
-
-                        // Transition to "Insert Card" screen
-                        IsPreparingTerminal = false;
-                        IsWaitingForCard = true;
-                        Console.WriteLine("[PaymentViewModel] Terminal ready - showing 'Insert Card' screen");
-                    }
-                    else
-                    {
-                        Console.WriteLine("[PaymentViewModel] Failed to initiate card reading");
-                        DynaflexStatus = "Card reader connected (passive mode)";
-
-                        // Still allow proceeding - device might work in passive mode
-                        IsPreparingTerminal = false;
-                        IsWaitingForCard = true;
-                    }
+                    DynaflexStatus = "Ready - Insert or tap card";
+                    Console.WriteLine("[PaymentViewModel] Passive mode - waiting for card (device may beep when card is presented)");
                 }
+
+                // Always transition to Insert Card screen
+                IsPreparingTerminal = false;
+                IsWaitingForCard = true;
+                Console.WriteLine("[PaymentViewModel] Showing 'Insert Card' screen");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[PaymentViewModel] Error starting card reading: {ex.Message}");
+                Console.WriteLine($"[PaymentViewModel] Error in StartCardReadingAsync: {ex.Message}");
                 DynaflexStatus = "Card reader connected";
 
                 // Still allow proceeding
@@ -1171,6 +1667,18 @@ namespace IPS.MainApp.ViewModels
             if (_isDisposed) return;
             _isDisposed = true;
 
+            // Dispose SDK-based service
+            if (_dynaflexSdkService != null)
+            {
+                _dynaflexSdkService.ConnectionStateChanged -= OnDynaflexSdkConnectionChanged;
+                _dynaflexSdkService.ArqcDataReceived -= OnDynaflexSdkArqcDataReceived;
+                _dynaflexSdkService.TransactionStatusChanged -= OnDynaflexSdkTransactionStatusChanged;
+                _dynaflexSdkService.DisplayMessageReceived -= OnDynaflexSdkDisplayMessage;
+                _dynaflexSdkService.LogMessage -= OnDynaflexSdkLogMessage;
+                _dynaflexSdkService.Dispose();
+            }
+
+            // Dispose legacy HID-based service
             if (_dynaflexService != null)
             {
                 _dynaflexService.ConnectionStateChanged -= OnDynaflexConnectionChanged;

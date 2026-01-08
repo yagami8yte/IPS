@@ -1637,7 +1637,7 @@
                                         <Border Background="{StaticResource Espresso}"
                                                 CornerRadius="6"
                                                 Padding="15"
-                                                MaxHeight="250">
+                                                MaxHeight="400">
                                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                                 <ItemsControl ItemsSource="{Binding CardReaderTestLogs}">
                                                     <ItemsControl.ItemTemplate>
@@ -1652,6 +1652,93 @@
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
                                             </ScrollViewer>
+                                        </Border>
+
+                                        <!-- Clear Logs Button -->
+                                        <Button Command="{Binding ClearCardReaderLogsCommand}"
+                                                Content="Clear Logs"
+                                                HorizontalAlignment="Right"
+                                                Margin="0,10,0,0"
+                                                Padding="15,8"
+                                                Cursor="Hand"
+                                                FontSize="14"
+                                                Background="{StaticResource MediumBrown}"
+                                                Foreground="White"
+                                                BorderThickness="0">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="6"
+                                                            Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Export Diagnostics Section -->
+                                <Border Background="{StaticResource SageGreen}"
+                                        CornerRadius="12"
+                                        Padding="20"
+                                        Margin="0,20,0,15">
+                                    <StackPanel>
+                                        <TextBlock Text="Diagnostics"
+                                                   FontSize="20"
+                                                   FontWeight="Bold"
+                                                   Foreground="{StaticResource DarkBrown}"
+                                                   Margin="0,0,0,10"/>
+                                        <TextBlock Text="Export all logs to a file for debugging printer and card reader issues."
+                                                   FontSize="14"
+                                                   Foreground="{StaticResource MediumBrown}"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,0,0,15"/>
+
+                                        <Button Command="{Binding ExportDiagnosticsCommand}"
+                                                Cursor="Hand"
+                                                Margin="0,0,0,10"
+                                                Padding="20,15">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Background" Value="{StaticResource ForestGreen}"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="{TemplateBinding Background}"
+                                                                        CornerRadius="8"
+                                                                        Padding="{TemplateBinding Padding}">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#1B5E20"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <TextBlock FontSize="18" FontWeight="Bold" Foreground="White">
+                                                <Run Text="📋 Export Diagnostic Logs to Desktop"/>
+                                            </TextBlock>
+                                        </Button>
+
+                                        <!-- Export Status Message -->
+                                        <Border Visibility="{Binding HasDiagnosticExportStatus, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                Background="#D4EDDA"
+                                                BorderBrush="#28A745"
+                                                BorderThickness="2"
+                                                CornerRadius="6"
+                                                Padding="15">
+                                            <TextBlock Text="{Binding DiagnosticExportStatus}"
+                                                       FontSize="14"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#155724"
+                                                       TextWrapping="Wrap"/>
                                         </Border>
                                     </StackPanel>
                                 </Border>
@@ -1956,6 +2043,96 @@
                                 </Style>
                             </Button.Resources>
                         </Button>
+                    </StackPanel>
+                </Border>
+
+                <!-- Auto-Update Section -->
+                <Border Background="White"
+                        CornerRadius="8"
+                        Padding="30"
+                        Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="🔄 Software Updates"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   Margin="0,0,0,20"/>
+
+                        <!-- Current Version -->
+                        <TextBlock FontSize="20" Foreground="{StaticResource DarkBrown}" Margin="0,0,0,20">
+                            <Run Text="Current Version: "/>
+                            <Run Text="v"/>
+                            <Run Text="{Binding CurrentAppVersion}" FontWeight="Bold"/>
+                        </TextBlock>
+
+                        <!-- Check for Updates Button -->
+                        <Button Command="{Binding CheckForUpdatesCommand}"
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Padding="30,20"
+                                Margin="0,0,0,15"
+                                Background="{StaticResource ForestGreen}"
+                                Foreground="White"
+                                Cursor="Hand"
+                                HorizontalAlignment="Left">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Content" Value="Check for Updates"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsCheckingForUpdates}" Value="True">
+                                            <Setter Property="Content" Value="Checking..."/>
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <!-- Update Status -->
+                        <TextBlock Text="{Binding UpdateStatus}"
+                                   FontSize="18"
+                                   Foreground="{StaticResource DarkBrown}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,10,0,15"
+                                   Visibility="{Binding HasUpdateStatus, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                        <!-- Apply Update Button (visible when update available) -->
+                        <Button Command="{Binding ApplyUpdateCommand}"
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Padding="30,20"
+                                Margin="0,0,0,15"
+                                Background="{StaticResource AccentGold}"
+                                Foreground="{StaticResource DarkBrown}"
+                                Cursor="Hand"
+                                HorizontalAlignment="Left"
+                                Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Content" Value="Download &amp; Install Update"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsApplyingUpdate}" Value="True">
+                                            <Setter Property="Content" Value="Updating..."/>
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <!-- Update Progress -->
+                        <StackPanel Visibility="{Binding IsApplyingUpdate, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Margin="0,10,0,0">
+                            <TextBlock Text="{Binding UpdateProgressMessage}"
+                                       FontSize="18"
+                                       Foreground="{StaticResource DarkBrown}"
+                                       Margin="0,0,0,10"/>
+                            <ProgressBar Value="{Binding UpdateProgress}"
+                                         Maximum="100"
+                                         Height="25"
+                                         Background="{StaticResource BackgroundBeige}"
+                                         Foreground="{StaticResource ForestGreen}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
                 </StackPanel> <!-- Close Security Section -->

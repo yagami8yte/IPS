@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <!-- Update this version before pushing to create a new release -->
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,12 +17,31 @@
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3595.46" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.10" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.1" />
     <PackageReference Include="System.Management" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="MainApp\Models\" />
     <Folder Include="Assets\Ads\" />
+  </ItemGroup>
+
+  <!-- Exclude dynaflex_sdk source files from compilation (we only use the DLLs) -->
+  <ItemGroup>
+    <Compile Remove="dynaflex_sdk\**\*" />
+    <Page Remove="dynaflex_sdk\**\*" />
+    <Resource Remove="dynaflex_sdk\**\*" />
+    <None Remove="dynaflex_sdk\**\*" />
+    <Content Remove="dynaflex_sdk\**\*" />
+    <ApplicationDefinition Remove="dynaflex_sdk\**\*" />
+    <EmbeddedResource Remove="dynaflex_sdk\**\*" />
+  </ItemGroup>
+
+  <!-- Also exclude forte_integration docs from compilation -->
+  <ItemGroup>
+    <Compile Remove="forte_integration\**\*" />
+    <None Remove="forte_integration\**\*" />
+    <Content Remove="forte_integration\**\*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +55,83 @@
     <Resource Include="Assets\**\*.png" />
     <Resource Include="Assets\**\*.jpg" />
     <Resource Include="Assets\**\*.jpeg" />
+  </ItemGroup>
+
+  <!-- MagTek Dynaflex SDK References -->
+  <ItemGroup>
+    <Reference Include="MTUSDKNET">
+      <HintPath>Adapters\Dynaflex\MTUSDKNET.dll</HintPath>
+    </Reference>
+    <Reference Include="MTAESDUKPT">
+      <HintPath>Adapters\Dynaflex\MTAESDUKPT.dll</HintPath>
+    </Reference>
+    <Reference Include="MTLib">
+      <HintPath>Adapters\Dynaflex\MTLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MTDevice">
+      <HintPath>Adapters\Dynaflex\MTDevice.dll</HintPath>
+    </Reference>
+    <Reference Include="MTSCRANET">
+      <HintPath>Adapters\Dynaflex\MTSCRANET.dll</HintPath>
+    </Reference>
+    <Reference Include="MTServiceNET">
+      <HintPath>Adapters\Dynaflex\MTServiceNET.dll</HintPath>
+    </Reference>
+    <Reference Include="MLog">
+      <HintPath>Adapters\Dynaflex\MLog.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy MagTek Dynaflex SDK DLLs to output directory -->
+    <None Include="Adapters\Dynaflex\MTUSDKNET.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTUSDKNET.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MTAESDUKPT.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTAESDUKPT.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MTLib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTLib.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MTDevice.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTDevice.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MTSCRANET.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTSCRANET.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MTServiceNET.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTServiceNET.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MLog.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MLog.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MQTTnet.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MQTTnet.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MMXNET.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MMXNET.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MTCMSNET.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTCMSNET.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MTPPSCRANET.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTPPSCRANET.dll</Link>
+    </None>
+    <None Include="Adapters\Dynaflex\MTPPServiceNET.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MTPPServiceNET.dll</Link>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

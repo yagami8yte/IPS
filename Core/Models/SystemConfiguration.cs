@@ -228,5 +228,24 @@ namespace IPS.Core.Models
         /// Tax label to display on receipt (e.g., "Sales Tax", "VAT")
         /// </summary>
         public string TaxLabel { get; set; } = "Tax";
+
+        // ========================================
+        // Auto-Update Configuration (GitHub)
+        // ========================================
+
+        /// <summary>
+        /// GitHub repository owner (username or organization)
+        /// </summary>
+        public string GitHubOwner { get; set; } = string.Empty;
+
+        /// <summary>
+        /// GitHub repository name
+        /// </summary>
+        public string GitHubRepo { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Automatically check for updates on startup
+        /// </summary>
+        public bool AutoCheckUpdates { get; set; } = false;
     }
 }

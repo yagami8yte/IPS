@@ -1,0 +1,106 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build -c Release --no-restore
+
+    - name: Publish
+      run: dotnet publish -c Release -r win-x64 --self-contained false -o ./publish
+
+    - name: Get version from csproj
+      id: get_version
+      shell: pwsh
+      run: |
+        $csproj = Get-Content "IPS.csproj" -Raw
+        if ($csproj -match '<Version>([^<]+)</Version>') {
+          $version = $matches[1]
+        } else {
+          # Auto-generate version from date if not specified
+          $version = Get-Date -Format "yyyy.MM.dd.HHmm"
+        }
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+        echo "Version: $version"
+
+    - name: Remove appsettings.json from publish folder
+      shell: pwsh
+      run: |
+        $settingsPath = "./publish/appsettings.json"
+        if (Test-Path $settingsPath) {
+          Remove-Item $settingsPath -Force
+          echo "Removed appsettings.json from publish folder"
+        } else {
+          echo "appsettings.json not found in publish folder (OK)"
+        }
+
+    - name: Create ZIP
+      shell: pwsh
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        Compress-Archive -Path "./publish/*" -DestinationPath "./IPS-v$version-win-x64.zip" -Force
+        echo "Created IPS-v$version-win-x64.zip"
+
+    - name: Check if release exists
+      id: check_release
+      shell: pwsh
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $tag = "v$version"
+        try {
+          $release = gh release view $tag 2>$null
+          echo "EXISTS=true" >> $env:GITHUB_OUTPUT
+          echo "Release $tag already exists"
+        } catch {
+          echo "EXISTS=false" >> $env:GITHUB_OUTPUT
+          echo "Release $tag does not exist, will create"
+        }
+
+    - name: Delete existing release if exists
+      if: steps.check_release.outputs.EXISTS == 'true'
+      shell: pwsh
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $tag = "v$version"
+        gh release delete $tag --yes --cleanup-tag
+        echo "Deleted existing release $tag"
+
+    - name: Create GitHub Release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      shell: pwsh
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $tag = "v$version"
+        $zipFile = "./IPS-v$version-win-x64.zip"
+        $commitMsg = git log -1 --pretty=%B
+
+        gh release create $tag $zipFile `
+          --title "IPS v$version" `
+          --notes "Release v$version`n`nChanges:`n$commitMsg`n`n---`nAuto-generated release from GitHub Actions" `
+          --latest
+
+        echo "Created release $tag with asset $zipFile"
