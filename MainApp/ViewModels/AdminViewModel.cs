@@ -751,6 +751,11 @@ namespace IPS.MainApp.ViewModels
         public IRelayCommand ClearCardReaderLogsCommand { get; }
 
         /// <summary>
+        /// Command to copy card reader test logs to clipboard
+        /// </summary>
+        public IRelayCommand CopyCardReaderLogsCommand { get; }
+
+        /// <summary>
         /// Command to check for application updates
         /// </summary>
         public IRelayCommand CheckForUpdatesCommand { get; }
@@ -1222,6 +1227,7 @@ namespace IPS.MainApp.ViewModels
             TestCardReaderCommand = new RelayCommand(async () => await OnTestCardReaderAsync());
             ExportDiagnosticsCommand = new RelayCommand(OnExportDiagnostics);
             ClearCardReaderLogsCommand = new RelayCommand(OnClearCardReaderLogs);
+            CopyCardReaderLogsCommand = new RelayCommand(OnCopyCardReaderLogs);
             FetchFromForteCommand = new RelayCommand(async () => await OnFetchFromForteAsync());
             SelectReceiptPrinterCommand = new RelayCommand<string>(OnSelectReceiptPrinter);
             CheckForUpdatesCommand = new RelayCommand(async () => await OnCheckForUpdatesAsync());
@@ -2286,6 +2292,30 @@ namespace IPS.MainApp.ViewModels
         }
 
         /// <summary>
+        /// Copy card reader test logs to clipboard
+        /// </summary>
+        private void OnCopyCardReaderLogs()
+        {
+            try
+            {
+                if (CardReaderTestLogs.Count == 0)
+                {
+                    System.Windows.Clipboard.SetText("No card terminal logs available.");
+                }
+                else
+                {
+                    var logsText = string.Join("\n", CardReaderTestLogs);
+                    System.Windows.Clipboard.SetText(logsText);
+                }
+                Console.WriteLine("[AdminViewModel] Card reader logs copied to clipboard");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AdminViewModel] Failed to copy logs: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Select a receipt printer from the discovered printers list
         /// </summary>
         private void OnSelectReceiptPrinter(string? printerName)
@@ -2446,11 +2476,20 @@ namespace IPS.MainApp.ViewModels
 
                 // Get current configuration info
                 var config = _configService.GetConfiguration();
+
+                // Include card terminal test logs if any
+                string cardTerminalLogs = "";
+                if (CardReaderTestLogs.Count > 0)
+                {
+                    cardTerminalLogs = "\n\n═══════════════════════════════════════\nCARD TERMINAL TEST LOGS\n═══════════════════════════════════════\n"
+                        + string.Join("\n", CardReaderTestLogs);
+                }
+
                 var additionalInfo = $@"Selected Printer: {config.SelectedReceiptPrinter ?? "None"}
 Auto Print Receipt: {config.AutoPrintReceipt}
 Payment Mode: {config.FortePaymentMode}
 Sandbox Mode: {config.ForteSandboxMode}
-Payment Enabled: {config.PaymentEnabled}";
+Payment Enabled: {config.PaymentEnabled}{cardTerminalLogs}";
 
                 string filePath = DiagnosticService.ExportToFile(additionalInfo);
 
