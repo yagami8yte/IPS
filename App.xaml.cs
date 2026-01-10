@@ -155,8 +155,8 @@ namespace IPS
                         );
                     });
 
-                    // Wait max 15 seconds for connection
-                    if (await Task.WhenAny(adapterTask, Task.Delay(15000)) == adapterTask)
+                    // Wait max 30 seconds for connection (booth may take 20+ seconds)
+                    if (await Task.WhenAny(adapterTask, Task.Delay(30000)) == adapterTask)
                     {
                         adapter = await adapterTask;
                         _systemManager!.RegisterSystem(adapter);
@@ -165,7 +165,7 @@ namespace IPS
                     }
                     else
                     {
-                        Console.WriteLine($"[App] ✗ Timeout connecting to {systemConfig.SystemName} (15s) - skipping");
+                        Console.WriteLine($"[App] ✗ Timeout connecting to {systemConfig.SystemName} (30s) - skipping");
                         progress.Report(($"Timeout: {systemConfig.SystemName} - skipping...", progressPercent));
                     }
 

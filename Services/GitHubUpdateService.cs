@@ -25,11 +25,16 @@ namespace IPS.Services
         {
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "IPS-Updater");
+            // Prevent caching - GitHub API responses should always be fresh
+            _httpClient.DefaultRequestHeaders.Add("Cache-Control", "no-cache, no-store");
+            _httpClient.DefaultRequestHeaders.Add("Pragma", "no-cache");
 
             // Get current version from assembly
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var version = assembly.GetName().Version;
             _currentVersion = version != null ? $"{version.Major}.{version.Minor}.{version.Build}" : "0.0.0";
+
+            Console.WriteLine($"[UpdateService] Initialized. Assembly version: {version}, CurrentVersion: {_currentVersion}");
 
             _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }
@@ -69,8 +74,12 @@ namespace IPS.Services
                     return null;
                 }
 
+                // Log raw response for debugging
+                Console.WriteLine($"[UpdateService] GitHub API Response - TagName: '{release.TagName}', Name: '{release.Name}'");
+
                 // Parse version from tag (e.g., "v1.2.0" -> "1.2.0")
                 var latestVersion = release.TagName?.TrimStart('v', 'V') ?? "0.0.0";
+                Console.WriteLine($"[UpdateService] Parsed latestVersion: '{latestVersion}'");
 
                 // Find the ZIP asset
                 string? downloadUrl = null;
@@ -91,11 +100,14 @@ namespace IPS.Services
                     }
                 }
 
+                var compareResult = CompareVersions(latestVersion, _currentVersion);
+                Console.WriteLine($"[UpdateService] CompareVersions('{latestVersion}', '{_currentVersion}') = {compareResult}");
+
                 var info = new GitHubReleaseInfo
                 {
                     CurrentVersion = _currentVersion,
                     LatestVersion = latestVersion,
-                    IsUpdateAvailable = CompareVersions(latestVersion, _currentVersion) > 0,
+                    IsUpdateAvailable = compareResult > 0,
                     ReleaseNotes = release.Body ?? "",
                     PublishedAt = release.PublishedAt,
                     DownloadUrl = downloadUrl,
@@ -342,22 +354,38 @@ exit
     }
 
     /// <summary>
-    /// GitHub API response model
+    /// GitHub API response model - uses JsonPropertyName for snake_case mapping
     /// </summary>
     internal class GitHubReleaseResponse
     {
+        [System.Text.Json.Serialization.JsonPropertyName("tag_name")]
         public string? TagName { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("body")]
         public string? Body { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("published_at")]
         public DateTime? PublishedAt { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("html_url")]
         public string? HtmlUrl { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("assets")]
         public GitHubAsset[]? Assets { get; set; }
     }
 
     internal class GitHubAsset
     {
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string? Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("browser_download_url")]
         public string? BrowserDownloadUrl { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("size")]
         public long Size { get; set; }
     }
 }
