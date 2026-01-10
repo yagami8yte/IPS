@@ -1,0 +1,133 @@
+﻿<Window x:Class="MTUSDKDemo.CustomizeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MTUSDKDemo"
+        mc:Ignorable="d"
+        Title="Custimize" Height="410" Width="350" WindowStartupLocation="CenterOwner" Icon="Assets/ic_settings.png">
+    <Grid Margin="5,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="380"/>
+        </Grid.RowDefinitions>
+
+            <Grid Margin="10,10,10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="185"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Label Content="Tip Mode: " VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="TipModeCB" Width="200" Height="25" VerticalAlignment="Center" Margin="0,0,0,0" SelectionChanged="TipModeCB_SelectionChanged" >
+                        <ComboBoxItem Content="Show TIP using %"/>
+                        <ComboBoxItem Content="Show TIP using $"/>
+                        <ComboBoxItem Content="Show +TIP button using % "/>
+                        <ComboBoxItem Content="Show +TIP button using $ "/>
+                    </ComboBox>
+                </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Tip Button 1: " VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                        <ComboBox x:Name="Tip1DisplayModeCB" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="Tip1DisplayModeCB_SelectionChanged" >
+                            <ComboBoxItem Content="% or $"/>
+                            <ComboBoxItem Content="Custom"/>
+                            <ComboBoxItem Content="NO TIP"/>
+                            <ComboBoxItem Content="Disabled"/>
+                        </ComboBox>
+                    <Label x:Name="Tip1AmountLabel" Content="$" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="5,5,0,0"/>
+                    <TextBox x:Name="Tip1ValueTextBox" TextWrapping="Wrap" Text="" Width="50" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                    <Label x:Name="Tip1PercentLabel" Content="%" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                    <Label Content="Tip Button 2: " VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                        <ComboBox x:Name="Tip2DisplayModeCB" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="Tip2DisplayModeCB_SelectionChanged" >
+                            <ComboBoxItem Content="% or $"/>
+                            <ComboBoxItem Content="Custom"/>
+                            <ComboBoxItem Content="NO TIP"/>
+                            <ComboBoxItem Content="Disabled"/>
+                        </ComboBox>
+                        <Label x:Name="Tip2AmountLabel" Content="$" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="5,5,0,0"/>
+                        <TextBox x:Name="Tip2ValueTextBox" TextWrapping="Wrap" Text="" Width="50" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                    <Label x:Name="Tip2PercentLabel" Content="%" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="0,5,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                    <Label Content="Tip Button 3: " VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                        <ComboBox x:Name="Tip3DisplayModeCB" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="Tip3DisplayModeCB_SelectionChanged" >
+                            <ComboBoxItem Content="% or $"/>
+                            <ComboBoxItem Content="Custom"/>
+                            <ComboBoxItem Content="NO TIP"/>
+                            <ComboBoxItem Content="Disabled"/>
+                        </ComboBox>
+                        <Label x:Name="Tip3AmountLabel" Content="$" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="5,5,0,0"/>
+                        <TextBox x:Name="Tip3ValueTextBox" TextWrapping="Wrap" Text="" Width="50" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                    <Label x:Name="Tip3PercentLabel" Content="%" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="0,5,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                    <Label Content="Tip Button 4: " VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                        <ComboBox x:Name="Tip4DisplayModeCB" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="Tip4DisplayModeCB_SelectionChanged" >
+                            <ComboBoxItem Content="% or $"/>
+                            <ComboBoxItem Content="Custom"/>
+                            <ComboBoxItem Content="NO TIP"/>
+                            <ComboBoxItem Content="Disabled"/>
+                        </ComboBox>
+                        <Label x:Name="Tip4AmountLabel" Content="$" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="5,5,0,0"/>
+                        <TextBox x:Name="Tip4ValueTextBox" TextWrapping="Wrap" Text="" Width="50" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                    <Label x:Name="Tip4PercentLabel" Content="%" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="0,5,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                    <Label Content="Tip Button 5: " VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                        <ComboBox x:Name="Tip5DisplayModeCB" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="Tip5DisplayModeCB_SelectionChanged" >
+                            <ComboBoxItem Content="% or $"/>
+                            <ComboBoxItem Content="Custom"/>
+                            <ComboBoxItem Content="NO TIP"/>
+                            <ComboBoxItem Content="Disabled"/>
+                        </ComboBox>
+                        <Label x:Name="Tip5AmountLabel" Content="$" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="5,5,0,0"/>
+                        <TextBox x:Name="Tip5ValueTextBox" TextWrapping="Wrap" Text="" Width="50" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                    <Label x:Name="Tip5PercentLabel" Content="%" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="0,5,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Tip Button 6: " VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                        <ComboBox x:Name="Tip6DisplayModeCB" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="Tip6DisplayModeCB_SelectionChanged" >
+                            <ComboBoxItem Content="% or $"/>
+                            <ComboBoxItem Content="Custom"/>
+                            <ComboBoxItem Content="NO TIP"/>
+                            <ComboBoxItem Content="Disabled"/>
+                        </ComboBox>
+                        <Label x:Name="Tip6AmountLabel" Content="$" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="5,5,0,0"/>
+                        <TextBox x:Name="Tip6ValueTextBox" TextWrapping="Wrap" Text="" Width="50" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                    <Label x:Name="Tip6PercentLabel" Content="%" VerticalContentAlignment="Center" Height="25" Width="20" FontWeight="Bold" Visibility="Hidden" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Label x:Name="TaxSurchargeRateLabel" Content="Tax Rate: " VerticalContentAlignment="Center" FontWeight="Bold"/>
+                    <TextBox x:Name="TaxSurchargeRateTextBox" Text="" Width="50" VerticalContentAlignment="Center" Height="25"/>
+                <Label Content="%" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+            </StackPanel>
+            
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <Label Content="Present Card Functional Button: " VerticalContentAlignment="Center" Width="190" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="FButtonRightCB" Width="110" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="Tip6DisplayModeCB_SelectionChanged" >
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="4" Orientation="Horizontal">
+                    <Button x:Name="OKButton" Content="OK" Width="85" Height="30" Margin="60,10,0,0" Click="OKButton_Click"/>
+                    <Button x:Name="CancelButton" Content="Cancel" Width="85" Height="30" Margin="20,10,0,0" IsCancel="True" Click="CancelButton_Click"/>
+                </StackPanel>
+
+            </Grid>
+    </Grid>
+
+</Window>

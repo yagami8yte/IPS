@@ -58,7 +58,10 @@
       "WebFetch(domain:www.magtek.com)",
       "WebFetch(domain:h10032.www1.hp.com)",
       "WebFetch(domain:www.manualslib.com)",
-      "WebFetch(domain:escpos.readthedocs.io)"
+      "WebFetch(domain:escpos.readthedocs.io)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git stash:*)"
     ],
     "deny": [],
     "ask": []

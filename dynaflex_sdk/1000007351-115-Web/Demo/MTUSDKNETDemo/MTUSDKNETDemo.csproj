@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B8140D5-2352-4CAB-A20B-CF7D666CD8DB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MTUSDKDemo</RootNamespace>
+    <AssemblyName>MTUSDKDemo</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MLog">
+      <HintPath>lib\MLog.dll</HintPath>
+    </Reference>
+    <Reference Include="MQTTnet">
+      <HintPath>lib\MQTTnet.dll</HintPath>
+    </Reference>
+    <Reference Include="MTAESDUKPT">
+      <HintPath>lib\MTAESDUKPT.dll</HintPath>
+    </Reference>
+    <Reference Include="MTUSDKNET">
+      <HintPath>lib\MTUSDKNET.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="netstandard" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ClassicNFCTagWindow.xaml.cs">
+      <DependentUpon>ClassicNFCTagWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigWindow.xaml.cs">
+      <DependentUpon>ConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomizedSettings.cs" />
+    <Compile Include="CustomizeWindow.xaml.cs">
+      <DependentUpon>CustomizeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceUIPage.xaml.cs">
+      <DependentUpon>DeviceUIPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceUIPageSettings.cs" />
+    <Compile Include="DisplayStrings.cs" />
+    <Compile Include="EnhancedSelectionsWindow.xaml.cs">
+      <DependentUpon>EnhancedSelectionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IFallbackAdapter.cs" />
+    <Compile Include="FallbackManager.cs" />
+    <Compile Include="MQTTSettings.cs" />
+    <Compile Include="MTNdef.cs" />
+    <Compile Include="MTNdefRecord.cs" />
+    <Compile Include="MTParser.cs" />
+    <Compile Include="NFCTagWindow.xaml.cs">
+      <DependentUpon>NFCTagWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectionsWindow.xaml.cs">
+      <DependentUpon>SelectionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="ClassicNFCTagWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomizeWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DeviceUIPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EnhancedSelectionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="NFCTagWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\wallet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\card.png" />
+    <Resource Include="Assets\dip_card.png" />
+    <Resource Include="Assets\ic_delete.png" />
+    <Resource Include="Assets\tap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\tap30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\tap30w.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\clear.png" />
+    <Resource Include="Assets\connect.png" />
+    <Resource Include="Assets\disconnect.png" />
+    <Resource Include="Assets\scan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\list_view.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\manual_entry2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ic_drawer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\pin.png" />
+    <Resource Include="Assets\signature.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\apple.png" />
+    <Resource Include="Assets\apple30.png" />
+    <Resource Include="Assets\barcode.png" />
+    <Resource Include="Assets\barcode30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\nfc30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ic_settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\gwallet30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\customize.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

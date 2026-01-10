@@ -1,0 +1,204 @@
+**********************************************************************************
+1000007351 MAGTEK UNIVERSAL SDK FOR MMS DEVICES (WINDOWS) 
+**********************************************************************************
+Revision 100		Date:10-01-2020
+
+Initial Release.
+**********************************************************************************
+Revision 101		Date:10-22-2020
+
+SDK API (Version 110):
+- Updated ITransaction interface for additional transaction options.
+- Updated TransactionStatus event handling to include Status Detail and Device Detail information.
+- Resolved device serial number issue for MMS devices.
+
+MTUSDKNET Demo (Version 1.0.1.0): 
+- Updated startTransaction method to specify additional transaction options.
+- Updated showDeviceInfo method to show additional information only when device is connected. 
+- Updated OnEvent to show additional Status Detail and Device Detail upon transaction cancelled or error.
+ 
+**********************************************************************************      
+Revision 102		Date:01-26-2021
+
+SDK API (Version 114):
+- Added GetFile method for MMSDevice.
+- Replaced setDisplay method with displayMessage method in IDeviceControl interface.
+- Added TechnicalFallback to TransactionStatus enumeration.
+- Added PreventMSRSignatureForCardWithICC property to ITransaction interface.
+- Updated MMSDevice to support Host-Driven Fallback for transactions.
+- Updated MMXDevice component to allow opening MMS device by more than one host app through USB at the same time.
+
+MTUSDKNET Demo (Version 1.0.2.0): 
+- Added Get File feature button, Host-Driven Fallback option, and Get Signature from Device option in UI.
+- Updated to support Get File from device.
+- Updated to support Get Signature from device.
+- Updated to support Host-Driven Fallback for transactions.
+
+**********************************************************************************      
+Revision 103		Date:06-21-2021
+
+SDK API (Version 116):
+- Added OperationStatus, DeviceEvent, and UserEvent to EventType enumeration.
+- Added DataEntryType, DeviceEvent and UserEvent as enumerations.
+- Added QuickChipDeferred, DataEntered, and TryAnotherInterface to TransactionStatus enumeration.
+- Added SuppressThankYouMessage and OverrideFinalTransactionMessage properties to ITransaction interface.
+- Updated MMSDevice to report device events and user events.
+- Updated MMSDevice to support Manual Card Entry (MCE) transactions.
+
+MTUSDKNET Demo (Version 1.0.3.0): 
+- Updated to support Event-Driven transactions.
+- Updated to support Manual Card Entry (MCE) transactions.
+- Updated to scan for USB device insertion and removal events.
+ 
+**********************************************************************************      
+Revision 104		Date:09-27-2021
+
+- Updated MMXNET.dll to optionally use MLog.dll for logging purposes.
+ 
+**********************************************************************************   
+Revision 105		Date:01-25-2022
+
+SDK API (Version 118):
+- Added FeatureStatus and BarCodeData to EventType enumeration.
+- Added DeviceFeature and FeatureStatus as enumerations.
+- Added BarCodeRequest and BarCodeData classes.
+- Added showBarCode, startBarCodeReader, and stopBarCodeReader methods to IDeviceControl interface.
+- Updated MMXNET.dll to support DynaProx readers.
+
+MTUSDKNET Demo (Version 1.0.8.1): 
+- Updated to support DynaFlex barcode scanning
+- Updated to support showing barcode on DynaFlex.
+
+**********************************************************************************   
+Revision 106		Date:03-02-2022
+
+SDK API (Version 119):
+- Added PINData and PANData to EventType enumeration.
+- Added PINEntry and PANEntry to DeviceFeature enumeration.
+- Added PINData, PANData, PINRequest and PANRequest classes.
+
+MTUSDKNET Demo (Version 1.0.9.01): 
+- Updated to support Request PIN and Request PIN+Card features
+
+**********************************************************************************   
+Revision 107		Date:02-21-2023
+
+SDK API (Version 121):
+- Added AppleVAS to PaymentMethod enumeration.
+- Added VASMode and VASProtocol enumerations.
+- Added AppleVASMode and AppleVASProtocol to ITransaction interface.
+- Added BarcodeRead and VASError to TransactionStatus enumeration.
+- Updated MMXNET.dll to support DynaFlex WebSocket WSS protocol.
+- Added WEBSOCKET and WEBSOCKET_TRUST to ConnectionType enumeration.
+- Added CertificateInfo class.
+
+MTUSDKNET Demo (Version 1.0.11.01): 
+- Updated to support Apple VAS.
+- Updated to support WebSocket WSS protocol.
+
+**********************************************************************************   
+Revision 108		Date:09-20-2023
+
+SDK API (Version 122):
+- Added DisplayAmountForQuickChip property to ITransaction interface.
+- Updated IDevice.getCapabilities() to return the physical hardware capabilities for DynaFlex and DynaProx devices.
+- Added NFC to PaymentMethod enumeration.
+- Added NFCEvent, NFCData, and NFCResponse to EventType enumeration.
+- Added NFCEvent enumeration.
+- Added NFCData class.
+- Added AppleVASMode and AppleVASProtocol to ITransaction interface.
+
+MTUSDKNET Demo (Version 1.0.12.01): 
+- Updated to display amount on device for Quick Chip transactions.
+- Updated to enable and disable payment method selections based up on the hardware capabilities of the connected device.
+- Updated to support NFC Tag Type 2 data reading and writing operations.
+
+**********************************************************************************   
+Revision 109		Date:11-09-2023
+
+SDK API (Version 123):
+- Added new properties to ITransaction interface: TipMode, Tip[1-6]DisplayMode, Tip[1-6]Value, and TaxAmount.
+- Added TransactionStartedFromDevice, TransactionStartedFromDeviceQuickChip, and TransactionCancelledFromDevice to TransactionStatus enumeration.
+- Added EnhancedInputRequest to EventType enumeration.
+- Added EnhancedInputRequest class.
+- Added MifareClassic1K, MifareClassic4K, IOFailed, and AuthenticationFailed to NFCEvent enumeration.
+
+MTUSDKNET Demo (Version 1.0.13.01): 
+- Updated to support tip and tax for transactions.
+- Updated to support enhanced application selections.
+- Updated to support NFC Mifare Classic 1K and 4K card reading and writing operations.
+
+**********************************************************************************   
+Revision 110		Date:12-21-2023
+
+SDK API (Version 124):
+- Added support for DynaFlex II Go (Bluetooth LE)
+- Added NFCAPDUResponse to EventType enumeration.
+- Added MifareDESFire to NFCEvent enumeration.
+- Added NFCAPDUData class.
+
+MTUSDKNET Demo (Version 1.0.14.01): 
+- Updated to support DynaFlex II Go (Bluetooth LE)
+- Updated to support NFC Mifare DESFire Light card reading operations.
+
+**********************************************************************************   
+Revision 111		Date:01-29-2024
+
+SDK API (Version 125):
+- Added GoogleVAS to PaymentMethod enumeration.
+
+MTUSDKNET Demo (Version 1.0.15.01): 
+- Updated to support Google VAS.
+- Added Parse NDEF feature button.
+- Updated NTAG fastread command to read only the valid user memory pages for NTAG213/NTAG215/NTAG216.
+
+**********************************************************************************   
+Revision 112		Date:06-24-2024
+
+SDK API (Version 126):
+- Added FunctionalButtonRightOption property to ITransaction interface.
+- Added new API functions for IDeviceControl to allow showing custom device UI pages.
+
+MTUSDKNET Demo (Version 1.0.16.01): 
+- Updated to support start transaction with functional button.
+- Updated to support showing custom device UI pages.
+
+**********************************************************************************   
+Revision 113		Date:08-29-2024
+
+SDK API (Version 127):
+- Fixed issue with passing NULL value for title parameter when showing custom device UI pages.
+
+MTUSDKNET Demo (Version 1.0.17.01): 
+- Updated sample code to allow loading UI String CSV file that can used in customization of device UI pages. 
+
+
+**********************************************************************************   
+Revision 114		Date:04-23-2025
+
+SDK API (Version 128):
+- Updated to scan for DynaFlex devices connected to MQTT broker.
+- Added MQTT to ConnectionType enumeration.
+- Added MQTT related methods to CoreAPI: setMQTTBrokerInfo, setMQTTClientID, setMQTTSubscribeTopic, setMQTTPublishTopic, setMQTTDeviceDiscoveryTimeout, setMQTTQoS, startMQTTDeviceStatusMonitoring, stopMQTTDeviceStatusMonitoring, and setSystemStatusCallback.
+- Added IMQTTDeviceStatusCallback interface.
+- Added ISystemStatusCallback interface.
+- Added ErrorType enumeration.
+
+MTUSDKNET Demo (Version 1.0.18.01): 
+- Updated sample code to support MQTT enabled DynaFlex devices. 
+- Updated sample code to monitor for MQTT device online/offline changes.
+
+**********************************************************************************   
+Revision 115		Date:06-13-2025
+
+SDK API (Version 129):
+- Added setMQTTClientCertificateInfo method to Core API to allow using client certificate for mTLS connection to MQTT broker.
+- Added DeviceBatteryLow and DeviceBatteryLowPowerDown to DeviceEvent enumeration.
+- Added more detailed description for the event when Device Operation Failure is reported.
+
+MTUSDKNET Demo (Version 1.0.19.01): 
+- Updated sample code to allow using client certificate for mTLS connection to MQTT broker.
+- Updated sample code to report device battery low events.
+- Updated sample code to report detailed descripiton when Device Operation Failure is reported.
+
+

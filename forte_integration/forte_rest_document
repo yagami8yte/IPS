@@ -1,0 +1,192 @@
+Custom Application Configurations
+Merchants can integrate their custom POS applications to work with the DynaFlex II Go using the  API/SDK  from Magtek depending on the type of integration. For example: 
+
+Merchants using Windows may use this API/SDK 
+Merchants using Android may use this API/SDK
+Merchants using iOS may use this API/SDK
+To use MagTek’s Wedget Keyboard extension, refer to Wedget Application Setup section.
+
+To create a transaction using Forte’s REST API, need to do the following steps: 
+
+Follow the steps mentioned in MagTek’s documentation to get the encrypted EMV or Swipe or Contactless data for your type of integration.
+Parsing the ARQC Data – All transaction requests must include the following minimum required fields which are returned in the ARQC data when doing a dip / swipe / contactless transaction.
+ARQC Data Example: “015CF9820158DFDF540A9070040B545E40000A97DFDF550182DFDF250742353435453430F
+A82013670820132820220009F6E0420700000DFDF530100DFDF4D273B34373631373330303
+0303030303031313D30303030303030303030303030303030303030303FDFDF520106F882
+00EEDFDF598200D03D1FB717A57F675679002181A0421919F0013A260DF0C8EA8672BB8E75FA
+5056810C7B1FD6F6678619BF614E0928B36A1630F8BE58E9E46ABF14BFCFE67581AA3B6E6967
+90CCF4914EF1ACD542BC936FA7CC5B6AF1E6BF7E085C2C1DAD9B09945AF867DD02B47ADA
+CBF1D475B35AE26D2326012FB0488A3E196C1C927CE3634D0053635D70F022867B74ED326
+C95649B2AC0869E442AFE3FFF066F09DE6EF61E26D2D37DE2DA641AF91C5C1A191DDBEAAE
+D8D1F1BA9160FB6C0E522AA78234BF37A0306671DB5FD1D04E4566DF8EA230DFDF560A907
+0040B545E40000A97DFDF570180DFDF580102000076B4DB75″
+KSN –  In the ARQC data, look for tag DFDF56. Use the first 2-digit hexadecimal number after the tag (e.g., 0A), followed by value (9070040B616G2F000015)
+EMVSREDData – In the ARQC data, look for tag DFDF59, next 2 chars are tag (82 sometimes its 81) followed by next 4 chars to be the length of data in Hex (00F8). Covert 00F8 to decimal(248), multiply by 2 to get the value of EMVSREDData value’s length (496). Next 496 chars after 00F8 is the value of EMVSREDData. 
+CardType – In the ARQC data, look for tag DFDF52 next 2 chars are length (01). Followed by value (05). Valid card type values should be 01 / 02 / 05 / 06 / 07 / 08.
+DeviceSerialNumber – 7-digit value, starts with B taken from KSN value BXXXXXX. (The Serial Number of the device is as mentioned at the bottom of DynaFlex II Go).
+After receiving the EMV, swipe or contactless data from the device, create a JSON with the minimum required fields (specified above) and convert it to a string format before passing it via Forte REST API. Refer to REST documentation for sample request and response.  
+ 
+Sending EMV Chip / EMV Contactless / Swipe Data to Forte
+Merchants can use either Forte's Advanced Gateway Interface or REST API  to send EMV DynaFlex II Go data to Forte. 
+
+When sending Swipe data, to conform with the EMV standards, chip cards should always be dipped and should only be swiped if the terminal cannot read the chip data. You may use MagTek's Web API to determine if a credit card has a chip. For Example, if you are using MagTek's Web API for Windows, when a fallback swipe is detected, it returns FallbackIndicator=01. To ensure a fallback swipe can be performed, include card.fallback_swipe=true (REST) in your transaction request message. 
+
+Along with the other required parameters for each request, use the following to pass in EMV Chip / EMV Contactless / Swipe data: 
+
+ 
+
+Integration Method
+
+Parameter
+
+Description
+
+AGI
+
+pg_cc_enc_decryptor=’dynaflex2go’, 
+pg_cc_enc_emv_data= '{"TransactionOutput":{"KSN":"<KSNValue>","DeviceSerialNumber":"<DeviceSerialNumberValue>","EMVSREDData":"<EMVSREDDataValue>","CardType":"<CardTypeValue>"}}'
+
+The pg_cc_enc_decryptor field identifies the device used in the transaction. For DynaFlex II Go, this value is “dynaflex2go”.
+The pg_cc_enc_emv_data field passes the required EMV data included in the ARQC field (see above).
+
+REST
+
+card.card_reader="dynaflex2go",  
+card.card_emv_data="{"TransactionOutput":{"KSN":"<KSNValue>","DeviceSerialNumber":"<DeviceSerialNumberValue>","EMVSREDData":"<EMVSREDDataValue>","CardType":"<CardTypeValue>"}}" 
+
+Both required REST parameters are part of the card object. The card_reader field identifies the device used in the transaction. For DynaFlex II Go, this value is “dynaflex2go”. 
+The card_emv_data field passes in the EMV data included in the ARQC field (see above). 
+
+Wedget Application Setup (Android & iOS)
+Merchants using browser-based POS checkout solutions on Android or iOS devices can connect to their DynaFlex II Go via Bluetooth LE through the Wedget application.  
+
+The Wedget functions as a virtual keyboard, capturing card data from MagTek devices and transmitting it securely to the browser-based POS application. The POS system parses the card data and transmits it to CSG Forte for processing, enabling merchants to accept in-person payments seamlessly through either Forte Checkout or custom browser-based POS applications on Android or iOS devices. 
+
+Download and Install:
+iOS: Download the Wedget aoo from the Apple App Store.
+Android: Download and install the Wedget app from the Google Play Store.
+Install the MagTek Wedget Keyboard Extension app on your device (refer to the Magensa Application Installation and Operation Manual for details).
+Pair DynaFlex II Go device with Wedget App:
+Enable Bluetooth: Turn on Bluetooth on both your mobile device and DynaFlex II Go.
+Enter Pairing Mode: Place the DynaFlex II Go in pairing mode by pressing the power button until you hear 4 beeps and the 4th LED starts flashing. 
+Connect in Wedget App:
+Launch the Wedget app on your device.
+Location Settings – Select “Precise” and “While Using the App” if prompted.
+Tap Continue to proceed. If prompted, select Go to Settings/Wedget.
+Enable the Wedget keyboard in the list of keyboards, if prompted.
+If displayed, proceed to the Choose Input Method screen and set Wedget as the default keyboard.
+Tap Choose Reader, then locate and select DynaFlex II Go from the MagneSafe Reader list.
+Tap Add Device, then select your DynaFlex II Go (Bluetooth LE EMV Device) reader from the list of available devices.
+When prompted, enter the pairing code: 000000 (six zeros)
+From Saved Devices click on DF II Go-BXXXXXX and select Set as Default
+NOTE: DynaFlex II Go should be the default device in the Wedget App
+Verify Connection:
+Your “DynaFlex II Go” reader will be listed under “Saved Devices” in the Wedget app, indicating a successful connection. 
+ 
+NOTE: Ensure that both the Wedget app and MagTek Wedget Keyboard Extension are installed correctly for optimal functionality. 
+
+Pairing DynaFlex II Go via Bluetooth
+To pair the DynaFlex II Go Reader with Your Device via Bluetooth, you must: 
+
+Power on the DynaFlex II Go card reader and place it in pairing mode by pressing the power button until you hear four beeps, and the fourth LED begins flashing, indicating the reader is ready to pair. 
+From your Windows or Android or iOS device, navigate to the Bluetooth settings and select the DynaFlex II Go from the list of available devices to complete the pairing process.
+Note: For additional guidance on pairing the reader via Bluetooth, refer to the Installation and Operation Manual available at Installation and Operation Manual (magtek.com)
+
+Downloading and Installing Drivers (Windows Users Only)
+The MagneFlex Powder API driver allows Windows to detect when the DynaFlex II Go is connected to your device. Merchants using Windows PCs or tablets can connect to DynaFlex II Go via Bluetooth or USB to process EMV, swipe, contactless, and digital wallet transactions.  
+
+Downloading the Driver:
+Download the MagneFlex Powder API. This API is also available for download under Downloads > Plugins > Drivers > DynaFlex Windows Installer on the Developer Documentation.
+Installing the Driver:
+After downloading the file, follow these steps to complete the installation:
+Extract the file and run MTUSDK.WEBAPI.Installer.msi with administrative rights.
+After installation, verify that the MagneFlex Powder V2 API service is running by checking under Windows Services.
+
+Once the service is installed, connect your Windows device to the DynaFlex II Go using either a micro-USB cable or a Bluetooth connection. If your Windows tablet lacks compatible USB ports, you will need to use a connector. 
+Formatting EMV Receipts
+ Merchants must generate EMV-compliant receipts for all EMV transaction sales and authorizations. The data needed to print the receipt is available in the transaction response data from the Forte Checkout callback or the REST/AGI response objects. Fields enclosed in angle brackets (< >) represent the callback field names from Forte Checkout, while fields in square brackets ([ ]) indicate the response field names from the AGI or REST response messages. These are the minimum required fields; merchants may customize the receipt formatting as needed. 
+
+Below are examples of EMV responses from various integration methods, along with a sample EMV receipt. 
+
+Sample REST EMV Response
+{
+    "transaction_id": "trn_ce975090-40ac-482e-a26a-9974ee3g80fc",
+    "location_id": "loc_115161",
+    "action": "sale",
+    "authorization_amount": 5.00,
+    "service_fee_amount": 0.25,
+    "subtotal_amount": 4.75,
+    "authorization_code": "MMY792",
+    "entered_by": "af4160261691a85918ea2491fe440633",
+    "billing_address": {
+        "company_name": "CSG Forte"
+    },
+    "card": {
+        "card_reader": "dynaflex2go"
+    },
+    "response": {
+        "environment": "live",
+        "response_type": "A",
+        "response_code": "A01",
+        "response_desc": "APPROVED",
+        "authorization_code": "MMY792",
+        "avs_result": "?",
+        "cvv_result": " ",
+        "requested_amount": "5.0",
+        "emv_receipt_data": "application_label:Mastercard Debit|entry_mode:CHIP|CVM:1F0302|AID:A0000000041010|TVR:0000000001|IAD:0110A04001220000000000000000000000FF|TSI:E000|ARC:"
+    },
+    "links": {
+        "disputes": "https://api.forte.net/v3/transactions/trn_ce975090-40ac-482e-a26a-9974ee3g80fc/disputes",
+        "settlements": "https://api.forte.net/v3/transactions/trn_ce975090-40ac-482e-a26a-9974ee3g80fc /settlements",
+        "self": " https://api.forte.net/v3/transactions/trn_ce975090-40ac-482e-a26a-9974ee3g80fc/"
+    }
+}
+Sample Forte Checkout EMV Response
+{
+"event":"success",
+"method":"sale",
+"request_id":"d51906d5-5fdf-48e0-e551-5992217e48a,
+"response_code":"A01",
+"response_description":"TEST APPROVAL",
+"trace_number":"fc56ee93-d09e-49c7-91db-3e9c6f1265b9",
+"authorization_code":"8RO895",
+"total_amount":"1",
+"avs_code":"Y",
+"order_number":"OrderNumber",
+"version_number":"1.0",
+"last_4":"1365",
+"method_used":"mast",
+"hash_method":"md5",
+"billing_name":"CSG Forte",
+"billing_street_line1":"500 W. Bethany Drive",
+"billing_street_line2":"Suite 200",
+"billing_locality":"Dallas,
+"billing_postal_code":"75034",
+"billing_country":"US",
+"billing_email_address":"cardholder.name@csgi.com",
+"name_on_card":"Carholder Name",
+"expire_month":"08",
+"expire_year":"2026",
+"signature":"bdb29857d36590cac577471fa1b6afa2",
+"utc_time":"637274902251420000",
+"terminal_number":"BXXXXXX,
+"emvReceiptData":"application_label:Mast Credit|entry_mode:CHIP|CVM:1E0300|AID:A0000001523010|TVR:8000008000|IAD:0105A000034000001E030000000000000000|TSI:6800|ARC:"
+}
+Sample AGI EMV Response
+pg_response_type=A
+pg_response_code=A01
+pg_response_description=TEST APPROVAL
+pg_authorization_code=123456
+pg_trace_number=7D2A316E-08FA-4418-B06F-80FEEC53C697
+pg_avs_code=Y
+pg_cvv_code=M
+pg_merchant_id=176645
+pg_transaction_type=10
+ecom_billto_postal_name_first=Test
+ecom_billto_postal_name_last=User
+pg_total_amount=1.0
+pg_cc_enc_decryptor=dynaflex2go
+pg_emv_receipt_data=application_label:VISA DEBIT|entry_mode:CHIP|CVM:5E0000|AID:A0000000031010|TVR:8000008000|IAD:06010A03A08000|TSI:6800|ARC:
+endofdata
+Sample EMV Receipt
+Receipts must contain all the below elements:

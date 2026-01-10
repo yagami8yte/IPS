@@ -223,6 +223,40 @@ namespace IPS.Services
                                     Log($"Serial Number: {_deviceSerialNumber}");
                                     Log($"Max Input Report: {device.GetMaxInputReportLength()}");
                                     Log($"Max Output Report: {device.GetMaxOutputReportLength()}");
+                                    Log($"Max Feature Report: {device.GetMaxFeatureReportLength()}");
+
+                                    // Check device mode by examining HID usage
+                                    bool isKeyboardMode = false;
+                                    try
+                                    {
+                                        var reportDescriptor = device.GetReportDescriptor();
+                                        foreach (var deviceItem in reportDescriptor.DeviceItems)
+                                        {
+                                            foreach (var usage in deviceItem.Usages.GetAllValues())
+                                            {
+                                                uint usagePage = (uint)(usage >> 16);
+                                                uint usageId = (uint)(usage & 0xFFFF);
+                                                Log($"  HID Usage: Page=0x{usagePage:X4}, ID=0x{usageId:X4}");
+
+                                                // Keyboard = Usage Page 0x01 (Generic Desktop), Usage 0x06 (Keyboard)
+                                                if (usagePage == 0x01 && usageId == 0x06)
+                                                {
+                                                    isKeyboardMode = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Log($"  Could not read HID descriptor: {ex.Message}");
+                                    }
+
+                                    if (isKeyboardMode)
+                                    {
+                                        Log("*** WARNING: Device is in KEYBOARD EMULATION mode ***");
+                                        Log("*** Commands will NOT work - device only sends keystrokes ***");
+                                        Log("*** Use MagTek Demo tools to switch to HID mode ***");
+                                    }
 
                                     // Start reading data
                                     StartReading();
@@ -430,20 +464,39 @@ namespace IPS.Services
             {
                 Log($"Sending beep: count={count}, duration={durationMs}ms");
 
-                // Beep command format varies by device
-                // Generic format: [ReportID][CommandID][Count][Duration(10ms units)]
                 byte durationUnits = (byte)Math.Min(255, durationMs / 10);
 
-                var command = new byte[]
+                // Try multiple command formats since MagTek devices vary
+                var commandFormats = new List<byte[]>
                 {
-                    0x00,                       // Report ID
-                    MmsCommands.Beep,           // Command ID (0x0A)
-                    0x02,                       // Data length
-                    (byte)Math.Min(255, count), // Beep count
-                    durationUnits               // Duration in 10ms units
+                    // Format 1: Standard MMS format [ReportID][CmdID][Len][Data...]
+                    new byte[] { 0x00, MmsCommands.Beep, 0x02, (byte)count, durationUnits },
+
+                    // Format 2: Without length byte
+                    new byte[] { 0x00, MmsCommands.Beep, (byte)count, durationUnits },
+
+                    // Format 3: Report ID 0x01
+                    new byte[] { 0x01, MmsCommands.Beep, 0x02, (byte)count, durationUnits },
+
+                    // Format 4: Direct command (no report ID in data, use report ID 0)
+                    new byte[] { MmsCommands.Beep, 0x02, (byte)count, durationUnits },
                 };
 
-                return await SendCommandAsync(command);
+                foreach (var command in commandFormats)
+                {
+                    Log($"Trying beep format: {BitConverter.ToString(command)}");
+                    bool sent = await SendCommandAsync(command);
+                    if (sent)
+                    {
+                        Log("Beep command sent successfully");
+                        // Wait a bit to see if it worked
+                        await Task.Delay(300);
+                        return true;
+                    }
+                }
+
+                Log("All beep formats failed");
+                return false;
             }
             catch (Exception ex)
             {
@@ -634,25 +687,95 @@ namespace IPS.Services
 
         private async Task<bool> SendCommandAsync(byte[] command)
         {
-            if (_stream == null) return false;
+            if (_stream == null || _device == null) return false;
 
             try
             {
-                // Pad to max output report length
-                int maxLen = _device?.GetMaxOutputReportLength() ?? 64;
+                Log($"Sending command: {BitConverter.ToString(command)}");
+
+                // Try Method 1: Output Report FIRST (more reliable for Dynaflex)
+                bool outputSent = await TrySendOutputReportAsync(command);
+                if (outputSent)
+                {
+                    Log("Command sent via Output Report - SUCCESS");
+                    return true;
+                }
+
+                // Try Method 2: Feature Report (fallback)
+                bool featureSent = await TrySendFeatureReportAsync(command);
+                if (featureSent)
+                {
+                    Log("Command sent via Feature Report - SUCCESS");
+                    return true;
+                }
+
+                Log("Failed to send command via both Output and Feature reports");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Log($"Error sending command: {ex.Message}");
+                return false;
+            }
+        }
+
+        private async Task<bool> TrySendFeatureReportAsync(byte[] command)
+        {
+            if (_stream == null || _device == null) return false;
+
+            try
+            {
+                // Get feature report length
+                int maxLen = _device.GetMaxFeatureReportLength();
+                if (maxLen <= 0) maxLen = 64;
+
                 var paddedCommand = new byte[maxLen];
                 Array.Copy(command, paddedCommand, Math.Min(command.Length, maxLen));
 
-                Log($"Sending command: {BitConverter.ToString(command.Take(Math.Min(10, command.Length)).ToArray())}...");
-
-                await _stream.WriteAsync(paddedCommand, 0, paddedCommand.Length);
-                await _stream.FlushAsync();
+                // Send as feature report (synchronous, but wrap in Task.Run)
+                await Task.Run(() =>
+                {
+                    _stream.SetFeature(paddedCommand);
+                });
 
                 return true;
             }
             catch (Exception ex)
             {
-                Log($"Error sending command: {ex.Message}");
+                Log($"Feature report failed: {ex.Message}");
+                return false;
+            }
+        }
+
+        private async Task<bool> TrySendOutputReportAsync(byte[] command)
+        {
+            if (_stream == null || _device == null) return false;
+
+            try
+            {
+                // Pad to max output report length
+                int maxLen = _device.GetMaxOutputReportLength();
+                Log($"Output Report: MaxLen={maxLen}, CommandLen={command.Length}");
+
+                if (maxLen <= 0)
+                {
+                    Log("Output Report: MaxLen is 0, device may not support output reports");
+                    return false;
+                }
+
+                var paddedCommand = new byte[maxLen];
+                Array.Copy(command, paddedCommand, Math.Min(command.Length, maxLen));
+
+                Log($"Output Report: Writing {paddedCommand.Length} bytes...");
+                await _stream.WriteAsync(paddedCommand, 0, paddedCommand.Length);
+                await _stream.FlushAsync();
+                Log("Output Report: Write completed");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log($"Output report failed: {ex.Message}");
                 return false;
             }
         }

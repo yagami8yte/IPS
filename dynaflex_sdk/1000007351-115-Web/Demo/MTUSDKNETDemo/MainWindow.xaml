@@ -1,0 +1,370 @@
+﻿<Window x:Name="DemoWindow" x:Class="MTUSDKDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MTUSDKDemo"
+        mc:Ignorable="d"
+        Title="MTUSDK Demo" Width="800" Height="620" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"  Background="SlateGray">
+
+    <Grid Width="770" Height="570" Margin="10,10,10,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="550" />
+            <ColumnDefinition Width="220" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="220"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="220"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Height="35" Margin="10,0,0,0" VerticalAlignment="Bottom" Grid.Row="0" Orientation="Horizontal" Background="LightGray">
+                <Label Content="MAGTEK" Height="30" Margin="5,0,0,0" VerticalAlignment="Bottom" FontFamily="Moire" Foreground="#FFAD2020" FontWeight="Bold" HorizontalAlignment="Center" Width="200"/>
+                <StackPanel x:Name="CardTypePanel" Orientation="Horizontal" Visibility="Hidden">
+                    <Image x:Name="MSRTypeImage" Source="Assets/card.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="30" Height="30" />
+                    <Image x:Name="ContactTypeImage" Source="Assets/dip_card.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0" Width="30" Height="30" />
+                    <Image x:Name="ContactlessTypeImage" Source="Assets/tap30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0" Width="30" Height="30" />
+                    <Image x:Name="VASTypeImage" Source="Assets/apple30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Width="30" Height="30" />
+                    <Image x:Name="GVASTypeImage" Source="Assets/gwallet30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Width="30" Height="30" />
+                    <Image x:Name="NFCTypeImage" Source="Assets/nfc30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Width="30" Height="30" />
+                    <Image x:Name="BCRTypeImage" Source="Assets/barcode30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Width="30" Height="30" />
+                </StackPanel>
+                <Rectangle x:Name="StatusRectangle" HorizontalAlignment="Center" VerticalAlignment="Center" Width="10" Height="10" Margin="20,0,0,0" Fill="#FF3AB42F" Stroke="#FF9AA096" Opacity="0.5" />
+            </StackPanel>
+            <StackPanel Height="220" Margin="10,0,0,0" VerticalAlignment="Top" Grid.Row="1" Orientation="Vertical" Background="Beige">
+                <TextBox x:Name="DisplayTextBox" Margin="5,10,5,10" Width="530" Height="100" Background="Beige" BorderBrush="Beige" Focusable="False" 
+                         VerticalAlignment="Top" AcceptsReturn="True" IsReadOnly="True" IsUndoEnabled="False" TextWrapping="NoWrap" 
+                         FontFamily="Arial" FontSize="18" TextAlignment="Center" Text="" FontWeight="Bold"
+                         ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Hidden" 
+                         ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsEnabled="False" />
+                <StackPanel x:Name="SignaturePanel" Orientation="Horizontal" HorizontalAlignment="Center" Height="92" Width="530" Background="LightGray" Visibility="Hidden">
+                    <Canvas x:Name="SignatureCanvas" Height="88" Width="526" Margin="2" HorizontalAlignment="Center" Background="#FFD9ECF1" MouseDown="SignatureCanvas_MouseDown" MouseMove="SignatureCanvas_MouseMove" Cursor="Pen">
+                    </Canvas>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="0,5,0,5" Orientation="Horizontal">
+                <CheckBox x:Name="ShowAmountCheckBox" Content="Show Amount" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,5,0,0" IsChecked="false" Width="95"/>
+                <CheckBox x:Name="ShowTaxCheckBox" Content="Show Tax" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,5,0,0" IsChecked="false" Width="70"/>
+                <CheckBox x:Name="ShowTipOptionsCheckBox" Content="Show Tip Options" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,5,0,0" IsChecked="false" Width="115"/>
+                <Button x:Name="UIStringFileButton" Width="40" VerticalAlignment="Center" Margin="10,0,0,0" Height="30" Click="UIStringFileButton_Click" Visibility="Visible">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" ToolTip="Select UI String File...">
+                        <Image Source="Assets/ic_settings.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" Width="24" Height="24" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="CustomizeButton" Width="40" VerticalAlignment="Center" Margin="10,0,0,0" Height="30" Click="CustomizeButton_Click" Visibility="Visible">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" ToolTip="Customize Tip/Tax/Options">
+                        <Image Source="Assets/customize.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" Width="24" Height="24" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="DeviceUIPageButton" Width="40" VerticalAlignment="Center" Margin="10,0,0,0" Height="30" Click="DeviceUIPageButton_Click" Visibility="Visible">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" ToolTip="Customize Device UI Page">
+                        <Image Source="Assets/ic_drawer.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" Width="24" Height="24" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="ExpandButton" Width="40" VerticalAlignment="Center" Margin="10,0,0,0" Height="30" Click="ExpandButton_Click" Visibility="Visible">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" ToolTip="Hide/Show Bottom Panel">
+                        <Image Source="Assets/list_view.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <TabControl Grid.Row="3">
+                <TabItem Background="LightGray">
+                    <TabItem.Header>
+                        <TextBlock Text=" Output " Foreground="Teal" FontWeight="Bold"/>
+                    </TabItem.Header>
+                    <TextBox x:Name="OutputTextBox" Background="White" Margin="10,10,10,10" AcceptsReturn="True" IsReadOnly="False" IsUndoEnabled="False" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" FontFamily="Courier New"/>
+                </TabItem>
+                <TabItem Background="LightGray">
+                    <TabItem.Header>
+                        <TextBlock Text=" MSR " Foreground="Teal" FontWeight="Bold"/>
+                    </TabItem.Header>
+                    <TextBox x:Name="MSRTextBox" Background="White" Margin="10,10,10,10" AcceptsReturn="True" IsReadOnly="False" IsUndoEnabled="False" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" FontFamily="Courier New"/>
+                </TabItem>
+                <TabItem Background="LightGray">
+                    <TabItem.Header>
+                        <TextBlock Text=" Authorization Request " Foreground="Teal" FontWeight="Bold"/>
+                    </TabItem.Header>
+                    <TextBox x:Name="AuthorizationTextBox" Background="White" Margin="10,10,10,10" AcceptsReturn="True" IsReadOnly="False" IsUndoEnabled="False" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" FontFamily="Courier New"/>
+                </TabItem>
+                <TabItem Background="LightGray">
+                    <TabItem.Header>
+                        <TextBlock Text=" Transaction Result " Foreground="Teal" FontWeight="Bold"/>
+                    </TabItem.Header>
+                    <TextBox x:Name="ResultTextBox" Background="White" Margin="10,10,10,10" AcceptsReturn="True" IsReadOnly="False" IsUndoEnabled="False" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" FontFamily="Courier New"/>
+                </TabItem>
+                <TabItem Background="LightGray">
+                    <TabItem.Header>
+                        <TextBlock Text=" Parser " Foreground="Teal" FontWeight="Bold"/>
+                    </TabItem.Header>
+                    <StackPanel>
+                        <Label>Input:</Label>
+                        <TextBox x:Name="ParserInputTextBox" Background="White" Margin="10,0,10,0" AcceptsReturn="True" IsReadOnly="False" IsUndoEnabled="False" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" FontFamily="Courier New" Height="60"/>
+                        <Label>Parser Output:</Label>
+                        <TextBox x:Name="ParserOutputTextBox" Background="White" Margin="10,0,10,5" AcceptsReturn="True" IsReadOnly="False" IsUndoEnabled="False" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" FontFamily="Courier New" Height="70"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Background="LightGray">
+                    <TabItem.Header>
+                        <TextBlock Text=" Configuration " Foreground="Teal" FontWeight="Bold"/>
+                    </TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Margin="6">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Image ID:" Margin="0" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="ShowImageIDCB" Width="45" Margin="5" VerticalAlignment="Center" Height="20">
+                                    <ComboBoxItem Content="1"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="3"/>
+                                    <ComboBoxItem Content="4"/>
+                                </ComboBox>
+                                <Button x:Name="ShowImageButton" Width="150" Height="25" Margin="2" Click="ShowImageButton_Click">Show Image</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Image ID:" Margin="0" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="SendImageIDCB" Width="45" Margin="5" VerticalAlignment="Center" Height="20">
+                                    <ComboBoxItem Content="1"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="3"/>
+                                    <ComboBoxItem Content="4"/>
+                                </ComboBox>
+                                <Button x:Name="SendImageButton" Width="150" Height="25" Margin="2" Click="SendImageButton_Click">Send Image ...</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Image ID:" Margin="0" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="SetDisplayImageIDCB" Width="45" Margin="5" VerticalAlignment="Center" Height="20">
+                                    <ComboBoxItem Content="0"/>
+                                    <ComboBoxItem Content="1"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="3"/>
+                                    <ComboBoxItem Content="4"/>
+                                </ComboBox>
+                                <Button x:Name="SetDisplayImageButton" Width="150" Height="25" Margin="2" Click="SetDisplayImageButton_Click">Set Display Image</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="File ID:" Margin="0" VerticalAlignment="Center"/>
+                                <TextBox x:Name="SendFileIDTextBox" Height="20" Text="00000000" Width="60" Margin="5" VerticalAlignment="Bottom"/>
+                                <Button x:Name="SendFileButton" Width="150" Height="25" Margin="2" Click="SendFileButton_Click">Send File ...</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="File ID:" Margin="0" VerticalAlignment="Center"/>
+                                <TextBox x:Name="GetFileIDTextBox" Height="20" Text="00000000" Width="60" Margin="5" VerticalAlignment="Bottom"/>
+                                <Button x:Name="GetFileButton" Width="150" Height="25" Margin="2" Click="GetFileButton_Click">Get File ...</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="DeviceResetButton" Width="150" Height="25" Margin="117,2,2,2" HorizontalAlignment="Right" Click="DeviceResetButton_Click" Background="DarkOrange" AutomationProperties.HelpText="Restarts the device">Device Reset</Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="6">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="ID:" Margin="0" VerticalAlignment="Center"/>
+                                <TextBox x:Name="MessageIDTextBox" Height="20" Text="01" Width="45" Margin="5" VerticalAlignment="Bottom"/>
+                                <Button x:Name="DisplayMessageButton" Width="150" Height="25" Margin="2" Click="DisplayMessageButton_Click">Display Message</Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="ID:" Margin="0" VerticalAlignment="Center"/>
+                                <TextBox x:Name="ChallengeIDTextBox" Height="20" Text="0000" Width="45" Margin="5" VerticalAlignment="Bottom"/>
+                                <Button x:Name="GetChallengeButton" Width="150" Height="25" Margin="2" HorizontalAlignment="Center" Click="GetChallengeButton_Click">Get Challenge</Button>
+                            </StackPanel>
+                            <StackPanel Width="240" Orientation="Horizontal">
+                                <Button x:Name="ConfigButton" Width="115" Height="25" Margin="2,2,2,2" HorizontalAlignment="Left" Click="ConfigButton_Click">Configuration ...</Button>
+                                <Button x:Name="RequestPANButton" Width="115" Height="25" Margin="2,2,2,2" HorizontalAlignment="Left" Click="RequestPANButton_Click">Request PAN</Button>
+                            </StackPanel>
+                            <StackPanel Width="240" Orientation="Horizontal">
+                                <Button x:Name="StartBCReaderButton" Width="115" Height="25" Margin="2,2,2,2" HorizontalAlignment="Left" Click="StartBCReaderButton_Click">Start BC Reader</Button>
+                                <Button x:Name="StopBCReaderButton" Width="115" Height="25" Margin="2,2,2,2" HorizontalAlignment="Left" Click="StopBCReaderButton_Click">Stop BC Reader</Button>
+                            </StackPanel>
+                            <StackPanel Width="240" Orientation="Horizontal">
+                                <Button x:Name="ShowBitmapButton" Width="115" Height="25" Margin="2,2,2,2" HorizontalAlignment="Left" Click="ShowBitmapButton_Click">Show Bitmap ...</Button>
+                                <Button x:Name="ShowBarCodeButton" Width="115" Height="25" Margin="2,2,2,2" HorizontalAlignment="Left" Click="ShowBarCodeButton_Click">Show Bar Code</Button>
+                            </StackPanel>
+                            <StackPanel Width="240" Orientation="Horizontal">
+                                <Button x:Name="UpdateFWButton" Width="115" Height="25" Margin="2,2,2,2" HorizontalAlignment="Left" Click="UpdateFWButton_Click">Update Firmware</Button>
+                                <Button x:Name="UpdateWLANFWButton" Width="115" Height="25" Margin="2,2,2,2" HorizontalAlignment="Left" Click="UpdateWLANFWButton_Click">Update WLAN FW</Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+
+            <StackPanel Grid.Row="5" Margin="0,10,0,0" Orientation="Horizontal">
+                <StackPanel Height="25" Margin="5,0,0,0" VerticalAlignment="Bottom" Orientation="Vertical">
+                    <Label Content="Device: " Height="25" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="White"/>
+                </StackPanel>
+                <ComboBox x:Name="DeviceAddressCB" Margin="5,0,0,0" VerticalAlignment="Bottom" Height="25" Width="180" SelectionChanged="DeviceAddressCB_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBox x:Name="AddressTextBox" Text="" Width="100" Height="25" Margin="5,0,0,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Normal" VerticalAlignment="Bottom"/>
+                <Button x:Name="ScanButton" Width="35" VerticalAlignment="Bottom" Margin="5,0,0,0" Height="25" Click="ScanButton_Click" Background="Yellow">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" ToolTip="Refresh Device List">
+                        <Image Source="Assets/scan.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="settingsButton" Width="35" VerticalAlignment="Bottom" Margin="5,0,0,0" Height="25" Click="SettingsButton_Click">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" ToolTip="Settings...">
+                        <Image Source="Assets/ic_settings.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,3,3,3" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="DeviceInfoButton" Width="35" Margin="5,0,0,0" Height="25" Content="i" ToolTip="Get Device Information" FontWeight="Bold" FontStyle="Italic" FontSize="16" VerticalAlignment="Bottom" Click="DeviceInfoButton_Click"/>
+                <Button x:Name="ConnectButton" Width="35" VerticalAlignment="Bottom" Margin="5,0,0,0" Height="25" Click="ConnectButton_Click">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" ToolTip="Connect">
+                        <Image Source="Assets/connect.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="DisconnectButton" Width="35" VerticalAlignment="Bottom" Margin="5,0,0,0" Height="25" Click="DisconnectButton_Click">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" ToolTip="Disconnect">
+                        <Image Source="Assets/disconnect.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" />
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="22"/>
+                <RowDefinition Height="22"/>
+                <RowDefinition Height="22"/>
+                <RowDefinition Height="22"/>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="0"/>
+                <RowDefinition Height="90"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="0"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,0,0,0" Orientation="Horizontal" VerticalAlignment="Center" >
+                <TextBlock Margin="15,7,0,0" FontWeight="Normal" Foreground="White">Amount:</TextBlock>
+                <TextBox x:Name="AmountTextBox" Text="$1.00" Width="64" Height="19" Margin="10,0,10,0" HorizontalContentAlignment="Right" FontWeight="Bold"/>
+                <ToggleButton x:Name="NFCButton" Width="30" Height="30" Margin="4,0,0,0" Style="{StaticResource ContactToggleButton}" IsChecked="False" ToolTip="NFC / Mifare Ultra / Mifare Classic">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="Assets/nfc30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="26" Height="26" />
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="BCRButton" Width="30" Height="30" Margin="4,0,0,0" Style="{StaticResource ContactToggleButton}" IsChecked="False" ToolTip="Barcode Scanner">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="Assets/barcode30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="24" Height="24" />
+                    </StackPanel>
+                </ToggleButton>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="40,0,0,0" Orientation="Horizontal" VerticalAlignment="Bottom" >
+                <ToggleButton x:Name="MSRButton" Width="30" Height="30" Margin="6,0,0,0" Style="{StaticResource ContactToggleButton}" IsChecked="True" ToolTip="MSR Card">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="Assets/card.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="20" Height="20" />
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="ContactButton" Width="30" Height="30" Margin="4,0,0,0" Style="{StaticResource ContactToggleButton}" IsChecked="True" ToolTip="Contact Card">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="Assets/dip_card.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="20" Height="20" />
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="ContactlessButton" Width="30" Height="30" Margin="4,0,0,0" Style="{StaticResource ContactToggleButton}" IsChecked="True" ToolTip="Contactless Card">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="Assets/tap30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="26" Height="26" />
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="VASButton" Width="30" Height="30" Margin="4,0,0,0" Style="{StaticResource ContactToggleButton}" IsChecked="False" ToolTip="Apple VAS Wallet">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="Assets/apple30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="30" Height="30" />
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="GVASButton" Width="30" Height="30" Margin="4,0,0,0" Style="{StaticResource ContactToggleButton}" IsChecked="False" ToolTip="Google VAS Wallet">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="Assets/gwallet30.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="24" Height="24" />
+                    </StackPanel>
+                </ToggleButton>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="0,0,0,0" Orientation="Horizontal">
+                <CheckBox x:Name="QuickChipCheckBox" Content="Quick Chip" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="28,5,0,0" IsChecked="True" Width="80"/>
+                <CheckBox x:Name="EMVOnlyCheckBox" Content="EMV Only" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,0,0" IsChecked="True"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Margin="0,0,0,0" Orientation="Horizontal">
+                <CheckBox x:Name="SignatureCheckBox" Content="Get Signature from Device" IsChecked="{Binding GetSignatureFromDevice}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="28,2,0,0" Width="160"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Margin="0,0,0,0" Orientation="Horizontal">
+                <CheckBox x:Name="FallbackCheckBox" Content="Host-Driven Fallback" IsChecked="{Binding Fallback}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="28,2,0,0" Width="150"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="5" Margin="0,0,0,0" Orientation="Horizontal">
+                <CheckBox x:Name="EventDrivenCheckBox" Content="Event-Driven Transaction" IsChecked="{Binding EventDrivenTransaction}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="28,4,0,0" Width="150"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="6" Margin="0,0,0,0" Orientation="Horizontal">
+                <CheckBox x:Name="NFCReadOnlyModeCheckBox" Content="NFC Read Only Mode" IsChecked="{Binding NFCReadOnlyMode}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="28,4,0,0" Width="150"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="7" Margin="0,0,0,0" Orientation="Vertical">
+                <Button x:Name="StartButton" Width="155" Height="32" Margin="0,2,0,0" ToolTip="Start Transaction" Click="StartButton_Click">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="Assets/wallet.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0" Width="20" Height="20" />
+                        <TextBlock Text="Credit / Debit" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" FontWeight="Normal"/>
+                    </StackPanel>
+                </Button>
+                <StackPanel x:Name="ReaderFeaturePanel" Orientation="Horizontal">
+                    <Button x:Name="ManualEntryButton" Width="45" Height="36" Margin="32,5,0,0" ToolTip="Start Manual Entry" Click="ManualEntryButton_Click" IsEnabled="True">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Assets/manual_entry2.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="24" Height="24" Stretch="Fill" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="PINButton" Width="45" Height="36" Margin="10,5,0,0" ToolTip="Request PIN Entry" Click="PINButton_Click" IsEnabled="True">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Assets/pin.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="24" Height="24" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="SignatureButton" Width="45" Height="36" Margin="10,5,0,0" ToolTip="Request Signature Capture" Click="SignatureButton_Click" IsEnabled="True">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Assets/signature.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Width="24" Height="24" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <Button x:Name="CancelButton" Width="155" Height="32" Margin="0,5,0,0" ToolTip="Cancel Transaction" Click="CancelButton_Click" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="Assets/ic_delete.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0" Width="24" Height="20" />
+                        <TextBlock Text="Cancel" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" FontWeight="Normal" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <StackPanel Grid.Row="8" Margin="0,0,0,0" Orientation="Vertical" VerticalAlignment="Center" >
+                <TextBox x:Name="CommandTextBox" Text="" Width="150" Height="25" Margin="0,0,0,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Normal"/>
+                <Button x:Name="SendCmdButton" Width="150" Height="25" Margin="0,2,0,0" HorizontalAlignment="Center" Click="SendCmdButton_Click">Send Command</Button>
+                <Button x:Name="SendExtCmdButton" Width="150" Height="25" Margin="0,2,0,0" HorizontalAlignment="Center" Click="SendExtCmdButton_Click">Send Extended Cmd</Button>
+            </StackPanel>
+
+            <StackPanel Grid.Row="9" Margin="0,0,0,0" Orientation="Vertical" VerticalAlignment="Center" >
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="10" Margin="0,0,0,0" Orientation="Vertical" VerticalAlignment="Center" >
+                <Button x:Name="NFCTagButton" Width="150" Height="25" Margin="0,2,0,0" HorizontalAlignment="Center" Click="NFCTagButton_Click" IsEnabled="False">NFC Type 2 ...</Button>
+                <Button x:Name="ClassicNFCTagButton" Width="150" Height="25" Margin="0,2,0,0" HorizontalAlignment="Center" Click="ClassicNFCTagButton_Click" IsEnabled="False">Mifare Classic NFC...</Button>
+            </StackPanel>
+
+            <StackPanel Grid.Row="11" Margin="0,0,0,0" Orientation="Vertical" VerticalAlignment="Center" >
+                <Button x:Name="ParseTLVButton" Width="150" Height="25" Margin="0,2,0,0" HorizontalAlignment="Center" Click="ParseTLVButton_Click">Parse TLV</Button>
+                <Button x:Name="ParseNDEFButton" Width="150" Height="25" Margin="0,2,0,0" HorizontalAlignment="Center" Click="ParseNDEFButton_Click">Parse NDEF</Button>
+                <Button x:Name="ClearButton" Width="150" Height="25" Margin="0,2,0,0" HorizontalAlignment="Center" Click="ClearButton_Click">Clear</Button>
+            </StackPanel>
+
+        </Grid>
+
+    </Grid>
+</Window>

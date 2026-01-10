@@ -1,0 +1,1024 @@
+╔══════════════════════════════════════════════════════════════╗
+║           IPS DIAGNOSTIC LOG EXPORT                          ║
+╚══════════════════════════════════════════════════════════════╝
+
+Export Time: 2026-01-05 11:25:50
+Machine Name: LGKIOSK1
+OS Version: Microsoft Windows NT 10.0.17763.0
+64-bit OS: True
+64-bit Process: True
+.NET Version: 8.0.21
+Working Directory: C:\Users\Administrator\Desktop\POS\publish
+
+═══════════════════════════════════════════════════════════════
+INSTALLED PRINTERS:
+═══════════════════════════════════════════════════════════════
+  - Splashtop PDF Remote Printer
+  - NPI6B6C19 (HP Color LaserJet MFP M281cdw)
+  - Microsoft XPS Document Writer
+  - Microsoft Print to PDF
+  - HWASUNG HMK-072
+  - HP058F6D (HP LaserJet Pro M428f-M429f)
+  - Fax
+  - EPSOND28296 (XP-8700 Series)
+
+═══════════════════════════════════════════════════════════════
+USB HID DEVICES (MagTek):
+═══════════════════════════════════════════════════════════════
+  - DynaFlex II Go
+    VID: 0x0801, PID: 0x2024
+    Path: \\?\hid#vid_0801&pid_2024#6&7bef3b5&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}
+    Max Input: 65
+    Max Output: 65
+    Max Feature: 0
+
+═══════════════════════════════════════════════════════════════
+ADDITIONAL INFO:
+═══════════════════════════════════════════════════════════════
+Selected Printer: 
+Auto Print Receipt: True
+Payment Mode: Checkout
+Sandbox Mode: False
+Payment Enabled: True
+
+═══════════════════════════════════════════════════════════════
+CONSOLE LOGS:
+═══════════════════════════════════════════════════════════════
+=== IPS Diagnostic Log Started: 2026-01-05 11:24:34 ===
+Machine: LGKIOSK1
+OS: Microsoft Windows NT 10.0.17763.0
+64-bit OS: True
+64-bit Process: True
+.NET Version: 8.0.21
+Working Directory: C:\Users\Administrator\Desktop\POS\publish
+===================================================
+
+[11:24:34.597] ========================================
+[11:24:34.599]   IPS - Integrated POS Solution
+[11:24:34.599]   Multi-Kiosk Linkage System
+[11:24:34.600] ========================================
+[11:24:34.600] Started at: 2026-01-05 11:24:34
+[11:24:34.601] [App] Initializing services...
+[11:24:34.672] [ConfigurationService] Configuration loaded from C:\Users\Administrator\Desktop\POS\publish\appsettings.json
+[11:24:34.672] [App] Creating main window...
+[11:24:34.784] [App] Starting system initialization...
+[11:24:34.785] [App] Found 1 enabled system(s) to initialize
+[11:24:34.785] [App] Initializing Coffee system:
+[11:24:34.785] [App]   DLL Server: 127.0.0.1:6000
+[11:24:34.786] [App]   Booth: 192.168.12.209:5000
+[11:24:34.792] [CoffeeSystemAdapter] Attempting to initialize DLL internal HTTP server on port 6000
+[11:24:34.798] [CoffeeSystemAdapter] DLL server initialization result: 0 (0=Success)
+[11:24:34.798] [CoffeeSystemAdapter] Attempting to connect to booth at 192.168.12.209:5000
+[11:24:35.322] [App] Application window created.
+[11:24:35.328] ========================================
+[11:24:44.184] [CoffeeSystemAdapter] Booth connection result: 0 (0=Success)
+[11:24:44.185] [CoffeeSystemAdapter] ✓ Successfully connected to system 'Coffee'
+[11:24:44.186] [App] ✓ Successfully registered: Coffee
+[11:24:44.687] [App] Registration complete: 1 system(s) registered
+[11:24:44.689] [App] Starting polling service on UI thread...
+[11:24:44.693] [App] Polling service started
+[11:24:44.694] [App] ✓ Initialization complete - polling service active
+[11:24:44.876] [CoffeeSystemAdapter] Received JSON from DLL: 249962 characters
+[11:24:44.886] [CoffeeSystemAdapter] First product raw JSON: {"alias":"Hot Mocha Macchiato (Light)","alias_es":null,"alias_ko":"\ud56b \ubaa8\uce74 \ub9c8\ub07c\uc544\ub610 (Light)","availability":false,"categoryId":"826989ad-45bf-48ad-a325-2a74f4dde86f","categoryName":"Milk Coffee","categoryName_es":null,"categoryName_ko":"\ubc00\ud06c \ucee4\ud53c","description":"Hot Mocha Macchiato (Light)","description_es":"","description_ko":"","extraInformation":{"App":"{\"baseMenu\":{\"menuId\":\"93ef258a-0482-44b1-a028-689e65d7a11d\",\"menuAlias\":\"Mocha Macchiato\",\"menuAlias1\":\"\ubaa8\uce74 \ub9c8\ub07c\uc544\ub610\",\"menuAlias2\":\"Mocha Macchiato(es)\",\"menuAlias3\":\"\"},\"menuTemperature\":\"hot\",\"menuVariant\":\"light\",\"menuViewIndex\":4,\"categoryViewIndex\":\"2\",\"details\":{\"nutrition\":{\"calories\":{\"amount\":\"190kcal\",\"ratio\":10},\"sodium\":{\"amount\":\"190kcal\",\"ratio\":10},\"carbon\":{\"amount\":\"190kcal\",\"ratio\":10},\"sugar\":{\"amount\":\"190kcal\",\"ratio\":10},\"fat\":{\"amount\":\"190kcal\",\"ratio\":10},\"transFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"saturFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"cholesterol\":{\"amount\":\"190kcal\",\"ratio\":10},\"protein\":{\"amount\":\"190kcal\",\"ratio\":10},\"caffeine\":{\"amount\":\"190kcal\",\"ratio\":10}}}}","Kiosk":"{\"baseMenu\":{\"menuId\":\"93ef258a-0482-44b1-a028-689e65d7a11d\",\"menuAlias\":\"Mocha Macchiato\",\"menuAlias_ko\":\"\ubaa8\uce74 \ub9c8\ub07c\uc544\ub610\",\"menuAlias_es\":\"Mocha Macchiato(es)\",\"menuAlias_jp\":\"\"},\"menuTemperature\":\"hot\",\"menuVariant\":\"light\",\"menuViewIndex\":4,\"categoryViewIndex\":\"2\",\"details\":{\"nutrition\":{\"calories\":{\"amount\":\"190kcal\",\"ratio\":10},\"sodium\":{\"amount\":\"190kcal\",\"ratio\":10},\"carbon\":{\"amount\":\"190kcal\",\"ratio\":10},\"sugar\":{\"amount\":\"190kcal\",\"ratio\":10},\"fat\":{\"amount\":\"190kcal\",\"ratio\":10},\"transFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"saturFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"cholesterol\":{\"amount\":\"190kcal\",\"ratio\":10},\"protein\":{\"amount\":\"190kcal\",\"ratio\":10},\"caffeine\":{\"amount\":\"190kcal\",\"ratio\":10}}}}"},"menuId":"f123c4f8-9f77-49b3-9a01-bdf07ff14162","menuImage":null,"options":[],"price":3.0,"priceUnit":"USD","salesCountPerMonth":0}
+[11:24:44.889] [CoffeeSystemAdapter] Parsing item #0: Hot Mocha Macchiato (Light), Price: 3.0, Available: False
+[11:24:44.893] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato (Light) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=light
+[11:24:44.893] [CoffeeSystemAdapter] Parsing item #1: Iced Vanilla Latte (Light), Price: 3.0, Available: False
+[11:24:44.894] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte (Light) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=light
+[11:24:44.894] [CoffeeSystemAdapter] Parsing item #2: Hot Caramel Latte (Light), Price: 3.0, Available: False
+[11:24:44.895] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte (Light) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=light
+[11:24:44.895] [CoffeeSystemAdapter] Parsing item #3: Hot Red Eye, Price: 3.0, Available: True
+[11:24:44.896] [CoffeeSystemAdapter] Parsed variant: Hot Red Eye -> BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Alias=Red Eye, Temp=hot, Variant=regular
+[11:24:44.896] [CoffeeSystemAdapter] Parsing item #4: Iced Black Eye, Price: 3.0, Available: True
+[11:24:44.897] [CoffeeSystemAdapter] Parsed variant: Iced Black Eye -> BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Alias=Black Eye, Temp=ice, Variant=regular
+[11:24:44.898] [CoffeeSystemAdapter] Parsing item #5: Hot Flat White, Price: 3.0, Available: False
+[11:24:44.899] [CoffeeSystemAdapter] Parsed variant: Hot Flat White -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=regular
+[11:24:44.899] [CoffeeSystemAdapter] Parsing item #6: Iced Dead Eye, Price: 3.0, Available: True
+[11:24:44.900] [CoffeeSystemAdapter] Parsed variant: Iced Dead Eye -> BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Alias=Dead Eye, Temp=ice, Variant=regular
+[11:24:44.900] [CoffeeSystemAdapter] Parsing item #7: Iced Cappuccino (Extra), Price: 3.0, Available: False
+[11:24:44.901] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino (Extra) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=extra
+[11:24:44.901] [CoffeeSystemAdapter] Parsing item #8: Energy 1, Price: 3.0, Available: False
+[11:24:44.901] [CoffeeSystemAdapter] Parsed variant: Energy 1 -> BaseMenuId=5973b7c2-d430-4ea6-a82b-1f6a8e641b6d, Alias=Lemonade, Temp=ice, Variant=
+[11:24:44.902] [CoffeeSystemAdapter] Parsing item #9: Hot Cortado (Light), Price: 3.0, Available: False
+[11:24:44.902] [CoffeeSystemAdapter] Parsed variant: Hot Cortado (Light) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=light
+[11:24:44.903] [CoffeeSystemAdapter] Parsing item #10: Energy 3, Price: 3.0, Available: False
+[11:24:44.903] [CoffeeSystemAdapter] Parsed variant: Energy 3 -> BaseMenuId=d5abcc15-ebec-4f93-a768-a2550852a7fa, Alias=Grapefruit Ade, Temp=ice, Variant=
+[11:24:44.903] [CoffeeSystemAdapter] Parsing item #11: Iced Red Eye, Price: 3.0, Available: True
+[11:24:44.904] [CoffeeSystemAdapter] Parsed variant: Iced Red Eye -> BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Alias=Red Eye, Temp=ice, Variant=regular
+[11:24:44.904] [CoffeeSystemAdapter] Parsing item #12: Hot Cafe Latte (Extra), Price: 3.0, Available: False
+[11:24:44.904] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte (Extra) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=extra
+[11:24:44.905] [CoffeeSystemAdapter] Parsing item #13: Iced Weak Americano, Price: 3.0, Available: True
+[11:24:44.905] [CoffeeSystemAdapter] Parsed variant: Iced Weak Americano -> BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Alias=Weak Americano, Temp=ice, Variant=regular
+[11:24:44.905] [CoffeeSystemAdapter] Parsing item #14: Hot Cafe Latte (Light), Price: 3.0, Available: False
+[11:24:44.906] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte (Light) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=light
+[11:24:44.906] [CoffeeSystemAdapter] Parsing item #15: Hot Cortado (Extra), Price: 3.0, Available: False
+[11:24:44.907] [CoffeeSystemAdapter] Parsed variant: Hot Cortado (Extra) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=extra
+[11:24:44.910] [CoffeeSystemAdapter] Parsing item #16: Iced Vanilla Latte, Price: 3.0, Available: False
+[11:24:44.910] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=regular
+[11:24:44.911] [CoffeeSystemAdapter] Parsing item #17: Hot Cappuccino (Extra), Price: 3.0, Available: False
+[11:24:44.911] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino (Extra) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=extra
+[11:24:44.912] [CoffeeSystemAdapter] Parsing item #18: Hot Mocha Macchiato (Extra), Price: 3.0, Available: False
+[11:24:44.912] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato (Extra) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=extra
+[11:24:44.913] [CoffeeSystemAdapter] Parsing item #19: Hot Vanilla Latte (Light), Price: 3.0, Available: False
+[11:24:44.913] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte (Light) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=light
+[11:24:44.914] [CoffeeSystemAdapter] Parsing item #20: Hot Black Eye, Price: 3.0, Available: True
+[11:24:44.914] [CoffeeSystemAdapter] Parsed variant: Hot Black Eye -> BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Alias=Black Eye, Temp=hot, Variant=regular
+[11:24:44.914] [CoffeeSystemAdapter] Parsing item #21: Iced Strong Americano, Price: 3.0, Available: True
+[11:24:44.915] [CoffeeSystemAdapter] Parsed variant: Iced Strong Americano -> BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Alias=Strong Americano, Temp=ice, Variant=regular
+[11:24:44.915] [CoffeeSystemAdapter] Parsing item #22: Hot Caramel Macchiato (Extra), Price: 3.0, Available: False
+[11:24:44.916] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato (Extra) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=extra
+[11:24:44.916] [CoffeeSystemAdapter] Parsing item #23: Hot Cortado, Price: 3.0, Available: False
+[11:24:44.916] [CoffeeSystemAdapter] Parsed variant: Hot Cortado -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=regular
+[11:24:44.917] [CoffeeSystemAdapter] Parsing item #24: Hot Strong Americano, Price: 3.0, Available: True
+[11:24:44.917] [CoffeeSystemAdapter] Parsed variant: Hot Strong Americano -> BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Alias=Strong Americano, Temp=hot, Variant=regular
+[11:24:44.917] [CoffeeSystemAdapter] Parsing item #25: Hot Dead Eye, Price: 3.0, Available: True
+[11:24:44.918] [CoffeeSystemAdapter] Parsed variant: Hot Dead Eye -> BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Alias=Dead Eye, Temp=hot, Variant=regular
+[11:24:44.918] [CoffeeSystemAdapter] Parsing item #26: Iced Cafe Latte, Price: 3.0, Available: False
+[11:24:44.921] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=regular
+[11:24:44.921] [CoffeeSystemAdapter] Parsing item #27: Iced Cappuccino, Price: 3.0, Available: False
+[11:24:44.922] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=regular
+[11:24:44.922] [CoffeeSystemAdapter] Parsing item #28: Iced Cafe Latte (Extra), Price: 3.0, Available: False
+[11:24:44.923] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte (Extra) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=extra
+[11:24:44.923] [CoffeeSystemAdapter] Parsing item #29: Hot Vanilla Macchiato (Extra), Price: 3.0, Available: False
+[11:24:44.924] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato (Extra) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=extra
+[11:24:44.925] [CoffeeSystemAdapter] Parsing item #30: Hot Vanilla Macchiato (Light), Price: 3.0, Available: False
+[11:24:44.926] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato (Light) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=light
+[11:24:44.927] [CoffeeSystemAdapter] Parsing item #31: Iced Vanilla Macchiato, Price: 3.0, Available: False
+[11:24:44.927] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=regular
+[11:24:44.927] [CoffeeSystemAdapter] Parsing item #32: Iced Vanilla Macchiato (Extra), Price: 3.0, Available: False
+[11:24:44.928] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato (Extra) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=extra
+[11:24:44.928] [CoffeeSystemAdapter] Parsing item #33: Iced Cafe Mocha, Price: 3.0, Available: False
+[11:24:44.929] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=regular
+[11:24:44.929] [CoffeeSystemAdapter] Parsing item #34: Iced Mocha Macchiato (Extra), Price: 3.0, Available: False
+[11:24:44.932] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato (Extra) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=extra
+[11:24:44.932] [CoffeeSystemAdapter] Parsing item #35: Iced Caramel Latte (Extra), Price: 3.0, Available: False
+[11:24:44.933] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte (Extra) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=extra
+[11:24:44.933] [CoffeeSystemAdapter] Parsing item #36: Iced Caramel Macchiato (Extra), Price: 3.0, Available: False
+[11:24:44.934] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato (Extra) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=extra
+[11:24:44.934] [CoffeeSystemAdapter] Parsing item #37: Iced Chocolate Milk, Price: 3.0, Available: False
+[11:24:44.935] [CoffeeSystemAdapter] Parsed variant: Iced Chocolate Milk -> BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Alias=Chocolate Milk, Temp=ice, Variant=
+[11:24:44.935] [CoffeeSystemAdapter] Parsing item #38: Iced Caramel Milk, Price: 3.0, Available: False
+[11:24:44.936] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Milk -> BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Alias=Caramel Milk, Temp=ice, Variant=
+[11:24:44.936] [CoffeeSystemAdapter] Parsing item #39: Iced Flat White, Price: 3.0, Available: False
+[11:24:44.936] [CoffeeSystemAdapter] Parsed variant: Iced Flat White -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=regular
+[11:24:44.937] [CoffeeSystemAdapter] Parsing item #40: Iced Cortado, Price: 3.0, Available: False
+[11:24:44.937] [CoffeeSystemAdapter] Parsed variant: Iced Cortado -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=regular
+[11:24:44.938] [CoffeeSystemAdapter] Parsing item #41: Hot Weak Americano, Price: 3.0, Available: True
+[11:24:44.938] [CoffeeSystemAdapter] Parsed variant: Hot Weak Americano -> BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Alias=Weak Americano, Temp=hot, Variant=regular
+[11:24:44.938] [CoffeeSystemAdapter] Parsing item #42: Hot Vanilla Latte, Price: 3.0, Available: False
+[11:24:44.939] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=regular
+[11:24:44.939] [CoffeeSystemAdapter] Parsing item #43: Hot Cafe Mocha, Price: 3.0, Available: False
+[11:24:44.940] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=regular
+[11:24:44.942] [CoffeeSystemAdapter] Parsing item #44: Iced Flat White (Extra), Price: 3.0, Available: False
+[11:24:44.943] [CoffeeSystemAdapter] Parsed variant: Iced Flat White (Extra) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=extra
+[11:24:44.943] [CoffeeSystemAdapter] Parsing item #45: Hot Caramel Macchiato, Price: 3.0, Available: False
+[11:24:44.944] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=regular
+[11:24:44.945] [CoffeeSystemAdapter] Parsing item #46: Hot Cafe Mocha (Light), Price: 3.0, Available: False
+[11:24:44.945] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha (Light) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=light
+[11:24:44.945] [CoffeeSystemAdapter] Parsing item #47: Iced Flat White (Light), Price: 3.0, Available: False
+[11:24:44.946] [CoffeeSystemAdapter] Parsed variant: Iced Flat White (Light) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=light
+[11:24:44.946] [CoffeeSystemAdapter] Parsing item #48: Iced Cafe Mocha (Light), Price: 3.0, Available: False
+[11:24:44.946] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha (Light) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=light
+[11:24:44.947] [CoffeeSystemAdapter] Parsing item #49: Espresso, Price: 5, Available: True
+[11:24:44.947] [CoffeeSystemAdapter] Parsed variant: Espresso -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=regular
+[11:24:44.947] [CoffeeSystemAdapter] Parsing item #50: Hot Cafe Latte, Price: 3.0, Available: False
+[11:24:44.948] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=regular
+[11:24:44.948] [CoffeeSystemAdapter] Parsing item #51: Hot Cappuccino, Price: 3.0, Available: False
+[11:24:44.948] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=regular
+[11:24:44.949] [CoffeeSystemAdapter] Parsing item #52: Hot Cafe Mocha (Extra), Price: 3.0, Available: False
+[11:24:44.949] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha (Extra) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=extra
+[11:24:44.949] [CoffeeSystemAdapter] Parsing item #53: Hot Mocha Macchiato, Price: 3.0, Available: False
+[11:24:44.950] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=regular
+[11:24:44.950] [CoffeeSystemAdapter] Parsing item #54: Iced Vanilla Macchiato (Light), Price: 3.0, Available: False
+[11:24:44.950] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato (Light) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=light
+[11:24:44.951] [CoffeeSystemAdapter] Parsing item #55: Iced Caramel Macchiato, Price: 3.0, Available: False
+[11:24:44.951] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=regular
+[11:24:44.954] [CoffeeSystemAdapter] Parsing item #56: Iced Cortado (Extra), Price: 3.0, Available: False
+[11:24:44.955] [CoffeeSystemAdapter] Parsed variant: Iced Cortado (Extra) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=extra
+[11:24:44.955] [CoffeeSystemAdapter] Parsing item #57: Iced Cappuccino (Light), Price: 3.0, Available: False
+[11:24:44.956] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino (Light) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=light
+[11:24:44.956] [CoffeeSystemAdapter] Parsing item #58: Hot Vanilla Latte (Extra), Price: 3.0, Available: False
+[11:24:44.957] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte (Extra) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=extra
+[11:24:44.957] [CoffeeSystemAdapter] Parsing item #59: Iced Caramel Latte, Price: 3.0, Available: False
+[11:24:44.957] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=regular
+[11:24:44.958] [CoffeeSystemAdapter] Parsing item #60: Iced Caramel Latte (Light), Price: 3.0, Available: False
+[11:24:44.958] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte (Light) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=light
+[11:24:44.958] [CoffeeSystemAdapter] Parsing item #61: Iced Cafe Latte (Light), Price: 3.0, Available: False
+[11:24:44.959] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte (Light) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=light
+[11:24:44.959] [CoffeeSystemAdapter] Parsing item #62: Hot Caramel Latte (Extra), Price: 3.0, Available: False
+[11:24:44.960] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte (Extra) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=extra
+[11:24:44.960] [CoffeeSystemAdapter] Parsing item #63: Hot Flat White (Extra), Price: 3.0, Available: False
+[11:24:44.960] [CoffeeSystemAdapter] Parsed variant: Hot Flat White (Extra) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=extra
+[11:24:44.961] [CoffeeSystemAdapter] Parsing item #64: Iced Cafe Mocha (Extra), Price: 3.0, Available: False
+[11:24:44.961] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha (Extra) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=extra
+[11:24:44.961] [CoffeeSystemAdapter] Parsing item #65: Iced Vanilla Latte (Extra), Price: 3.0, Available: False
+[11:24:44.962] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte (Extra) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=extra
+[11:24:44.964] [CoffeeSystemAdapter] Parsing item #66: Iced Caramel Macchiato (Light), Price: 3.0, Available: False
+[11:24:44.965] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato (Light) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=light
+[11:24:44.965] [CoffeeSystemAdapter] Parsing item #67: Hot Cappuccino (Light), Price: 3.0, Available: False
+[11:24:44.965] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino (Light) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=light
+[11:24:44.966] [CoffeeSystemAdapter] Parsing item #68: Hot Caramel Macchiato (Light), Price: 3.0, Available: False
+[11:24:44.966] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato (Light) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=light
+[11:24:44.966] [CoffeeSystemAdapter] Parsing item #69: Iced Mocha Macchiato, Price: 3.0, Available: False
+[11:24:44.967] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=regular
+[11:24:44.967] [CoffeeSystemAdapter] Parsing item #70: Energy 2, Price: 3.0, Available: False
+[11:24:44.968] [CoffeeSystemAdapter] Parsed variant: Energy 2 -> BaseMenuId=793703d0-0050-46b6-8c79-48290d49d1c0, Alias=Green Grape Ade, Temp=ice, Variant=
+[11:24:44.968] [CoffeeSystemAdapter] Parsing item #71: Iced Mocha Macchiato (Light), Price: 3.0, Available: False
+[11:24:44.968] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato (Light) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=light
+[11:24:44.969] [CoffeeSystemAdapter] Parsing item #72: Hot Vanilla Macchiato, Price: 3.0, Available: False
+[11:24:44.969] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=regular
+[11:24:44.969] [CoffeeSystemAdapter] Parsing item #73: Iced Cortado (Light), Price: 3.0, Available: False
+[11:24:44.970] [CoffeeSystemAdapter] Parsed variant: Iced Cortado (Light) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=light
+[11:24:44.970] [CoffeeSystemAdapter] Parsing item #74: Hot Caramel Milk, Price: 3.0, Available: False
+[11:24:44.971] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Milk -> BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Alias=Caramel Milk, Temp=hot, Variant=
+[11:24:44.971] [CoffeeSystemAdapter] Parsing item #75: Hot Caramel Latte, Price: 3.0, Available: False
+[11:24:44.971] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=regular
+[11:24:44.972] [CoffeeSystemAdapter] Parsing item #76: Hot Flat White (Light), Price: 3.0, Available: False
+[11:24:44.972] [CoffeeSystemAdapter] Parsed variant: Hot Flat White (Light) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=light
+[11:24:44.972] [CoffeeSystemAdapter] Parsing item #77: Hot Chocolate Milk, Price: 3.0, Available: False
+[11:24:44.976] [CoffeeSystemAdapter] Parsed variant: Hot Chocolate Milk -> BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Alias=Chocolate Milk, Temp=hot, Variant=
+[11:24:44.976] [CoffeeSystemAdapter] Parsing item #78: Lungo, Price: 5, Available: True
+[11:24:44.977] [CoffeeSystemAdapter] Parsed variant: Lungo -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=extra
+[11:24:44.977] [CoffeeSystemAdapter] Parsing item #79: Ristretto, Price: 5, Available: True
+[11:24:44.977] [CoffeeSystemAdapter] Parsed variant: Ristretto -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=light
+[11:24:44.978] [CoffeeSystemAdapter] Parsing item #80: Double Espresso, Price: 10, Available: True
+[11:24:44.978] [CoffeeSystemAdapter] Parsed variant: Double Espresso -> BaseMenuId=b937d44e-27e6-4a18-8bd5-68d753927e4d, Alias=Double Espresso, Temp=hot, Variant=regular
+[11:24:44.978] [CoffeeSystemAdapter] Parsing item #81: Triple Espresso, Price: 10, Available: True
+[11:24:44.979] [CoffeeSystemAdapter] Parsed variant: Triple Espresso -> BaseMenuId=eadaed05-da8c-456a-8353-960aff7b4704, Alias=Triple Espresso, Temp=hot, Variant=regular
+[11:24:44.979] [CoffeeSystemAdapter] Parsed 82 menu items
+[11:24:44.996] [MainViewModel] ExecuteNavigateToWelcome - Checking break time status
+[11:24:44.997] [MainViewModel] Not in break time - creating WelcomeViewModel
+[11:24:44.999] [WelcomeViewModel] Scanning for videos in: C:\Users\Administrator\Desktop\POS\publish\Assets\Ads
+[11:24:45.002] [WelcomeViewModel] Added video to playlist: Assets/Ads/Coffee  Vertical film - JC Gatdula (720p, h264, youtube).mp4
+[11:24:45.002] [WelcomeViewModel] Initial video: Assets/Ads/Coffee  Vertical film - JC Gatdula (720p, h264, youtube).mp4
+[11:24:45.003] [WelcomeViewModel] Initialized with 1 video(s) in playlist
+[11:24:45.004] [MainViewModel] WelcomeViewModel set as CurrentViewModel
+[11:24:49.883] [CoffeeSystemAdapter] Received JSON from DLL: 249962 characters
+[11:24:49.898] [CoffeeSystemAdapter] First product raw JSON: {"alias":"Hot Mocha Macchiato (Light)","alias_es":null,"alias_ko":"\ud56b \ubaa8\uce74 \ub9c8\ub07c\uc544\ub610 (Light)","availability":false,"categoryId":"826989ad-45bf-48ad-a325-2a74f4dde86f","categoryName":"Milk Coffee","categoryName_es":null,"categoryName_ko":"\ubc00\ud06c \ucee4\ud53c","description":"Hot Mocha Macchiato (Light)","description_es":"","description_ko":"","extraInformation":{"App":"{\"baseMenu\":{\"menuId\":\"93ef258a-0482-44b1-a028-689e65d7a11d\",\"menuAlias\":\"Mocha Macchiato\",\"menuAlias1\":\"\ubaa8\uce74 \ub9c8\ub07c\uc544\ub610\",\"menuAlias2\":\"Mocha Macchiato(es)\",\"menuAlias3\":\"\"},\"menuTemperature\":\"hot\",\"menuVariant\":\"light\",\"menuViewIndex\":4,\"categoryViewIndex\":\"2\",\"details\":{\"nutrition\":{\"calories\":{\"amount\":\"190kcal\",\"ratio\":10},\"sodium\":{\"amount\":\"190kcal\",\"ratio\":10},\"carbon\":{\"amount\":\"190kcal\",\"ratio\":10},\"sugar\":{\"amount\":\"190kcal\",\"ratio\":10},\"fat\":{\"amount\":\"190kcal\",\"ratio\":10},\"transFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"saturFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"cholesterol\":{\"amount\":\"190kcal\",\"ratio\":10},\"protein\":{\"amount\":\"190kcal\",\"ratio\":10},\"caffeine\":{\"amount\":\"190kcal\",\"ratio\":10}}}}","Kiosk":"{\"baseMenu\":{\"menuId\":\"93ef258a-0482-44b1-a028-689e65d7a11d\",\"menuAlias\":\"Mocha Macchiato\",\"menuAlias_ko\":\"\ubaa8\uce74 \ub9c8\ub07c\uc544\ub610\",\"menuAlias_es\":\"Mocha Macchiato(es)\",\"menuAlias_jp\":\"\"},\"menuTemperature\":\"hot\",\"menuVariant\":\"light\",\"menuViewIndex\":4,\"categoryViewIndex\":\"2\",\"details\":{\"nutrition\":{\"calories\":{\"amount\":\"190kcal\",\"ratio\":10},\"sodium\":{\"amount\":\"190kcal\",\"ratio\":10},\"carbon\":{\"amount\":\"190kcal\",\"ratio\":10},\"sugar\":{\"amount\":\"190kcal\",\"ratio\":10},\"fat\":{\"amount\":\"190kcal\",\"ratio\":10},\"transFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"saturFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"cholesterol\":{\"amount\":\"190kcal\",\"ratio\":10},\"protein\":{\"amount\":\"190kcal\",\"ratio\":10},\"caffeine\":{\"amount\":\"190kcal\",\"ratio\":10}}}}"},"menuId":"f123c4f8-9f77-49b3-9a01-bdf07ff14162","menuImage":null,"options":[],"price":3.0,"priceUnit":"USD","salesCountPerMonth":0}
+[11:24:49.898] [CoffeeSystemAdapter] Parsing item #0: Hot Mocha Macchiato (Light), Price: 3.0, Available: False
+[11:24:49.899] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato (Light) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=light
+[11:24:49.899] [CoffeeSystemAdapter] Parsing item #1: Iced Vanilla Latte (Light), Price: 3.0, Available: False
+[11:24:49.900] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte (Light) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=light
+[11:24:49.900] [CoffeeSystemAdapter] Parsing item #2: Hot Caramel Latte (Light), Price: 3.0, Available: False
+[11:24:49.901] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte (Light) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=light
+[11:24:49.901] [CoffeeSystemAdapter] Parsing item #3: Hot Red Eye, Price: 3.0, Available: True
+[11:24:49.902] [CoffeeSystemAdapter] Parsed variant: Hot Red Eye -> BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Alias=Red Eye, Temp=hot, Variant=regular
+[11:24:49.902] [CoffeeSystemAdapter] Parsing item #4: Iced Black Eye, Price: 3.0, Available: True
+[11:24:49.903] [CoffeeSystemAdapter] Parsed variant: Iced Black Eye -> BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Alias=Black Eye, Temp=ice, Variant=regular
+[11:24:49.903] [CoffeeSystemAdapter] Parsing item #5: Hot Flat White, Price: 3.0, Available: False
+[11:24:49.904] [CoffeeSystemAdapter] Parsed variant: Hot Flat White -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=regular
+[11:24:49.904] [CoffeeSystemAdapter] Parsing item #6: Iced Dead Eye, Price: 3.0, Available: True
+[11:24:49.904] [CoffeeSystemAdapter] Parsed variant: Iced Dead Eye -> BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Alias=Dead Eye, Temp=ice, Variant=regular
+[11:24:49.905] [CoffeeSystemAdapter] Parsing item #7: Iced Cappuccino (Extra), Price: 3.0, Available: False
+[11:24:49.905] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino (Extra) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=extra
+[11:24:49.906] [CoffeeSystemAdapter] Parsing item #8: Energy 1, Price: 3.0, Available: False
+[11:24:49.907] [CoffeeSystemAdapter] Parsed variant: Energy 1 -> BaseMenuId=5973b7c2-d430-4ea6-a82b-1f6a8e641b6d, Alias=Lemonade, Temp=ice, Variant=
+[11:24:49.907] [CoffeeSystemAdapter] Parsing item #9: Hot Cortado (Light), Price: 3.0, Available: False
+[11:24:49.912] [CoffeeSystemAdapter] Parsed variant: Hot Cortado (Light) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=light
+[11:24:49.913] [CoffeeSystemAdapter] Parsing item #10: Energy 3, Price: 3.0, Available: False
+[11:24:49.914] [CoffeeSystemAdapter] Parsed variant: Energy 3 -> BaseMenuId=d5abcc15-ebec-4f93-a768-a2550852a7fa, Alias=Grapefruit Ade, Temp=ice, Variant=
+[11:24:49.914] [CoffeeSystemAdapter] Parsing item #11: Iced Red Eye, Price: 3.0, Available: True
+[11:24:49.915] [CoffeeSystemAdapter] Parsed variant: Iced Red Eye -> BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Alias=Red Eye, Temp=ice, Variant=regular
+[11:24:49.915] [CoffeeSystemAdapter] Parsing item #12: Hot Cafe Latte (Extra), Price: 3.0, Available: False
+[11:24:49.917] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte (Extra) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=extra
+[11:24:49.918] [CoffeeSystemAdapter] Parsing item #13: Iced Weak Americano, Price: 3.0, Available: True
+[11:24:49.919] [CoffeeSystemAdapter] Parsed variant: Iced Weak Americano -> BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Alias=Weak Americano, Temp=ice, Variant=regular
+[11:24:49.919] [CoffeeSystemAdapter] Parsing item #14: Hot Cafe Latte (Light), Price: 3.0, Available: False
+[11:24:49.920] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte (Light) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=light
+[11:24:49.920] [CoffeeSystemAdapter] Parsing item #15: Hot Cortado (Extra), Price: 3.0, Available: False
+[11:24:49.921] [CoffeeSystemAdapter] Parsed variant: Hot Cortado (Extra) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=extra
+[11:24:49.926] [CoffeeSystemAdapter] Parsing item #16: Iced Vanilla Latte, Price: 3.0, Available: False
+[11:24:49.927] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=regular
+[11:24:49.928] [CoffeeSystemAdapter] Parsing item #17: Hot Cappuccino (Extra), Price: 3.0, Available: False
+[11:24:49.928] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino (Extra) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=extra
+[11:24:49.929] [CoffeeSystemAdapter] Parsing item #18: Hot Mocha Macchiato (Extra), Price: 3.0, Available: False
+[11:24:49.929] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato (Extra) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=extra
+[11:24:49.930] [CoffeeSystemAdapter] Parsing item #19: Hot Vanilla Latte (Light), Price: 3.0, Available: False
+[11:24:49.930] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte (Light) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=light
+[11:24:49.931] [CoffeeSystemAdapter] Parsing item #20: Hot Black Eye, Price: 3.0, Available: True
+[11:24:49.931] [CoffeeSystemAdapter] Parsed variant: Hot Black Eye -> BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Alias=Black Eye, Temp=hot, Variant=regular
+[11:24:49.932] [CoffeeSystemAdapter] Parsing item #21: Iced Strong Americano, Price: 3.0, Available: True
+[11:24:49.933] [CoffeeSystemAdapter] Parsed variant: Iced Strong Americano -> BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Alias=Strong Americano, Temp=ice, Variant=regular
+[11:24:49.933] [CoffeeSystemAdapter] Parsing item #22: Hot Caramel Macchiato (Extra), Price: 3.0, Available: False
+[11:24:49.935] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato (Extra) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=extra
+[11:24:49.935] [CoffeeSystemAdapter] Parsing item #23: Hot Cortado, Price: 3.0, Available: False
+[11:24:49.936] [CoffeeSystemAdapter] Parsed variant: Hot Cortado -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=regular
+[11:24:49.937] [CoffeeSystemAdapter] Parsing item #24: Hot Strong Americano, Price: 3.0, Available: True
+[11:24:49.937] [CoffeeSystemAdapter] Parsed variant: Hot Strong Americano -> BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Alias=Strong Americano, Temp=hot, Variant=regular
+[11:24:49.938] [CoffeeSystemAdapter] Parsing item #25: Hot Dead Eye, Price: 3.0, Available: True
+[11:24:49.938] [CoffeeSystemAdapter] Parsed variant: Hot Dead Eye -> BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Alias=Dead Eye, Temp=hot, Variant=regular
+[11:24:49.938] [CoffeeSystemAdapter] Parsing item #26: Iced Cafe Latte, Price: 3.0, Available: False
+[11:24:49.939] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=regular
+[11:24:49.939] [CoffeeSystemAdapter] Parsing item #27: Iced Cappuccino, Price: 3.0, Available: False
+[11:24:49.939] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=regular
+[11:24:49.940] [CoffeeSystemAdapter] Parsing item #28: Iced Cafe Latte (Extra), Price: 3.0, Available: False
+[11:24:49.940] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte (Extra) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=extra
+[11:24:49.941] [CoffeeSystemAdapter] Parsing item #29: Hot Vanilla Macchiato (Extra), Price: 3.0, Available: False
+[11:24:49.942] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato (Extra) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=extra
+[11:24:49.944] [CoffeeSystemAdapter] Parsing item #30: Hot Vanilla Macchiato (Light), Price: 3.0, Available: False
+[11:24:49.946] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato (Light) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=light
+[11:24:49.946] [CoffeeSystemAdapter] Parsing item #31: Iced Vanilla Macchiato, Price: 3.0, Available: False
+[11:24:49.947] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=regular
+[11:24:49.948] [CoffeeSystemAdapter] Parsing item #32: Iced Vanilla Macchiato (Extra), Price: 3.0, Available: False
+[11:24:49.949] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato (Extra) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=extra
+[11:24:49.950] [CoffeeSystemAdapter] Parsing item #33: Iced Cafe Mocha, Price: 3.0, Available: False
+[11:24:49.950] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=regular
+[11:24:49.951] [CoffeeSystemAdapter] Parsing item #34: Iced Mocha Macchiato (Extra), Price: 3.0, Available: False
+[11:24:49.951] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato (Extra) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=extra
+[11:24:49.952] [CoffeeSystemAdapter] Parsing item #35: Iced Caramel Latte (Extra), Price: 3.0, Available: False
+[11:24:49.953] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte (Extra) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=extra
+[11:24:49.953] [CoffeeSystemAdapter] Parsing item #36: Iced Caramel Macchiato (Extra), Price: 3.0, Available: False
+[11:24:49.954] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato (Extra) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=extra
+[11:24:49.959] [CoffeeSystemAdapter] Parsing item #37: Iced Chocolate Milk, Price: 3.0, Available: False
+[11:24:49.960] [CoffeeSystemAdapter] Parsed variant: Iced Chocolate Milk -> BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Alias=Chocolate Milk, Temp=ice, Variant=
+[11:24:49.961] [CoffeeSystemAdapter] Parsing item #38: Iced Caramel Milk, Price: 3.0, Available: False
+[11:24:49.961] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Milk -> BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Alias=Caramel Milk, Temp=ice, Variant=
+[11:24:49.962] [CoffeeSystemAdapter] Parsing item #39: Iced Flat White, Price: 3.0, Available: False
+[11:24:49.962] [CoffeeSystemAdapter] Parsed variant: Iced Flat White -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=regular
+[11:24:49.962] [CoffeeSystemAdapter] Parsing item #40: Iced Cortado, Price: 3.0, Available: False
+[11:24:49.963] [CoffeeSystemAdapter] Parsed variant: Iced Cortado -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=regular
+[11:24:49.963] [CoffeeSystemAdapter] Parsing item #41: Hot Weak Americano, Price: 3.0, Available: True
+[11:24:49.964] [CoffeeSystemAdapter] Parsed variant: Hot Weak Americano -> BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Alias=Weak Americano, Temp=hot, Variant=regular
+[11:24:49.964] [CoffeeSystemAdapter] Parsing item #42: Hot Vanilla Latte, Price: 3.0, Available: False
+[11:24:49.964] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=regular
+[11:24:49.965] [CoffeeSystemAdapter] Parsing item #43: Hot Cafe Mocha, Price: 3.0, Available: False
+[11:24:49.965] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=regular
+[11:24:49.965] [CoffeeSystemAdapter] Parsing item #44: Iced Flat White (Extra), Price: 3.0, Available: False
+[11:24:49.966] [CoffeeSystemAdapter] Parsed variant: Iced Flat White (Extra) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=extra
+[11:24:49.966] [CoffeeSystemAdapter] Parsing item #45: Hot Caramel Macchiato, Price: 3.0, Available: False
+[11:24:49.967] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=regular
+[11:24:49.967] [CoffeeSystemAdapter] Parsing item #46: Hot Cafe Mocha (Light), Price: 3.0, Available: False
+[11:24:49.967] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha (Light) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=light
+[11:24:49.970] [CoffeeSystemAdapter] Parsing item #47: Iced Flat White (Light), Price: 3.0, Available: False
+[11:24:49.970] [CoffeeSystemAdapter] Parsed variant: Iced Flat White (Light) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=light
+[11:24:49.971] [CoffeeSystemAdapter] Parsing item #48: Iced Cafe Mocha (Light), Price: 3.0, Available: False
+[11:24:49.971] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha (Light) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=light
+[11:24:49.971] [CoffeeSystemAdapter] Parsing item #49: Espresso, Price: 5, Available: True
+[11:24:49.972] [CoffeeSystemAdapter] Parsed variant: Espresso -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=regular
+[11:24:49.972] [CoffeeSystemAdapter] Parsing item #50: Hot Cafe Latte, Price: 3.0, Available: False
+[11:24:49.972] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=regular
+[11:24:49.973] [CoffeeSystemAdapter] Parsing item #51: Hot Cappuccino, Price: 3.0, Available: False
+[11:24:49.973] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=regular
+[11:24:49.974] [CoffeeSystemAdapter] Parsing item #52: Hot Cafe Mocha (Extra), Price: 3.0, Available: False
+[11:24:49.975] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha (Extra) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=extra
+[11:24:49.976] [CoffeeSystemAdapter] Parsing item #53: Hot Mocha Macchiato, Price: 3.0, Available: False
+[11:24:49.977] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=regular
+[11:24:49.978] [CoffeeSystemAdapter] Parsing item #54: Iced Vanilla Macchiato (Light), Price: 3.0, Available: False
+[11:24:49.978] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato (Light) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=light
+[11:24:49.984] [CoffeeSystemAdapter] Parsing item #55: Iced Caramel Macchiato, Price: 3.0, Available: False
+[11:24:49.984] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=regular
+[11:24:49.985] [CoffeeSystemAdapter] Parsing item #56: Iced Cortado (Extra), Price: 3.0, Available: False
+[11:24:49.987] [CoffeeSystemAdapter] Parsed variant: Iced Cortado (Extra) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=extra
+[11:24:49.988] [CoffeeSystemAdapter] Parsing item #57: Iced Cappuccino (Light), Price: 3.0, Available: False
+[11:24:49.988] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino (Light) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=light
+[11:24:49.989] [CoffeeSystemAdapter] Parsing item #58: Hot Vanilla Latte (Extra), Price: 3.0, Available: False
+[11:24:49.991] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte (Extra) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=extra
+[11:24:49.992] [CoffeeSystemAdapter] Parsing item #59: Iced Caramel Latte, Price: 3.0, Available: False
+[11:24:49.997] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=regular
+[11:24:49.998] [CoffeeSystemAdapter] Parsing item #60: Iced Caramel Latte (Light), Price: 3.0, Available: False
+[11:24:49.998] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte (Light) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=light
+[11:24:49.999] [CoffeeSystemAdapter] Parsing item #61: Iced Cafe Latte (Light), Price: 3.0, Available: False
+[11:24:49.999] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte (Light) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=light
+[11:24:50.000] [CoffeeSystemAdapter] Parsing item #62: Hot Caramel Latte (Extra), Price: 3.0, Available: False
+[11:24:50.000] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte (Extra) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=extra
+[11:24:50.001] [CoffeeSystemAdapter] Parsing item #63: Hot Flat White (Extra), Price: 3.0, Available: False
+[11:24:50.001] [CoffeeSystemAdapter] Parsed variant: Hot Flat White (Extra) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=extra
+[11:24:50.001] [CoffeeSystemAdapter] Parsing item #64: Iced Cafe Mocha (Extra), Price: 3.0, Available: False
+[11:24:50.002] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha (Extra) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=extra
+[11:24:50.002] [CoffeeSystemAdapter] Parsing item #65: Iced Vanilla Latte (Extra), Price: 3.0, Available: False
+[11:24:50.003] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte (Extra) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=extra
+[11:24:50.003] [CoffeeSystemAdapter] Parsing item #66: Iced Caramel Macchiato (Light), Price: 3.0, Available: False
+[11:24:50.003] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato (Light) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=light
+[11:24:50.004] [CoffeeSystemAdapter] Parsing item #67: Hot Cappuccino (Light), Price: 3.0, Available: False
+[11:24:50.004] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino (Light) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=light
+[11:24:50.005] [CoffeeSystemAdapter] Parsing item #68: Hot Caramel Macchiato (Light), Price: 3.0, Available: False
+[11:24:50.005] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato (Light) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=light
+[11:24:50.005] [CoffeeSystemAdapter] Parsing item #69: Iced Mocha Macchiato, Price: 3.0, Available: False
+[11:24:50.011] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=regular
+[11:24:50.011] [CoffeeSystemAdapter] Parsing item #70: Energy 2, Price: 3.0, Available: False
+[11:24:50.012] [CoffeeSystemAdapter] Parsed variant: Energy 2 -> BaseMenuId=793703d0-0050-46b6-8c79-48290d49d1c0, Alias=Green Grape Ade, Temp=ice, Variant=
+[11:24:50.012] [CoffeeSystemAdapter] Parsing item #71: Iced Mocha Macchiato (Light), Price: 3.0, Available: False
+[11:24:50.013] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato (Light) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=light
+[11:24:50.013] [CoffeeSystemAdapter] Parsing item #72: Hot Vanilla Macchiato, Price: 3.0, Available: False
+[11:24:50.014] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=regular
+[11:24:50.014] [CoffeeSystemAdapter] Parsing item #73: Iced Cortado (Light), Price: 3.0, Available: False
+[11:24:50.014] [CoffeeSystemAdapter] Parsed variant: Iced Cortado (Light) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=light
+[11:24:50.015] [CoffeeSystemAdapter] Parsing item #74: Hot Caramel Milk, Price: 3.0, Available: False
+[11:24:50.015] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Milk -> BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Alias=Caramel Milk, Temp=hot, Variant=
+[11:24:50.016] [CoffeeSystemAdapter] Parsing item #75: Hot Caramel Latte, Price: 3.0, Available: False
+[11:24:50.016] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=regular
+[11:24:50.017] [CoffeeSystemAdapter] Parsing item #76: Hot Flat White (Light), Price: 3.0, Available: False
+[11:24:50.018] [CoffeeSystemAdapter] Parsed variant: Hot Flat White (Light) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=light
+[11:24:50.019] [CoffeeSystemAdapter] Parsing item #77: Hot Chocolate Milk, Price: 3.0, Available: False
+[11:24:50.023] [CoffeeSystemAdapter] Parsed variant: Hot Chocolate Milk -> BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Alias=Chocolate Milk, Temp=hot, Variant=
+[11:24:50.024] [CoffeeSystemAdapter] Parsing item #78: Lungo, Price: 5, Available: True
+[11:24:50.025] [CoffeeSystemAdapter] Parsed variant: Lungo -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=extra
+[11:24:50.026] [CoffeeSystemAdapter] Parsing item #79: Ristretto, Price: 5, Available: True
+[11:24:50.028] [CoffeeSystemAdapter] Parsed variant: Ristretto -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=light
+[11:24:50.029] [CoffeeSystemAdapter] Parsing item #80: Double Espresso, Price: 10, Available: True
+[11:24:50.029] [CoffeeSystemAdapter] Parsed variant: Double Espresso -> BaseMenuId=b937d44e-27e6-4a18-8bd5-68d753927e4d, Alias=Double Espresso, Temp=hot, Variant=regular
+[11:24:50.029] [CoffeeSystemAdapter] Parsing item #81: Triple Espresso, Price: 10, Available: True
+[11:24:50.030] [CoffeeSystemAdapter] Parsed variant: Triple Espresso -> BaseMenuId=eadaed05-da8c-456a-8353-960aff7b4704, Alias=Triple Espresso, Temp=hot, Variant=regular
+[11:24:50.030] [CoffeeSystemAdapter] Parsed 82 menu items
+[11:24:54.650] [WelcomeViewModel] StartOrderCommand executed - calling onStartOrder callback
+[11:24:54.652] [MainViewModel] ExecuteNavigateToMenu - START
+[11:24:54.652] [MainViewModel] ExecuteNavigateToMenu - Creating MenuViewModel...
+[11:24:54.656] [MenuViewModel] Constructor - START
+[11:24:54.660] [MenuViewModel] Validating parameters...
+[11:24:54.664] [MenuViewModel] Parameters validated
+[11:24:54.665] [MenuViewModel] Creating commands...
+[11:24:54.667] [MenuViewModel] Commands created
+[11:24:54.668] [MenuViewModel] Initializing inactivity timer...
+[11:24:54.669] [MenuViewModel] Inactivity timer initialized
+[11:24:54.670] [MenuViewModel] Initializing clock timer...
+[11:24:54.671] [MenuViewModel] Clock timer initialized
+[11:24:54.672] [MenuViewModel] Subscribing to polling updates...
+[11:24:54.672] [MenuViewModel] Subscribed to polling updates
+[11:24:54.673] [MenuViewModel] Starting async initialization...
+[11:24:54.676] [MenuViewModel] InitializeAsync - START
+[11:24:54.678] [MenuViewModel] InitializeAsync - Getting system names in background...
+[11:24:54.678] [MenuViewModel] InitializeAsync - Background task started
+[11:24:54.679] [MenuViewModel] InitializeAsync - Background task completed with 1 systems
+[11:24:54.680] [MenuViewModel] Constructor - END
+[11:24:54.681] [MainViewModel] ExecuteNavigateToMenu - MenuViewModel created successfully
+[11:24:54.681] [MainViewModel] ExecuteNavigateToMenu - MenuViewModel set as CurrentViewModel
+[11:24:54.681] [MainViewModel] ExecuteNavigateToMenu - END
+[11:24:54.682] [WelcomeViewModel] StartOrderCommand completed
+[11:24:54.683] [MenuViewModel] InitializeAsync - Updating UI on UI thread...
+[11:24:54.684] [MenuViewModel] InitializeAsync - SystemTabs cleared
+[11:24:54.686] [MenuViewModel] InitializeAsync - Adding system tab: Coffee
+[11:24:54.687] [MenuViewModel] InitializeAsync - Selecting first system: Coffee
+[11:24:54.688] [MenuViewModel] SelectedSystemName changing from '' to 'Coffee'
+[11:24:54.688] [MenuViewModel] SelectedSystemName - Calling LoadMenuForSelectedSystem...
+[11:24:54.689] [MenuViewModel] LoadMenuForSelectedSystem - START (SelectedSystemName='Coffee')
+[11:24:54.689] [MenuViewModel] LoadMenuForSelectedSystem - No cached items, calling LoadMenuItemsAsync...
+[11:24:54.691] [MenuViewModel] LoadMenuItemsAsync - START (systemName='Coffee')
+[11:24:54.692] [MenuViewModel] LoadMenuItemsAsync - Fetching menu items in background...
+[11:24:54.694] [MenuViewModel] LoadMenuItemsAsync - Background task: Calling GetMenuItems...
+[11:24:54.698] [MenuViewModel] LoadMenuForSelectedSystem - END
+[11:24:54.699] [MenuViewModel] SelectedSystemName - LoadMenuForSelectedSystem completed
+[11:24:54.699] [MenuViewModel] InitializeAsync - Updating system tab selection...
+[11:24:54.700] [MenuViewModel] InitializeAsync - IsLoading set to false
+[11:24:54.701] [MenuViewModel] InitializeAsync - END
+[11:24:54.897] [CoffeeSystemAdapter] Received JSON from DLL: 249962 characters
+[11:24:54.905] [CoffeeSystemAdapter] First product raw JSON: {"alias":"Hot Mocha Macchiato (Light)","alias_es":null,"alias_ko":"\ud56b \ubaa8\uce74 \ub9c8\ub07c\uc544\ub610 (Light)","availability":false,"categoryId":"826989ad-45bf-48ad-a325-2a74f4dde86f","categoryName":"Milk Coffee","categoryName_es":null,"categoryName_ko":"\ubc00\ud06c \ucee4\ud53c","description":"Hot Mocha Macchiato (Light)","description_es":"","description_ko":"","extraInformation":{"App":"{\"baseMenu\":{\"menuId\":\"93ef258a-0482-44b1-a028-689e65d7a11d\",\"menuAlias\":\"Mocha Macchiato\",\"menuAlias1\":\"\ubaa8\uce74 \ub9c8\ub07c\uc544\ub610\",\"menuAlias2\":\"Mocha Macchiato(es)\",\"menuAlias3\":\"\"},\"menuTemperature\":\"hot\",\"menuVariant\":\"light\",\"menuViewIndex\":4,\"categoryViewIndex\":\"2\",\"details\":{\"nutrition\":{\"calories\":{\"amount\":\"190kcal\",\"ratio\":10},\"sodium\":{\"amount\":\"190kcal\",\"ratio\":10},\"carbon\":{\"amount\":\"190kcal\",\"ratio\":10},\"sugar\":{\"amount\":\"190kcal\",\"ratio\":10},\"fat\":{\"amount\":\"190kcal\",\"ratio\":10},\"transFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"saturFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"cholesterol\":{\"amount\":\"190kcal\",\"ratio\":10},\"protein\":{\"amount\":\"190kcal\",\"ratio\":10},\"caffeine\":{\"amount\":\"190kcal\",\"ratio\":10}}}}","Kiosk":"{\"baseMenu\":{\"menuId\":\"93ef258a-0482-44b1-a028-689e65d7a11d\",\"menuAlias\":\"Mocha Macchiato\",\"menuAlias_ko\":\"\ubaa8\uce74 \ub9c8\ub07c\uc544\ub610\",\"menuAlias_es\":\"Mocha Macchiato(es)\",\"menuAlias_jp\":\"\"},\"menuTemperature\":\"hot\",\"menuVariant\":\"light\",\"menuViewIndex\":4,\"categoryViewIndex\":\"2\",\"details\":{\"nutrition\":{\"calories\":{\"amount\":\"190kcal\",\"ratio\":10},\"sodium\":{\"amount\":\"190kcal\",\"ratio\":10},\"carbon\":{\"amount\":\"190kcal\",\"ratio\":10},\"sugar\":{\"amount\":\"190kcal\",\"ratio\":10},\"fat\":{\"amount\":\"190kcal\",\"ratio\":10},\"transFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"saturFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"cholesterol\":{\"amount\":\"190kcal\",\"ratio\":10},\"protein\":{\"amount\":\"190kcal\",\"ratio\":10},\"caffeine\":{\"amount\":\"190kcal\",\"ratio\":10}}}}"},"menuId":"f123c4f8-9f77-49b3-9a01-bdf07ff14162","menuImage":null,"options":[],"price":3.0,"priceUnit":"USD","salesCountPerMonth":0}
+[11:24:54.910] [CoffeeSystemAdapter] Parsing item #0: Hot Mocha Macchiato (Light), Price: 3.0, Available: False
+[11:24:54.911] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato (Light) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=light
+[11:24:54.911] [CoffeeSystemAdapter] Parsing item #1: Iced Vanilla Latte (Light), Price: 3.0, Available: False
+[11:24:54.912] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte (Light) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=light
+[11:24:54.913] [CoffeeSystemAdapter] Parsing item #2: Hot Caramel Latte (Light), Price: 3.0, Available: False
+[11:24:54.913] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte (Light) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=light
+[11:24:54.914] [CoffeeSystemAdapter] Parsing item #3: Hot Red Eye, Price: 3.0, Available: True
+[11:24:54.916] [CoffeeSystemAdapter] Parsed variant: Hot Red Eye -> BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Alias=Red Eye, Temp=hot, Variant=regular
+[11:24:54.916] [CoffeeSystemAdapter] Parsing item #4: Iced Black Eye, Price: 3.0, Available: True
+[11:24:54.917] [CoffeeSystemAdapter] Parsed variant: Iced Black Eye -> BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Alias=Black Eye, Temp=ice, Variant=regular
+[11:24:54.917] [CoffeeSystemAdapter] Parsing item #5: Hot Flat White, Price: 3.0, Available: False
+[11:24:54.917] [CoffeeSystemAdapter] Parsed variant: Hot Flat White -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=regular
+[11:24:54.918] [CoffeeSystemAdapter] Parsing item #6: Iced Dead Eye, Price: 3.0, Available: True
+[11:24:54.918] [CoffeeSystemAdapter] Parsed variant: Iced Dead Eye -> BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Alias=Dead Eye, Temp=ice, Variant=regular
+[11:24:54.921] [CoffeeSystemAdapter] Parsing item #7: Iced Cappuccino (Extra), Price: 3.0, Available: False
+[11:24:54.921] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino (Extra) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=extra
+[11:24:54.922] [CoffeeSystemAdapter] Parsing item #8: Energy 1, Price: 3.0, Available: False
+[11:24:54.923] [CoffeeSystemAdapter] Parsed variant: Energy 1 -> BaseMenuId=5973b7c2-d430-4ea6-a82b-1f6a8e641b6d, Alias=Lemonade, Temp=ice, Variant=
+[11:24:54.925] [CoffeeSystemAdapter] Parsing item #9: Hot Cortado (Light), Price: 3.0, Available: False
+[11:24:54.926] [CoffeeSystemAdapter] Parsed variant: Hot Cortado (Light) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=light
+[11:24:54.927] [CoffeeSystemAdapter] Parsing item #10: Energy 3, Price: 3.0, Available: False
+[11:24:54.929] [CoffeeSystemAdapter] Parsed variant: Energy 3 -> BaseMenuId=d5abcc15-ebec-4f93-a768-a2550852a7fa, Alias=Grapefruit Ade, Temp=ice, Variant=
+[11:24:54.929] [CoffeeSystemAdapter] Parsing item #11: Iced Red Eye, Price: 3.0, Available: True
+[11:24:54.932] [CoffeeSystemAdapter] Parsed variant: Iced Red Eye -> BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Alias=Red Eye, Temp=ice, Variant=regular
+[11:24:54.933] [CoffeeSystemAdapter] Parsing item #12: Hot Cafe Latte (Extra), Price: 3.0, Available: False
+[11:24:54.933] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte (Extra) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=extra
+[11:24:54.934] [CoffeeSystemAdapter] Parsing item #13: Iced Weak Americano, Price: 3.0, Available: True
+[11:24:54.935] [CoffeeSystemAdapter] Parsed variant: Iced Weak Americano -> BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Alias=Weak Americano, Temp=ice, Variant=regular
+[11:24:54.935] [CoffeeSystemAdapter] Parsing item #14: Hot Cafe Latte (Light), Price: 3.0, Available: False
+[11:24:54.936] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte (Light) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=light
+[11:24:54.936] [CoffeeSystemAdapter] Parsing item #15: Hot Cortado (Extra), Price: 3.0, Available: False
+[11:24:54.937] [CoffeeSystemAdapter] Parsed variant: Hot Cortado (Extra) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=extra
+[11:24:54.937] [CoffeeSystemAdapter] Parsing item #16: Iced Vanilla Latte, Price: 3.0, Available: False
+[11:24:54.938] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=regular
+[11:24:54.938] [CoffeeSystemAdapter] Parsing item #17: Hot Cappuccino (Extra), Price: 3.0, Available: False
+[11:24:54.939] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino (Extra) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=extra
+[11:24:54.939] [CoffeeSystemAdapter] Parsing item #18: Hot Mocha Macchiato (Extra), Price: 3.0, Available: False
+[11:24:54.939] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato (Extra) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=extra
+[11:24:54.940] [CoffeeSystemAdapter] Parsing item #19: Hot Vanilla Latte (Light), Price: 3.0, Available: False
+[11:24:54.940] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte (Light) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=light
+[11:24:54.943] [CoffeeSystemAdapter] Parsing item #20: Hot Black Eye, Price: 3.0, Available: True
+[11:24:54.944] [CoffeeSystemAdapter] Parsed variant: Hot Black Eye -> BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Alias=Black Eye, Temp=hot, Variant=regular
+[11:24:54.944] [CoffeeSystemAdapter] Parsing item #21: Iced Strong Americano, Price: 3.0, Available: True
+[11:24:54.945] [CoffeeSystemAdapter] Parsed variant: Iced Strong Americano -> BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Alias=Strong Americano, Temp=ice, Variant=regular
+[11:24:54.945] [CoffeeSystemAdapter] Parsing item #22: Hot Caramel Macchiato (Extra), Price: 3.0, Available: False
+[11:24:54.945] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato (Extra) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=extra
+[11:24:54.945] [CoffeeSystemAdapter] Parsing item #23: Hot Cortado, Price: 3.0, Available: False
+[11:24:54.946] [CoffeeSystemAdapter] Parsed variant: Hot Cortado -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=regular
+[11:24:54.946] [CoffeeSystemAdapter] Parsing item #24: Hot Strong Americano, Price: 3.0, Available: True
+[11:24:54.947] [CoffeeSystemAdapter] Parsed variant: Hot Strong Americano -> BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Alias=Strong Americano, Temp=hot, Variant=regular
+[11:24:54.947] [CoffeeSystemAdapter] Parsing item #25: Hot Dead Eye, Price: 3.0, Available: True
+[11:24:54.947] [CoffeeSystemAdapter] Parsed variant: Hot Dead Eye -> BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Alias=Dead Eye, Temp=hot, Variant=regular
+[11:24:54.947] [CoffeeSystemAdapter] Parsing item #26: Iced Cafe Latte, Price: 3.0, Available: False
+[11:24:54.948] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=regular
+[11:24:54.948] [CoffeeSystemAdapter] Parsing item #27: Iced Cappuccino, Price: 3.0, Available: False
+[11:24:54.948] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=regular
+[11:24:54.949] [CoffeeSystemAdapter] Parsing item #28: Iced Cafe Latte (Extra), Price: 3.0, Available: False
+[11:24:54.949] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte (Extra) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=extra
+[11:24:54.949] [CoffeeSystemAdapter] Parsing item #29: Hot Vanilla Macchiato (Extra), Price: 3.0, Available: False
+[11:24:54.950] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato (Extra) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=extra
+[11:24:54.954] [CoffeeSystemAdapter] Parsing item #30: Hot Vanilla Macchiato (Light), Price: 3.0, Available: False
+[11:24:54.954] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato (Light) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=light
+[11:24:54.955] [CoffeeSystemAdapter] Parsing item #31: Iced Vanilla Macchiato, Price: 3.0, Available: False
+[11:24:54.956] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=regular
+[11:24:54.956] [CoffeeSystemAdapter] Parsing item #32: Iced Vanilla Macchiato (Extra), Price: 3.0, Available: False
+[11:24:54.956] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato (Extra) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=extra
+[11:24:54.957] [CoffeeSystemAdapter] Parsing item #33: Iced Cafe Mocha, Price: 3.0, Available: False
+[11:24:54.958] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=regular
+[11:24:54.958] [CoffeeSystemAdapter] Parsing item #34: Iced Mocha Macchiato (Extra), Price: 3.0, Available: False
+[11:24:54.959] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato (Extra) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=extra
+[11:24:54.959] [CoffeeSystemAdapter] Parsing item #35: Iced Caramel Latte (Extra), Price: 3.0, Available: False
+[11:24:54.959] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte (Extra) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=extra
+[11:24:54.960] [CoffeeSystemAdapter] Parsing item #36: Iced Caramel Macchiato (Extra), Price: 3.0, Available: False
+[11:24:54.960] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato (Extra) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=extra
+[11:24:54.960] [CoffeeSystemAdapter] Parsing item #37: Iced Chocolate Milk, Price: 3.0, Available: False
+[11:24:54.961] [CoffeeSystemAdapter] Parsed variant: Iced Chocolate Milk -> BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Alias=Chocolate Milk, Temp=ice, Variant=
+[11:24:54.961] [CoffeeSystemAdapter] Parsing item #38: Iced Caramel Milk, Price: 3.0, Available: False
+[11:24:54.962] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Milk -> BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Alias=Caramel Milk, Temp=ice, Variant=
+[11:24:54.962] [CoffeeSystemAdapter] Parsing item #39: Iced Flat White, Price: 3.0, Available: False
+[11:24:54.964] [CoffeeSystemAdapter] Parsed variant: Iced Flat White -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=regular
+[11:24:54.965] [CoffeeSystemAdapter] Parsing item #40: Iced Cortado, Price: 3.0, Available: False
+[11:24:54.965] [CoffeeSystemAdapter] Parsed variant: Iced Cortado -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=regular
+[11:24:54.965] [CoffeeSystemAdapter] Parsing item #41: Hot Weak Americano, Price: 3.0, Available: True
+[11:24:54.966] [CoffeeSystemAdapter] Parsed variant: Hot Weak Americano -> BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Alias=Weak Americano, Temp=hot, Variant=regular
+[11:24:54.966] [CoffeeSystemAdapter] Parsing item #42: Hot Vanilla Latte, Price: 3.0, Available: False
+[11:24:54.966] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=regular
+[11:24:54.966] [CoffeeSystemAdapter] Parsing item #43: Hot Cafe Mocha, Price: 3.0, Available: False
+[11:24:54.967] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=regular
+[11:24:54.967] [CoffeeSystemAdapter] Parsing item #44: Iced Flat White (Extra), Price: 3.0, Available: False
+[11:24:54.968] [CoffeeSystemAdapter] Parsed variant: Iced Flat White (Extra) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=extra
+[11:24:54.968] [CoffeeSystemAdapter] Parsing item #45: Hot Caramel Macchiato, Price: 3.0, Available: False
+[11:24:54.968] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=regular
+[11:24:54.968] [CoffeeSystemAdapter] Parsing item #46: Hot Cafe Mocha (Light), Price: 3.0, Available: False
+[11:24:54.969] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha (Light) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=light
+[11:24:54.969] [CoffeeSystemAdapter] Parsing item #47: Iced Flat White (Light), Price: 3.0, Available: False
+[11:24:54.969] [CoffeeSystemAdapter] Parsed variant: Iced Flat White (Light) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=light
+[11:24:54.970] [CoffeeSystemAdapter] Parsing item #48: Iced Cafe Mocha (Light), Price: 3.0, Available: False
+[11:24:54.970] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha (Light) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=light
+[11:24:54.970] [CoffeeSystemAdapter] Parsing item #49: Espresso, Price: 5, Available: True
+[11:24:54.971] [CoffeeSystemAdapter] Parsed variant: Espresso -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=regular
+[11:24:54.971] [CoffeeSystemAdapter] Parsing item #50: Hot Cafe Latte, Price: 3.0, Available: False
+[11:24:54.971] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=regular
+[11:24:54.972] [CoffeeSystemAdapter] Parsing item #51: Hot Cappuccino, Price: 3.0, Available: False
+[11:24:54.972] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=regular
+[11:24:54.972] [CoffeeSystemAdapter] Parsing item #52: Hot Cafe Mocha (Extra), Price: 3.0, Available: False
+[11:24:54.976] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha (Extra) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=extra
+[11:24:54.977] [CoffeeSystemAdapter] Parsing item #53: Hot Mocha Macchiato, Price: 3.0, Available: False
+[11:24:54.977] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=regular
+[11:24:54.978] [CoffeeSystemAdapter] Parsing item #54: Iced Vanilla Macchiato (Light), Price: 3.0, Available: False
+[11:24:54.978] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato (Light) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=light
+[11:24:54.978] [CoffeeSystemAdapter] Parsing item #55: Iced Caramel Macchiato, Price: 3.0, Available: False
+[11:24:54.979] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=regular
+[11:24:54.979] [CoffeeSystemAdapter] Parsing item #56: Iced Cortado (Extra), Price: 3.0, Available: False
+[11:24:54.979] [CoffeeSystemAdapter] Parsed variant: Iced Cortado (Extra) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=extra
+[11:24:54.980] [CoffeeSystemAdapter] Parsing item #57: Iced Cappuccino (Light), Price: 3.0, Available: False
+[11:24:54.980] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino (Light) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=light
+[11:24:54.980] [CoffeeSystemAdapter] Parsing item #58: Hot Vanilla Latte (Extra), Price: 3.0, Available: False
+[11:24:54.981] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte (Extra) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=extra
+[11:24:54.981] [CoffeeSystemAdapter] Parsing item #59: Iced Caramel Latte, Price: 3.0, Available: False
+[11:24:54.981] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=regular
+[11:24:54.982] [CoffeeSystemAdapter] Parsing item #60: Iced Caramel Latte (Light), Price: 3.0, Available: False
+[11:24:54.982] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte (Light) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=light
+[11:24:54.982] [CoffeeSystemAdapter] Parsing item #61: Iced Cafe Latte (Light), Price: 3.0, Available: False
+[11:24:54.983] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte (Light) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=light
+[11:24:54.983] [CoffeeSystemAdapter] Parsing item #62: Hot Caramel Latte (Extra), Price: 3.0, Available: False
+[11:24:54.983] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte (Extra) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=extra
+[11:24:54.984] [CoffeeSystemAdapter] Parsing item #63: Hot Flat White (Extra), Price: 3.0, Available: False
+[11:24:54.984] [CoffeeSystemAdapter] Parsed variant: Hot Flat White (Extra) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=extra
+[11:24:54.984] [CoffeeSystemAdapter] Parsing item #64: Iced Cafe Mocha (Extra), Price: 3.0, Available: False
+[11:24:54.985] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha (Extra) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=extra
+[11:24:54.985] [CoffeeSystemAdapter] Parsing item #65: Iced Vanilla Latte (Extra), Price: 3.0, Available: False
+[11:24:54.988] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte (Extra) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=extra
+[11:24:54.988] [CoffeeSystemAdapter] Parsing item #66: Iced Caramel Macchiato (Light), Price: 3.0, Available: False
+[11:24:54.988] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato (Light) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=light
+[11:24:54.989] [CoffeeSystemAdapter] Parsing item #67: Hot Cappuccino (Light), Price: 3.0, Available: False
+[11:24:54.989] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino (Light) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=light
+[11:24:54.989] [CoffeeSystemAdapter] Parsing item #68: Hot Caramel Macchiato (Light), Price: 3.0, Available: False
+[11:24:54.990] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato (Light) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=light
+[11:24:54.990] [CoffeeSystemAdapter] Parsing item #69: Iced Mocha Macchiato, Price: 3.0, Available: False
+[11:24:54.991] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=regular
+[11:24:54.992] [CoffeeSystemAdapter] Parsing item #70: Energy 2, Price: 3.0, Available: False
+[11:24:54.992] [CoffeeSystemAdapter] Parsed variant: Energy 2 -> BaseMenuId=793703d0-0050-46b6-8c79-48290d49d1c0, Alias=Green Grape Ade, Temp=ice, Variant=
+[11:24:54.993] [CoffeeSystemAdapter] Parsing item #71: Iced Mocha Macchiato (Light), Price: 3.0, Available: False
+[11:24:54.993] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato (Light) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=light
+[11:24:54.993] [CoffeeSystemAdapter] Parsing item #72: Hot Vanilla Macchiato, Price: 3.0, Available: False
+[11:24:54.994] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=regular
+[11:24:54.994] [CoffeeSystemAdapter] Parsing item #73: Iced Cortado (Light), Price: 3.0, Available: False
+[11:24:54.994] [CoffeeSystemAdapter] Parsed variant: Iced Cortado (Light) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=light
+[11:24:54.995] [CoffeeSystemAdapter] Parsing item #74: Hot Caramel Milk, Price: 3.0, Available: False
+[11:24:54.995] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Milk -> BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Alias=Caramel Milk, Temp=hot, Variant=
+[11:24:54.995] [CoffeeSystemAdapter] Parsing item #75: Hot Caramel Latte, Price: 3.0, Available: False
+[11:24:54.998] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=regular
+[11:24:54.998] [CoffeeSystemAdapter] Parsing item #76: Hot Flat White (Light), Price: 3.0, Available: False
+[11:24:54.999] [CoffeeSystemAdapter] Parsed variant: Hot Flat White (Light) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=light
+[11:24:54.999] [CoffeeSystemAdapter] Parsing item #77: Hot Chocolate Milk, Price: 3.0, Available: False
+[11:24:55.000] [CoffeeSystemAdapter] Parsed variant: Hot Chocolate Milk -> BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Alias=Chocolate Milk, Temp=hot, Variant=
+[11:24:55.000] [CoffeeSystemAdapter] Parsing item #78: Lungo, Price: 5, Available: True
+[11:24:55.000] [CoffeeSystemAdapter] Parsed variant: Lungo -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=extra
+[11:24:55.001] [CoffeeSystemAdapter] Parsing item #79: Ristretto, Price: 5, Available: True
+[11:24:55.001] [CoffeeSystemAdapter] Parsed variant: Ristretto -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=light
+[11:24:55.001] [CoffeeSystemAdapter] Parsing item #80: Double Espresso, Price: 10, Available: True
+[11:24:55.002] [CoffeeSystemAdapter] Parsed variant: Double Espresso -> BaseMenuId=b937d44e-27e6-4a18-8bd5-68d753927e4d, Alias=Double Espresso, Temp=hot, Variant=regular
+[11:24:55.002] [CoffeeSystemAdapter] Parsing item #81: Triple Espresso, Price: 10, Available: True
+[11:24:55.002] [CoffeeSystemAdapter] Parsed variant: Triple Espresso -> BaseMenuId=eadaed05-da8c-456a-8353-960aff7b4704, Alias=Triple Espresso, Temp=hot, Variant=regular
+[11:24:55.002] [CoffeeSystemAdapter] Parsed 82 menu items
+[11:24:55.003] [MenuViewModel] LoadMenuItemsAsync - Background task: GetMenuItems returned 82 items
+[11:24:55.003] [MenuViewModel] LoadMenuItemsAsync - Background task completed, updating UI...
+[11:24:55.004] [MenuViewModel] LoadMenuItemsAsync - System still selected, updating display...
+[11:24:55.012] [MenuViewModel] GroupMenuVariants called with 3 items
+[11:24:55.013] [MenuViewModel] Created 3 groups
+[11:24:55.013] [MenuViewModel] Group '5973b7c2-d430-4ea6-a82b-1f6a8e641b6d': 1 items
+[11:24:55.013] [MenuViewModel]   - Energy 1 (MenuId=5973b7c2-d430-4ea6-a82b-1f6a8e641b6d, BaseMenuId=5973b7c2-d430-4ea6-a82b-1f6a8e641b6d, Temp=ice, Variant=)
+[11:24:55.014] [MenuViewModel] Representative: Energy 1, BaseMenuAlias: Lemonade
+[11:24:55.014] [MenuViewModel] Group 'd5abcc15-ebec-4f93-a768-a2550852a7fa': 1 items
+[11:24:55.014] [MenuViewModel]   - Energy 3 (MenuId=d5abcc15-ebec-4f93-a768-a2550852a7fa, BaseMenuId=d5abcc15-ebec-4f93-a768-a2550852a7fa, Temp=ice, Variant=)
+[11:24:55.015] [MenuViewModel] Representative: Energy 3, BaseMenuAlias: Grapefruit Ade
+[11:24:55.015] [MenuViewModel] Group '793703d0-0050-46b6-8c79-48290d49d1c0': 1 items
+[11:24:55.015] [MenuViewModel]   - Energy 2 (MenuId=793703d0-0050-46b6-8c79-48290d49d1c0, BaseMenuId=793703d0-0050-46b6-8c79-48290d49d1c0, Temp=ice, Variant=)
+[11:24:55.016] [MenuViewModel] Representative: Energy 2, BaseMenuAlias: Green Grape Ade
+[11:24:55.016] [MenuViewModel] Returning 3 display items
+[11:24:55.017] [MenuViewModel] GroupMenuVariants called with 15 items
+[11:24:55.017] [MenuViewModel] Created 8 groups
+[11:24:55.017] [MenuViewModel] Group '8e6eb323-29c9-40c6-802c-883a899ec799': 2 items
+[11:24:55.018] [MenuViewModel]   - Hot Red Eye (MenuId=8e6eb323-29c9-40c6-802c-883a899ec799, BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Temp=hot, Variant=regular)
+[11:24:55.019] [MenuViewModel]   - Iced Red Eye (MenuId=d806602c-662a-4a74-ae38-cb97a485b74d, BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Temp=ice, Variant=regular)
+[11:24:55.020] [MenuViewModel] Representative: Hot Red Eye, BaseMenuAlias: Red Eye
+[11:24:55.020] [MenuViewModel] Group '584d6816-6cdd-420d-80b7-a496c9f63317': 2 items
+[11:24:55.021] [MenuViewModel]   - Iced Black Eye (MenuId=24dc3226-a77b-4588-9b69-5e06a19305c6, BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Temp=ice, Variant=regular)
+[11:24:55.021] [MenuViewModel]   - Hot Black Eye (MenuId=584d6816-6cdd-420d-80b7-a496c9f63317, BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Temp=hot, Variant=regular)
+[11:24:55.022] [MenuViewModel] Representative: Hot Black Eye, BaseMenuAlias: Black Eye
+[11:24:55.022] [MenuViewModel] Group 'f0223184-1278-47b6-9ae8-a6652d5c6930': 2 items
+[11:24:55.022] [MenuViewModel]   - Iced Dead Eye (MenuId=c11b5847-303d-4901-9f13-b2e232049c85, BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Temp=ice, Variant=regular)
+[11:24:55.023] [MenuViewModel]   - Hot Dead Eye (MenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Temp=hot, Variant=regular)
+[11:24:55.023] [MenuViewModel] Representative: Hot Dead Eye, BaseMenuAlias: Dead Eye
+[11:24:55.024] [MenuViewModel] Group '2f4ea101-6851-4428-9220-7efd3e98fc8d': 2 items
+[11:24:55.024] [MenuViewModel]   - Iced Weak Americano (MenuId=76b208c2-9d59-401c-b91b-3b9d9db84801, BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Temp=ice, Variant=regular)
+[11:24:55.025] [MenuViewModel]   - Hot Weak Americano (MenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Temp=hot, Variant=regular)
+[11:24:55.025] [MenuViewModel] Representative: Hot Weak Americano, BaseMenuAlias: Weak Americano
+[11:24:55.025] [MenuViewModel] Group '2e61f863-8371-465d-bc39-e88d77d43935': 2 items
+[11:24:55.026] [MenuViewModel]   - Iced Strong Americano (MenuId=8c35ece8-517f-44b1-900f-8f4308698c17, BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Temp=ice, Variant=regular)
+[11:24:55.026] [MenuViewModel]   - Hot Strong Americano (MenuId=2e61f863-8371-465d-bc39-e88d77d43935, BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Temp=hot, Variant=regular)
+[11:24:55.026] [MenuViewModel] Representative: Hot Strong Americano, BaseMenuAlias: Strong Americano
+[11:24:55.027] [MenuViewModel] Group 'a5fa3092-d173-4144-8ab2-ba9f40ed35fe': 3 items
+[11:24:55.027] [MenuViewModel]   - Espresso (MenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Temp=Hot, Variant=regular)
+[11:24:55.027] [MenuViewModel]   - Lungo (MenuId=e126c668-b04c-41f2-bc24-15caac72d04a, BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Temp=Hot, Variant=extra)
+[11:24:55.028] [MenuViewModel]   - Ristretto (MenuId=f41bf8a7-1e2e-4240-b390-6a75092a9a5a, BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Temp=Hot, Variant=light)
+[11:24:55.030] [MenuViewModel] Representative: Espresso, BaseMenuAlias: Espresso
+[11:24:55.030] [MenuViewModel] Group 'b937d44e-27e6-4a18-8bd5-68d753927e4d': 1 items
+[11:24:55.031] [MenuViewModel]   - Double Espresso (MenuId=b937d44e-27e6-4a18-8bd5-68d753927e4d, BaseMenuId=b937d44e-27e6-4a18-8bd5-68d753927e4d, Temp=hot, Variant=regular)
+[11:24:55.031] [MenuViewModel] Representative: Double Espresso, BaseMenuAlias: Double Espresso
+[11:24:55.031] [MenuViewModel] Group 'eadaed05-da8c-456a-8353-960aff7b4704': 1 items
+[11:24:55.032] [MenuViewModel]   - Triple Espresso (MenuId=eadaed05-da8c-456a-8353-960aff7b4704, BaseMenuId=eadaed05-da8c-456a-8353-960aff7b4704, Temp=hot, Variant=regular)
+[11:24:55.032] [MenuViewModel] Representative: Triple Espresso, BaseMenuAlias: Triple Espresso
+[11:24:55.032] [MenuViewModel] Returning 8 display items
+[11:24:55.033] [MenuViewModel] GroupMenuVariants called with 4 items
+[11:24:55.033] [MenuViewModel] Created 2 groups
+[11:24:55.033] [MenuViewModel] Group '4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9': 2 items
+[11:24:55.034] [MenuViewModel]   - Iced Chocolate Milk (MenuId=820e0c10-ff2b-471d-8903-7744e4687646, BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Temp=ice, Variant=)
+[11:24:55.034] [MenuViewModel]   - Hot Chocolate Milk (MenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Temp=hot, Variant=)
+[11:24:55.034] [MenuViewModel] Representative: Hot Chocolate Milk, BaseMenuAlias: Chocolate Milk
+[11:24:55.035] [MenuViewModel] Group '5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9': 2 items
+[11:24:55.035] [MenuViewModel]   - Iced Caramel Milk (MenuId=f32233a9-c036-4dc7-8efa-96c0b2107fcd, BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Temp=ice, Variant=)
+[11:24:55.035] [MenuViewModel]   - Hot Caramel Milk (MenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Temp=hot, Variant=)
+[11:24:55.035] [MenuViewModel] Representative: Hot Caramel Milk, BaseMenuAlias: Caramel Milk
+[11:24:55.036] [MenuViewModel] Returning 2 display items
+[11:24:55.036] [MenuViewModel] GroupMenuVariants called with 60 items
+[11:24:55.036] [MenuViewModel] Created 10 groups
+[11:24:55.037] [MenuViewModel] Group '93ef258a-0482-44b1-a028-689e65d7a11d': 6 items
+[11:24:55.037] [MenuViewModel]   - Hot Mocha Macchiato (Light) (MenuId=f123c4f8-9f77-49b3-9a01-bdf07ff14162, BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Temp=hot, Variant=light)
+[11:24:55.037] [MenuViewModel]   - Hot Mocha Macchiato (Extra) (MenuId=d809f78e-2f13-47d0-a068-883cdefb6725, BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Temp=hot, Variant=extra)
+[11:24:55.038] [MenuViewModel]   - Iced Mocha Macchiato (Extra) (MenuId=6ed307c2-2fb2-4b24-b73c-394056024f0f, BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Temp=ice, Variant=extra)
+[11:24:55.038] [MenuViewModel]   - Hot Mocha Macchiato (MenuId=93ef258a-0482-44b1-a028-689e65d7a11d, BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Temp=hot, Variant=regular)
+[11:24:55.045] [MenuViewModel]   - Iced Mocha Macchiato (MenuId=26571b56-eb2c-4cc8-bb59-47383c1c36dd, BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Temp=ice, Variant=regular)
+[11:24:55.046] [MenuViewModel]   - Iced Mocha Macchiato (Light) (MenuId=c068c73e-ec97-4849-b565-039214b3bd6a, BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Temp=ice, Variant=light)
+[11:24:55.046] [MenuViewModel] Representative: Hot Mocha Macchiato, BaseMenuAlias: Mocha Macchiato
+[11:24:55.047] [MenuViewModel] Group '04cbaf79-118f-49b2-8360-4394413a600a': 6 items
+[11:24:55.047] [MenuViewModel]   - Iced Vanilla Latte (Light) (MenuId=cddc8057-f72e-45ae-b11c-3276c733b94d, BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Temp=ice, Variant=light)
+[11:24:55.048] [MenuViewModel]   - Iced Vanilla Latte (MenuId=2c7acfd8-99fd-40f8-b18d-2f1375f2849c, BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Temp=ice, Variant=regular)
+[11:24:55.048] [MenuViewModel]   - Hot Vanilla Latte (Light) (MenuId=b1494651-61fe-44ca-b530-027e0d680ba1, BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Temp=hot, Variant=light)
+[11:24:55.048] [MenuViewModel]   - Hot Vanilla Latte (MenuId=04cbaf79-118f-49b2-8360-4394413a600a, BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Temp=hot, Variant=regular)
+[11:24:55.049] [MenuViewModel]   - Hot Vanilla Latte (Extra) (MenuId=7d3963cf-a93c-4818-b600-d0869e81bbab, BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Temp=hot, Variant=extra)
+[11:24:55.049] [MenuViewModel]   - Iced Vanilla Latte (Extra) (MenuId=8a60efd7-f60a-41b7-a2ba-aa25ae4d22bc, BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Temp=ice, Variant=extra)
+[11:24:55.050] [MenuViewModel] Representative: Hot Vanilla Latte, BaseMenuAlias: Vanila Latte
+[11:24:55.050] [MenuViewModel] Group '8b58b991-adbd-4c59-9ce4-51155a30b310': 6 items
+[11:24:55.050] [MenuViewModel]   - Hot Caramel Latte (Light) (MenuId=08e28edf-905f-4559-b666-de3cd78ef6ae, BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Temp=hot, Variant=light)
+[11:24:55.051] [MenuViewModel]   - Iced Caramel Latte (Extra) (MenuId=8729b00b-acbe-40e0-8189-5e183a27b6ad, BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Temp=ice, Variant=extra)
+[11:24:55.051] [MenuViewModel]   - Iced Caramel Latte (MenuId=318a68cf-cb0c-4f3a-95a3-cc5a82e552ea, BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Temp=ice, Variant=regular)
+[11:24:55.051] [MenuViewModel]   - Iced Caramel Latte (Light) (MenuId=f8e2741e-28ad-4ec4-b463-97428a6c609e, BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Temp=ice, Variant=light)
+[11:24:55.052] [MenuViewModel]   - Hot Caramel Latte (Extra) (MenuId=75f2cc1e-34ba-4359-b85e-cc135e64f5cc, BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Temp=hot, Variant=extra)
+[11:24:55.052] [MenuViewModel]   - Hot Caramel Latte (MenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Temp=hot, Variant=regular)
+[11:24:55.052] [MenuViewModel] Representative: Hot Caramel Latte, BaseMenuAlias: Caramel Latte
+[11:24:55.052] [MenuViewModel] Group '8f72997c-c078-4673-b1ec-2659d647b9ae': 6 items
+[11:24:55.053] [MenuViewModel]   - Hot Flat White (MenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Temp=hot, Variant=regular)
+[11:24:55.053] [MenuViewModel]   - Iced Flat White (MenuId=a44e1fca-7718-42a8-889d-4a7bf0e4c62c, BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Temp=ice, Variant=regular)
+[11:24:55.054] [MenuViewModel]   - Iced Flat White (Extra) (MenuId=0ff240e9-b50e-4947-84d0-7deb157a9847, BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Temp=ice, Variant=extra)
+[11:24:55.054] [MenuViewModel]   - Iced Flat White (Light) (MenuId=f509de26-2dba-47a7-8ba9-98ba4836168b, BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Temp=ice, Variant=light)
+[11:24:55.057] [MenuViewModel]   - Hot Flat White (Extra) (MenuId=4cb3c98c-9695-4320-991a-9a5664c95099, BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Temp=hot, Variant=extra)
+[11:24:55.057] [MenuViewModel]   - Hot Flat White (Light) (MenuId=a4e062d7-ff3e-4f12-8b97-149bd1592060, BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Temp=hot, Variant=light)
+[11:24:55.058] [MenuViewModel] Representative: Hot Flat White, BaseMenuAlias: Flat White
+[11:24:55.058] [MenuViewModel] Group '45122cdb-4131-4b84-889c-abf9ccfc9a26': 6 items
+[11:24:55.058] [MenuViewModel]   - Iced Cappuccino (Extra) (MenuId=d96f2660-b329-40c3-b67e-e57f817fdef6, BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Temp=ice, Variant=extra)
+[11:24:55.059] [MenuViewModel]   - Hot Cappuccino (Extra) (MenuId=461b7ba5-c2fb-41ad-aa4e-176ebae3a4c7, BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Temp=hot, Variant=extra)
+[11:24:55.059] [MenuViewModel]   - Iced Cappuccino (MenuId=f310fdf1-cdf5-4d73-b36b-1be517383fc6, BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Temp=ice, Variant=regular)
+[11:24:55.059] [MenuViewModel]   - Hot Cappuccino (MenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Temp=hot, Variant=regular)
+[11:24:55.060] [MenuViewModel]   - Iced Cappuccino (Light) (MenuId=db9a1af7-065f-4f3b-a46e-e497e015d461, BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Temp=ice, Variant=light)
+[11:24:55.060] [MenuViewModel]   - Hot Cappuccino (Light) (MenuId=874d8e24-f3b5-434c-aa62-89bbfa78f165, BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Temp=hot, Variant=light)
+[11:24:55.060] [MenuViewModel] Representative: Hot Cappuccino, BaseMenuAlias: Cappuccino
+[11:24:55.061] [MenuViewModel] Group '79e1ecb9-abad-4a69-8b33-36c70ed80dc4': 6 items
+[11:24:55.061] [MenuViewModel]   - Hot Cortado (Light) (MenuId=ea9e6c65-621f-47ee-a452-a4b1ad2e956d, BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Temp=hot, Variant=light)
+[11:24:55.061] [MenuViewModel]   - Hot Cortado (Extra) (MenuId=28095d9b-944e-4f96-a5dd-a60832625cfb, BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Temp=hot, Variant=extra)
+[11:24:55.062] [MenuViewModel]   - Hot Cortado (MenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Temp=hot, Variant=regular)
+[11:24:55.062] [MenuViewModel]   - Iced Cortado (MenuId=a979f18b-36d5-45b0-92a2-c0e3d53377ff, BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Temp=ice, Variant=regular)
+[11:24:55.063] [MenuViewModel]   - Iced Cortado (Extra) (MenuId=f7c01cb0-ff83-44ce-8683-6e2eab2a51e1, BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Temp=ice, Variant=extra)
+[11:24:55.063] [MenuViewModel]   - Iced Cortado (Light) (MenuId=c2951376-a7bf-4be1-a297-16ca5d31a2d7, BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Temp=ice, Variant=light)
+[11:24:55.063] [MenuViewModel] Representative: Hot Cortado, BaseMenuAlias: Cortado
+[11:24:55.064] [MenuViewModel] Group '3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01': 6 items
+[11:24:55.064] [MenuViewModel]   - Hot Cafe Latte (Extra) (MenuId=286d6316-ed98-4db0-a551-591b581c9b40, BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Temp=hot, Variant=extra)
+[11:24:55.064] [MenuViewModel]   - Hot Cafe Latte (Light) (MenuId=437665a4-a06a-4c48-a0cf-23f9e5aeae78, BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Temp=hot, Variant=light)
+[11:24:55.065] [MenuViewModel]   - Iced Cafe Latte (MenuId=a5dd68a7-cd38-4263-993f-93fb5f1f6f29, BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Temp=ice, Variant=regular)
+[11:24:55.067] [MenuViewModel]   - Iced Cafe Latte (Extra) (MenuId=453ff9f8-9751-402a-848e-40708addb3ff, BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Temp=ice, Variant=extra)
+[11:24:55.068] [MenuViewModel]   - Hot Cafe Latte (MenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Temp=hot, Variant=regular)
+[11:24:55.068] [MenuViewModel]   - Iced Cafe Latte (Light) (MenuId=af3b38af-0f2e-48a8-98b5-0b6a7983fa69, BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Temp=ice, Variant=light)
+[11:24:55.069] [MenuViewModel] Representative: Hot Cafe Latte, BaseMenuAlias: Cafe Latte
+[11:24:55.069] [MenuViewModel] Group '4d01c11c-b3e1-4bc9-bed4-974687741417': 6 items
+[11:24:55.069] [MenuViewModel]   - Hot Caramel Macchiato (Extra) (MenuId=06a37635-a8c0-48f9-b9f1-2d4b7ecd4e39, BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Temp=hot, Variant=extra)
+[11:24:55.070] [MenuViewModel]   - Iced Caramel Macchiato (Extra) (MenuId=0e19d5e9-fd3e-44b0-b5bb-3d7e8250fd4a, BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Temp=ice, Variant=extra)
+[11:24:55.070] [MenuViewModel]   - Hot Caramel Macchiato (MenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Temp=hot, Variant=regular)
+[11:24:55.070] [MenuViewModel]   - Iced Caramel Macchiato (MenuId=63cb28e2-de9f-4e06-97e6-e77ae8d94928, BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Temp=ice, Variant=regular)
+[11:24:55.071] [MenuViewModel]   - Iced Caramel Macchiato (Light) (MenuId=b4bb9ee9-52ee-4708-9842-c3bc935dc6a7, BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Temp=ice, Variant=light)
+[11:24:55.071] [MenuViewModel]   - Hot Caramel Macchiato (Light) (MenuId=be0f1983-4d92-452d-a297-fe4d3de7e53a, BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Temp=hot, Variant=light)
+[11:24:55.071] [MenuViewModel] Representative: Hot Caramel Macchiato, BaseMenuAlias: Caramel Macchiato
+[11:24:55.072] [MenuViewModel] Group 'bc54a131-4bb7-40a0-9c81-e9027e5123eb': 6 items
+[11:24:55.072] [MenuViewModel]   - Hot Vanilla Macchiato (Extra) (MenuId=4ab8d930-343b-4667-a39c-a96eb797947a, BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Temp=hot, Variant=extra)
+[11:24:55.072] [MenuViewModel]   - Hot Vanilla Macchiato (Light) (MenuId=3ed92de1-58e5-4cb3-8068-c5146d61fc04, BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Temp=hot, Variant=light)
+[11:24:55.073] [MenuViewModel]   - Iced Vanilla Macchiato (MenuId=46809889-af40-4cd1-bf76-3cdfb4437828, BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Temp=ice, Variant=regular)
+[11:24:55.073] [MenuViewModel]   - Iced Vanilla Macchiato (Extra) (MenuId=3cd83bc7-a036-4cb9-a3ff-5129171621f9, BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Temp=ice, Variant=extra)
+[11:24:55.074] [MenuViewModel]   - Iced Vanilla Macchiato (Light) (MenuId=f950fae8-0a48-4a29-9b62-f2f64d597bd6, BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Temp=ice, Variant=light)
+[11:24:55.074] [MenuViewModel]   - Hot Vanilla Macchiato (MenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Temp=hot, Variant=regular)
+[11:24:55.075] [MenuViewModel] Representative: Hot Vanilla Macchiato, BaseMenuAlias: Vanilla Macchiato
+[11:24:55.075] [MenuViewModel] Group '101195ed-f7c0-4968-bed7-23732ba79a34': 6 items
+[11:24:55.075] [MenuViewModel]   - Iced Cafe Mocha (MenuId=c6b039b0-808b-4dad-a127-4a02dce80659, BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Temp=ice, Variant=regular)
+[11:24:55.076] [MenuViewModel]   - Hot Cafe Mocha (MenuId=101195ed-f7c0-4968-bed7-23732ba79a34, BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Temp=hot, Variant=regular)
+[11:24:55.078] [MenuViewModel]   - Hot Cafe Mocha (Light) (MenuId=d2a15210-6ae4-44d0-be47-54d6e3b50ce3, BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Temp=hot, Variant=light)
+[11:24:55.079] [MenuViewModel]   - Iced Cafe Mocha (Light) (MenuId=618bef1f-6e8c-4293-9d2d-71f160a34787, BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Temp=ice, Variant=light)
+[11:24:55.079] [MenuViewModel]   - Hot Cafe Mocha (Extra) (MenuId=02edbdff-9f88-48b9-a914-b78fd1bc1d8d, BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Temp=hot, Variant=extra)
+[11:24:55.079] [MenuViewModel]   - Iced Cafe Mocha (Extra) (MenuId=dc4b5327-bcbd-4d22-a926-1124f27fedca, BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Temp=ice, Variant=extra)
+[11:24:55.080] [MenuViewModel] Representative: Hot Cafe Mocha, BaseMenuAlias: Cafe Mocha
+[11:24:55.080] [MenuViewModel] Returning 10 display items
+[11:24:55.080] [MenuViewModel] LoadMenuItemsAsync - END
+[11:24:55.833] [CoffeeSystemAdapter] Received JSON from DLL: 249962 characters
+[11:24:55.842] [CoffeeSystemAdapter] First product raw JSON: {"alias":"Hot Mocha Macchiato (Light)","alias_es":null,"alias_ko":"\ud56b \ubaa8\uce74 \ub9c8\ub07c\uc544\ub610 (Light)","availability":false,"categoryId":"826989ad-45bf-48ad-a325-2a74f4dde86f","categoryName":"Milk Coffee","categoryName_es":null,"categoryName_ko":"\ubc00\ud06c \ucee4\ud53c","description":"Hot Mocha Macchiato (Light)","description_es":"","description_ko":"","extraInformation":{"App":"{\"baseMenu\":{\"menuId\":\"93ef258a-0482-44b1-a028-689e65d7a11d\",\"menuAlias\":\"Mocha Macchiato\",\"menuAlias1\":\"\ubaa8\uce74 \ub9c8\ub07c\uc544\ub610\",\"menuAlias2\":\"Mocha Macchiato(es)\",\"menuAlias3\":\"\"},\"menuTemperature\":\"hot\",\"menuVariant\":\"light\",\"menuViewIndex\":4,\"categoryViewIndex\":\"2\",\"details\":{\"nutrition\":{\"calories\":{\"amount\":\"190kcal\",\"ratio\":10},\"sodium\":{\"amount\":\"190kcal\",\"ratio\":10},\"carbon\":{\"amount\":\"190kcal\",\"ratio\":10},\"sugar\":{\"amount\":\"190kcal\",\"ratio\":10},\"fat\":{\"amount\":\"190kcal\",\"ratio\":10},\"transFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"saturFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"cholesterol\":{\"amount\":\"190kcal\",\"ratio\":10},\"protein\":{\"amount\":\"190kcal\",\"ratio\":10},\"caffeine\":{\"amount\":\"190kcal\",\"ratio\":10}}}}","Kiosk":"{\"baseMenu\":{\"menuId\":\"93ef258a-0482-44b1-a028-689e65d7a11d\",\"menuAlias\":\"Mocha Macchiato\",\"menuAlias_ko\":\"\ubaa8\uce74 \ub9c8\ub07c\uc544\ub610\",\"menuAlias_es\":\"Mocha Macchiato(es)\",\"menuAlias_jp\":\"\"},\"menuTemperature\":\"hot\",\"menuVariant\":\"light\",\"menuViewIndex\":4,\"categoryViewIndex\":\"2\",\"details\":{\"nutrition\":{\"calories\":{\"amount\":\"190kcal\",\"ratio\":10},\"sodium\":{\"amount\":\"190kcal\",\"ratio\":10},\"carbon\":{\"amount\":\"190kcal\",\"ratio\":10},\"sugar\":{\"amount\":\"190kcal\",\"ratio\":10},\"fat\":{\"amount\":\"190kcal\",\"ratio\":10},\"transFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"saturFat\":{\"amount\":\"190kcal\",\"ratio\":10},\"cholesterol\":{\"amount\":\"190kcal\",\"ratio\":10},\"protein\":{\"amount\":\"190kcal\",\"ratio\":10},\"caffeine\":{\"amount\":\"190kcal\",\"ratio\":10}}}}"},"menuId":"f123c4f8-9f77-49b3-9a01-bdf07ff14162","menuImage":null,"options":[],"price":3.0,"priceUnit":"USD","salesCountPerMonth":0}
+[11:24:55.842] [CoffeeSystemAdapter] Parsing item #0: Hot Mocha Macchiato (Light), Price: 3.0, Available: False
+[11:24:55.843] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato (Light) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=light
+[11:24:55.845] [CoffeeSystemAdapter] Parsing item #1: Iced Vanilla Latte (Light), Price: 3.0, Available: False
+[11:24:55.846] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte (Light) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=light
+[11:24:55.846] [CoffeeSystemAdapter] Parsing item #2: Hot Caramel Latte (Light), Price: 3.0, Available: False
+[11:24:55.847] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte (Light) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=light
+[11:24:55.847] [CoffeeSystemAdapter] Parsing item #3: Hot Red Eye, Price: 3.0, Available: True
+[11:24:55.848] [CoffeeSystemAdapter] Parsed variant: Hot Red Eye -> BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Alias=Red Eye, Temp=hot, Variant=regular
+[11:24:55.848] [CoffeeSystemAdapter] Parsing item #4: Iced Black Eye, Price: 3.0, Available: True
+[11:24:55.849] [CoffeeSystemAdapter] Parsed variant: Iced Black Eye -> BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Alias=Black Eye, Temp=ice, Variant=regular
+[11:24:55.849] [CoffeeSystemAdapter] Parsing item #5: Hot Flat White, Price: 3.0, Available: False
+[11:24:55.850] [CoffeeSystemAdapter] Parsed variant: Hot Flat White -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=regular
+[11:24:55.850] [CoffeeSystemAdapter] Parsing item #6: Iced Dead Eye, Price: 3.0, Available: True
+[11:24:55.851] [CoffeeSystemAdapter] Parsed variant: Iced Dead Eye -> BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Alias=Dead Eye, Temp=ice, Variant=regular
+[11:24:55.851] [CoffeeSystemAdapter] Parsing item #7: Iced Cappuccino (Extra), Price: 3.0, Available: False
+[11:24:55.852] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino (Extra) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=extra
+[11:24:55.852] [CoffeeSystemAdapter] Parsing item #8: Energy 1, Price: 3.0, Available: False
+[11:24:55.852] [CoffeeSystemAdapter] Parsed variant: Energy 1 -> BaseMenuId=5973b7c2-d430-4ea6-a82b-1f6a8e641b6d, Alias=Lemonade, Temp=ice, Variant=
+[11:24:55.853] [CoffeeSystemAdapter] Parsing item #9: Hot Cortado (Light), Price: 3.0, Available: False
+[11:24:55.853] [CoffeeSystemAdapter] Parsed variant: Hot Cortado (Light) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=light
+[11:24:55.854] [CoffeeSystemAdapter] Parsing item #10: Energy 3, Price: 3.0, Available: False
+[11:24:55.857] [CoffeeSystemAdapter] Parsed variant: Energy 3 -> BaseMenuId=d5abcc15-ebec-4f93-a768-a2550852a7fa, Alias=Grapefruit Ade, Temp=ice, Variant=
+[11:24:55.858] [CoffeeSystemAdapter] Parsing item #11: Iced Red Eye, Price: 3.0, Available: True
+[11:24:55.858] [CoffeeSystemAdapter] Parsed variant: Iced Red Eye -> BaseMenuId=8e6eb323-29c9-40c6-802c-883a899ec799, Alias=Red Eye, Temp=ice, Variant=regular
+[11:24:55.859] [CoffeeSystemAdapter] Parsing item #12: Hot Cafe Latte (Extra), Price: 3.0, Available: False
+[11:24:55.859] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte (Extra) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=extra
+[11:24:55.860] [CoffeeSystemAdapter] Parsing item #13: Iced Weak Americano, Price: 3.0, Available: True
+[11:24:55.860] [CoffeeSystemAdapter] Parsed variant: Iced Weak Americano -> BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Alias=Weak Americano, Temp=ice, Variant=regular
+[11:24:55.860] [CoffeeSystemAdapter] Parsing item #14: Hot Cafe Latte (Light), Price: 3.0, Available: False
+[11:24:55.861] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte (Light) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=light
+[11:24:55.861] [CoffeeSystemAdapter] Parsing item #15: Hot Cortado (Extra), Price: 3.0, Available: False
+[11:24:55.862] [CoffeeSystemAdapter] Parsed variant: Hot Cortado (Extra) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=extra
+[11:24:55.862] [CoffeeSystemAdapter] Parsing item #16: Iced Vanilla Latte, Price: 3.0, Available: False
+[11:24:55.862] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=regular
+[11:24:55.863] [CoffeeSystemAdapter] Parsing item #17: Hot Cappuccino (Extra), Price: 3.0, Available: False
+[11:24:55.863] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino (Extra) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=extra
+[11:24:55.863] [CoffeeSystemAdapter] Parsing item #18: Hot Mocha Macchiato (Extra), Price: 3.0, Available: False
+[11:24:55.864] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato (Extra) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=extra
+[11:24:55.864] [CoffeeSystemAdapter] Parsing item #19: Hot Vanilla Latte (Light), Price: 3.0, Available: False
+[11:24:55.865] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte (Light) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=light
+[11:24:55.867] [CoffeeSystemAdapter] Parsing item #20: Hot Black Eye, Price: 3.0, Available: True
+[11:24:55.868] [CoffeeSystemAdapter] Parsed variant: Hot Black Eye -> BaseMenuId=584d6816-6cdd-420d-80b7-a496c9f63317, Alias=Black Eye, Temp=hot, Variant=regular
+[11:24:55.868] [CoffeeSystemAdapter] Parsing item #21: Iced Strong Americano, Price: 3.0, Available: True
+[11:24:55.869] [CoffeeSystemAdapter] Parsed variant: Iced Strong Americano -> BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Alias=Strong Americano, Temp=ice, Variant=regular
+[11:24:55.869] [CoffeeSystemAdapter] Parsing item #22: Hot Caramel Macchiato (Extra), Price: 3.0, Available: False
+[11:24:55.870] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato (Extra) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=extra
+[11:24:55.870] [CoffeeSystemAdapter] Parsing item #23: Hot Cortado, Price: 3.0, Available: False
+[11:24:55.870] [CoffeeSystemAdapter] Parsed variant: Hot Cortado -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=hot, Variant=regular
+[11:24:55.871] [CoffeeSystemAdapter] Parsing item #24: Hot Strong Americano, Price: 3.0, Available: True
+[11:24:55.871] [CoffeeSystemAdapter] Parsed variant: Hot Strong Americano -> BaseMenuId=2e61f863-8371-465d-bc39-e88d77d43935, Alias=Strong Americano, Temp=hot, Variant=regular
+[11:24:55.871] [CoffeeSystemAdapter] Parsing item #25: Hot Dead Eye, Price: 3.0, Available: True
+[11:24:55.872] [CoffeeSystemAdapter] Parsed variant: Hot Dead Eye -> BaseMenuId=f0223184-1278-47b6-9ae8-a6652d5c6930, Alias=Dead Eye, Temp=hot, Variant=regular
+[11:24:55.872] [CoffeeSystemAdapter] Parsing item #26: Iced Cafe Latte, Price: 3.0, Available: False
+[11:24:55.873] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=regular
+[11:24:55.873] [CoffeeSystemAdapter] Parsing item #27: Iced Cappuccino, Price: 3.0, Available: False
+[11:24:55.874] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=regular
+[11:24:55.875] [CoffeeSystemAdapter] Parsing item #28: Iced Cafe Latte (Extra), Price: 3.0, Available: False
+[11:24:55.875] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte (Extra) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=extra
+[11:24:55.876] [CoffeeSystemAdapter] Parsing item #29: Hot Vanilla Macchiato (Extra), Price: 3.0, Available: False
+[11:24:55.876] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato (Extra) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=extra
+[11:24:55.879] [CoffeeSystemAdapter] Parsing item #30: Hot Vanilla Macchiato (Light), Price: 3.0, Available: False
+[11:24:55.879] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato (Light) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=light
+[11:24:55.880] [CoffeeSystemAdapter] Parsing item #31: Iced Vanilla Macchiato, Price: 3.0, Available: False
+[11:24:55.880] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=regular
+[11:24:55.881] [CoffeeSystemAdapter] Parsing item #32: Iced Vanilla Macchiato (Extra), Price: 3.0, Available: False
+[11:24:55.881] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato (Extra) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=extra
+[11:24:55.882] [CoffeeSystemAdapter] Parsing item #33: Iced Cafe Mocha, Price: 3.0, Available: False
+[11:24:55.882] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=regular
+[11:24:55.882] [CoffeeSystemAdapter] Parsing item #34: Iced Mocha Macchiato (Extra), Price: 3.0, Available: False
+[11:24:55.883] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato (Extra) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=extra
+[11:24:55.883] [CoffeeSystemAdapter] Parsing item #35: Iced Caramel Latte (Extra), Price: 3.0, Available: False
+[11:24:55.884] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte (Extra) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=extra
+[11:24:55.884] [CoffeeSystemAdapter] Parsing item #36: Iced Caramel Macchiato (Extra), Price: 3.0, Available: False
+[11:24:55.885] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato (Extra) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=extra
+[11:24:55.886] [CoffeeSystemAdapter] Parsing item #37: Iced Chocolate Milk, Price: 3.0, Available: False
+[11:24:55.887] [CoffeeSystemAdapter] Parsed variant: Iced Chocolate Milk -> BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Alias=Chocolate Milk, Temp=ice, Variant=
+[11:24:55.892] [CoffeeSystemAdapter] Parsing item #38: Iced Caramel Milk, Price: 3.0, Available: False
+[11:24:55.893] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Milk -> BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Alias=Caramel Milk, Temp=ice, Variant=
+[11:24:55.893] [CoffeeSystemAdapter] Parsing item #39: Iced Flat White, Price: 3.0, Available: False
+[11:24:55.894] [CoffeeSystemAdapter] Parsed variant: Iced Flat White -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=regular
+[11:24:55.894] [CoffeeSystemAdapter] Parsing item #40: Iced Cortado, Price: 3.0, Available: False
+[11:24:55.895] [CoffeeSystemAdapter] Parsed variant: Iced Cortado -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=regular
+[11:24:55.895] [CoffeeSystemAdapter] Parsing item #41: Hot Weak Americano, Price: 3.0, Available: True
+[11:24:55.896] [CoffeeSystemAdapter] Parsed variant: Hot Weak Americano -> BaseMenuId=2f4ea101-6851-4428-9220-7efd3e98fc8d, Alias=Weak Americano, Temp=hot, Variant=regular
+[11:24:55.896] [CoffeeSystemAdapter] Parsing item #42: Hot Vanilla Latte, Price: 3.0, Available: False
+[11:24:55.897] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=regular
+[11:24:55.897] [CoffeeSystemAdapter] Parsing item #43: Hot Cafe Mocha, Price: 3.0, Available: False
+[11:24:55.898] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=regular
+[11:24:55.898] [CoffeeSystemAdapter] Parsing item #44: Iced Flat White (Extra), Price: 3.0, Available: False
+[11:24:55.899] [CoffeeSystemAdapter] Parsed variant: Iced Flat White (Extra) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=extra
+[11:24:55.899] [CoffeeSystemAdapter] Parsing item #45: Hot Caramel Macchiato, Price: 3.0, Available: False
+[11:24:55.900] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=regular
+[11:24:55.902] [CoffeeSystemAdapter] Parsing item #46: Hot Cafe Mocha (Light), Price: 3.0, Available: False
+[11:24:55.903] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha (Light) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=light
+[11:24:55.904] [CoffeeSystemAdapter] Parsing item #47: Iced Flat White (Light), Price: 3.0, Available: False
+[11:24:55.904] [CoffeeSystemAdapter] Parsed variant: Iced Flat White (Light) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=ice, Variant=light
+[11:24:55.904] [CoffeeSystemAdapter] Parsing item #48: Iced Cafe Mocha (Light), Price: 3.0, Available: False
+[11:24:55.905] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha (Light) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=light
+[11:24:55.905] [CoffeeSystemAdapter] Parsing item #49: Espresso, Price: 5, Available: True
+[11:24:55.906] [CoffeeSystemAdapter] Parsed variant: Espresso -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=regular
+[11:24:55.906] [CoffeeSystemAdapter] Parsing item #50: Hot Cafe Latte, Price: 3.0, Available: False
+[11:24:55.907] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Latte -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=hot, Variant=regular
+[11:24:55.907] [CoffeeSystemAdapter] Parsing item #51: Hot Cappuccino, Price: 3.0, Available: False
+[11:24:55.908] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=regular
+[11:24:55.908] [CoffeeSystemAdapter] Parsing item #52: Hot Cafe Mocha (Extra), Price: 3.0, Available: False
+[11:24:55.909] [CoffeeSystemAdapter] Parsed variant: Hot Cafe Mocha (Extra) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=hot, Variant=extra
+[11:24:55.909] [CoffeeSystemAdapter] Parsing item #53: Hot Mocha Macchiato, Price: 3.0, Available: False
+[11:24:55.909] [CoffeeSystemAdapter] Parsed variant: Hot Mocha Macchiato -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=hot, Variant=regular
+[11:24:55.910] [CoffeeSystemAdapter] Parsing item #54: Iced Vanilla Macchiato (Light), Price: 3.0, Available: False
+[11:24:55.910] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Macchiato (Light) -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=ice, Variant=light
+[11:24:55.911] [CoffeeSystemAdapter] Parsing item #55: Iced Caramel Macchiato, Price: 3.0, Available: False
+[11:24:55.911] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=regular
+[11:24:55.914] [CoffeeSystemAdapter] Parsing item #56: Iced Cortado (Extra), Price: 3.0, Available: False
+[11:24:55.914] [CoffeeSystemAdapter] Parsed variant: Iced Cortado (Extra) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=extra
+[11:24:55.915] [CoffeeSystemAdapter] Parsing item #57: Iced Cappuccino (Light), Price: 3.0, Available: False
+[11:24:55.915] [CoffeeSystemAdapter] Parsed variant: Iced Cappuccino (Light) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=ice, Variant=light
+[11:24:55.916] [CoffeeSystemAdapter] Parsing item #58: Hot Vanilla Latte (Extra), Price: 3.0, Available: False
+[11:24:55.916] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Latte (Extra) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=hot, Variant=extra
+[11:24:55.916] [CoffeeSystemAdapter] Parsing item #59: Iced Caramel Latte, Price: 3.0, Available: False
+[11:24:55.917] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=regular
+[11:24:55.917] [CoffeeSystemAdapter] Parsing item #60: Iced Caramel Latte (Light), Price: 3.0, Available: False
+[11:24:55.918] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Latte (Light) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=ice, Variant=light
+[11:24:55.918] [CoffeeSystemAdapter] Parsing item #61: Iced Cafe Latte (Light), Price: 3.0, Available: False
+[11:24:55.918] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Latte (Light) -> BaseMenuId=3e4f27bb-fc7f-4f6e-98ce-a39a4fc77c01, Alias=Cafe Latte, Temp=ice, Variant=light
+[11:24:55.919] [CoffeeSystemAdapter] Parsing item #62: Hot Caramel Latte (Extra), Price: 3.0, Available: False
+[11:24:55.919] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte (Extra) -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=extra
+[11:24:55.920] [CoffeeSystemAdapter] Parsing item #63: Hot Flat White (Extra), Price: 3.0, Available: False
+[11:24:55.920] [CoffeeSystemAdapter] Parsed variant: Hot Flat White (Extra) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=extra
+[11:24:55.920] [CoffeeSystemAdapter] Parsing item #64: Iced Cafe Mocha (Extra), Price: 3.0, Available: False
+[11:24:55.921] [CoffeeSystemAdapter] Parsed variant: Iced Cafe Mocha (Extra) -> BaseMenuId=101195ed-f7c0-4968-bed7-23732ba79a34, Alias=Cafe Mocha, Temp=ice, Variant=extra
+[11:24:55.921] [CoffeeSystemAdapter] Parsing item #65: Iced Vanilla Latte (Extra), Price: 3.0, Available: False
+[11:24:55.922] [CoffeeSystemAdapter] Parsed variant: Iced Vanilla Latte (Extra) -> BaseMenuId=04cbaf79-118f-49b2-8360-4394413a600a, Alias=Vanila Latte, Temp=ice, Variant=extra
+[11:24:55.922] [CoffeeSystemAdapter] Parsing item #66: Iced Caramel Macchiato (Light), Price: 3.0, Available: False
+[11:24:55.923] [CoffeeSystemAdapter] Parsed variant: Iced Caramel Macchiato (Light) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=ice, Variant=light
+[11:24:55.926] [CoffeeSystemAdapter] Parsing item #67: Hot Cappuccino (Light), Price: 3.0, Available: False
+[11:24:55.927] [CoffeeSystemAdapter] Parsed variant: Hot Cappuccino (Light) -> BaseMenuId=45122cdb-4131-4b84-889c-abf9ccfc9a26, Alias=Cappuccino, Temp=hot, Variant=light
+[11:24:55.928] [CoffeeSystemAdapter] Parsing item #68: Hot Caramel Macchiato (Light), Price: 3.0, Available: False
+[11:24:55.928] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Macchiato (Light) -> BaseMenuId=4d01c11c-b3e1-4bc9-bed4-974687741417, Alias=Caramel Macchiato, Temp=hot, Variant=light
+[11:24:55.928] [CoffeeSystemAdapter] Parsing item #69: Iced Mocha Macchiato, Price: 3.0, Available: False
+[11:24:55.929] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=regular
+[11:24:55.929] [CoffeeSystemAdapter] Parsing item #70: Energy 2, Price: 3.0, Available: False
+[11:24:55.930] [CoffeeSystemAdapter] Parsed variant: Energy 2 -> BaseMenuId=793703d0-0050-46b6-8c79-48290d49d1c0, Alias=Green Grape Ade, Temp=ice, Variant=
+[11:24:55.930] [CoffeeSystemAdapter] Parsing item #71: Iced Mocha Macchiato (Light), Price: 3.0, Available: False
+[11:24:55.931] [CoffeeSystemAdapter] Parsed variant: Iced Mocha Macchiato (Light) -> BaseMenuId=93ef258a-0482-44b1-a028-689e65d7a11d, Alias=Mocha Macchiato, Temp=ice, Variant=light
+[11:24:55.931] [CoffeeSystemAdapter] Parsing item #72: Hot Vanilla Macchiato, Price: 3.0, Available: False
+[11:24:55.932] [CoffeeSystemAdapter] Parsed variant: Hot Vanilla Macchiato -> BaseMenuId=bc54a131-4bb7-40a0-9c81-e9027e5123eb, Alias=Vanilla Macchiato, Temp=hot, Variant=regular
+[11:24:55.932] [CoffeeSystemAdapter] Parsing item #73: Iced Cortado (Light), Price: 3.0, Available: False
+[11:24:55.933] [CoffeeSystemAdapter] Parsed variant: Iced Cortado (Light) -> BaseMenuId=79e1ecb9-abad-4a69-8b33-36c70ed80dc4, Alias=Cortado, Temp=ice, Variant=light
+[11:24:55.933] [CoffeeSystemAdapter] Parsing item #74: Hot Caramel Milk, Price: 3.0, Available: False
+[11:24:55.934] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Milk -> BaseMenuId=5cd5ef9c-8b05-4dee-b096-b1f7d28f1eb9, Alias=Caramel Milk, Temp=hot, Variant=
+[11:24:55.934] [CoffeeSystemAdapter] Parsing item #75: Hot Caramel Latte, Price: 3.0, Available: False
+[11:24:55.934] [CoffeeSystemAdapter] Parsed variant: Hot Caramel Latte -> BaseMenuId=8b58b991-adbd-4c59-9ce4-51155a30b310, Alias=Caramel Latte, Temp=hot, Variant=regular
+[11:24:55.937] [CoffeeSystemAdapter] Parsing item #76: Hot Flat White (Light), Price: 3.0, Available: False
+[11:24:55.938] [CoffeeSystemAdapter] Parsed variant: Hot Flat White (Light) -> BaseMenuId=8f72997c-c078-4673-b1ec-2659d647b9ae, Alias=Flat White, Temp=hot, Variant=light
+[11:24:55.938] [CoffeeSystemAdapter] Parsing item #77: Hot Chocolate Milk, Price: 3.0, Available: False
+[11:24:55.939] [CoffeeSystemAdapter] Parsed variant: Hot Chocolate Milk -> BaseMenuId=4a9a8e18-a1bb-4007-ac8e-4a1f880f44d9, Alias=Chocolate Milk, Temp=hot, Variant=
+[11:24:55.939] [CoffeeSystemAdapter] Parsing item #78: Lungo, Price: 5, Available: True
+[11:24:55.939] [CoffeeSystemAdapter] Parsed variant: Lungo -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=extra
+[11:24:55.940] [CoffeeSystemAdapter] Parsing item #79: Ristretto, Price: 5, Available: True
+[11:24:55.941] [CoffeeSystemAdapter] Parsed variant: Ristretto -> BaseMenuId=a5fa3092-d173-4144-8ab2-ba9f40ed35fe, Alias=Espresso, Temp=Hot, Variant=light
+[11:24:55.941] [CoffeeSystemAdapter] Parsing item #80: Double Espresso, Price: 10, Available: True
+[11:24:55.942] [CoffeeSystemAdapter] Parsed variant: Double Espresso -> BaseMenuId=b937d44e-27e6-4a18-8bd5-68d753927e4d, Alias=Double Espresso, Temp=hot, Variant=regular
+[11:24:55.942] [CoffeeSystemAdapter] Parsing item #81: Triple Espresso, Price: 10, Available: True
+[11:24:55.943] [CoffeeSystemAdapter] Parsed variant: Triple Espresso -> BaseMenuId=eadaed05-da8c-456a-8353-960aff7b4704, Alias=Triple Espresso, Temp=hot, Variant=regular
+[11:24:55.943] [CoffeeSystemAdapter] Parsed 82 menu items
+[11:24:57.821] [MainViewModel] ExecuteNavigateToWelcome - Checking break time status
+[11:24:57.822] [MainViewModel] Not in break time - creating WelcomeViewModel
+[11:24:57.822] [WelcomeViewModel] Scanning for videos in: C:\Users\Administrator\Desktop\POS\publish\Assets\Ads
+[11:24:57.823] [WelcomeViewModel] Added video to playlist: Assets/Ads/Coffee  Vertical film - JC Gatdula (720p, h264, youtube).mp4
+[11:24:57.824] [WelcomeViewModel] Initial video: Assets/Ads/Coffee  Vertical film - JC Gatdula (720p, h264, youtube).mp4
+[11:24:57.825] [WelcomeViewModel] Initialized with 1 video(s) in playlist
+[11:24:57.826] [MainViewModel] WelcomeViewModel set as CurrentViewModel
+[11:24:59.995] [WelcomeViewModel] OpenAdminCommand executed - calling onOpenAdmin callback
+[11:24:59.997] [MainViewModel] ExecuteNavigateToAdmin - Showing password entry
+[11:24:59.998] [PasswordEntryViewModel] Initialized - Password cleared
+[11:24:59.999] [MainViewModel] ExecuteNavigateToAdmin - PasswordEntryViewModel set as CurrentViewModel
+[11:25:00.000] [WelcomeViewModel] OpenAdminCommand completed
+[11:25:00.030] [PasswordEntryView] DataContext changed
+[11:25:00.031] [PasswordEntryView] New PasswordEntryViewModel set, calling ResetState
+[11:25:00.031] [PasswordEntryViewModel] ResetState called
+[11:25:00.032] [PasswordEntryViewModel] State reset complete - Password is now: '' (length: 0)
+[11:25:00.049] [PasswordEntryView] View loaded
+[11:25:00.050] [PasswordEntryView] DataContext type: PasswordEntryViewModel
+[11:25:00.050] [PasswordEntryView] Password length before reset: 0
+[11:25:00.051] [PasswordEntryView] Calling ResetState to clear all inputs
+[11:25:00.051] [PasswordEntryViewModel] ResetState called
+[11:25:00.052] [PasswordEntryViewModel] State reset complete - Password is now: '' (length: 0)
+[11:25:00.052] [PasswordEntryView] Password length after reset: 0
+[11:25:00.053] [PasswordEntryView] All inputs initialized to empty
+[11:25:06.254] [MainViewModel] ExecuteNavigateToAdminAfterAuth - Password verified, creating AdminViewModel
+[11:25:06.300] [SalesViewModel] Data refreshed for Last7Days: 22 orders, $413.00 revenue
+[11:25:06.304] [MainViewModel] ExecuteNavigateToAdminAfterAuth - AdminViewModel set as CurrentViewModel
+[11:25:06.305] [PasswordEntryView] DataContext changed
+[11:25:07.372] [PasswordEntryView] View unloaded
+[11:25:07.438] [AdminView] Payment test WebView2 initialized
+[11:25:09.810] [AdminViewModel] Selecting section: Payment
+[11:25:09.813] [AdminViewModel] Section visibility updated: Payment
+[11:25:11.978] [AdminViewModel] Payment mode changed to: RestApi
+[11:25:16.264] [AdminViewModel] Card reader full test requested
+[11:25:16.271] [11:25:16.270] [Dynaflex] === CARD READER TEST STARTED ===
+[11:25:16.275] [11:25:16.275] [Dynaflex] Attempting to connect to Dynaflex...
+[11:25:16.383] [11:25:16.382] [Dynaflex] Trying to open device: DynaFlex II Go (PID=2024)
+[11:25:16.409] [11:25:16.409] [Dynaflex] Connected to: DynaFlex II Go
+[11:25:16.411] [11:25:16.410] [Dynaflex] Serial Number: B574E87
+[11:25:16.416] [11:25:16.416] [Dynaflex] Max Input Report: 65
+[11:25:16.418] [11:25:16.417] [Dynaflex] Max Output Report: 65
+[11:25:16.420] [11:25:16.420] [Dynaflex] Max Feature Report: 0
+[11:25:16.455] [11:25:16.455] [Dynaflex]   HID Usage: Page=0xFF00, ID=0x0001
+[11:25:16.458] [11:25:16.457] [Dynaflex] Started reading from device
+[11:25:16.461] [11:25:16.458] [Dynaflex] Read loop started
+[11:25:16.465] [11:25:16.465] [Dynaflex] Sending beep: count=2, duration=150ms
+[11:25:16.466] [11:25:16.466] [Dynaflex] Trying beep format: 00-0A-02-02-0F
+[11:25:16.468] [11:25:16.468] [Dynaflex] Sending command: 00-0A-02-02-0F
+[11:25:16.471] [11:25:16.471] [Dynaflex] Output Report: MaxLen=65, CommandLen=5
+[11:25:16.472] [11:25:16.472] [Dynaflex] Output Report: Writing 65 bytes...
+[11:25:16.495] [11:25:16.495] [Dynaflex] Output Report: Write completed
+[11:25:16.497] [11:25:16.497] [Dynaflex] Command sent via Output Report - SUCCESS
+[11:25:16.498] [11:25:16.498] [Dynaflex] Beep command sent successfully
+[11:25:16.802] [11:25:16.801] [Dynaflex] Starting EMV transaction for amount: $0.01
+[11:25:16.803] [11:25:16.802] [Dynaflex] Sending command: 00-A2-04-01-00-00-00
+[11:25:16.803] [11:25:16.803] [Dynaflex] Output Report: MaxLen=65, CommandLen=7
+[11:25:16.804] [11:25:16.803] [Dynaflex] Output Report: Writing 65 bytes...
+[11:25:16.810] [11:25:16.810] [Dynaflex] Output Report: Write completed
+[11:25:16.811] [11:25:16.811] [Dynaflex] Command sent via Output Report - SUCCESS
+[11:25:16.812] [11:25:16.812] [Dynaflex] Transaction started - waiting for card
+[11:25:16.813] [11:25:16.812] [Dynaflex] Sending beep: count=2, duration=150ms
+[11:25:16.813] [11:25:16.813] [Dynaflex] Trying beep format: 00-0A-02-02-0F
+[11:25:16.813] [11:25:16.813] [Dynaflex] Sending command: 00-0A-02-02-0F
+[11:25:16.814] [11:25:16.813] [Dynaflex] Output Report: MaxLen=65, CommandLen=5
+[11:25:16.814] [11:25:16.814] [Dynaflex] Output Report: Writing 65 bytes...
+[11:25:16.819] [11:25:16.819] [Dynaflex] Output Report: Write completed
+[11:25:16.820] [11:25:16.820] [Dynaflex] Command sent via Output Report - SUCCESS
+[11:25:16.821] [11:25:16.820] [Dynaflex] Beep command sent successfully
+[11:25:16.961] [11:25:16.961] [Dynaflex] Sending beep: count=1, duration=100ms
+[11:25:16.962] [11:25:16.961] [Dynaflex] Trying beep format: 00-0A-02-01-0A
+[11:25:16.964] [11:25:16.963] [Dynaflex] Sending command: 00-0A-02-01-0A
+[11:25:16.966] [11:25:16.965] [Dynaflex] Output Report: MaxLen=65, CommandLen=5
+[11:25:16.967] [11:25:16.967] [Dynaflex] Output Report: Writing 65 bytes...
+[11:25:16.971] [11:25:16.971] [Dynaflex] Output Report: Write completed
+[11:25:16.973] [11:25:16.973] [Dynaflex] Command sent via Output Report - SUCCESS
+[11:25:16.976] [11:25:16.976] [Dynaflex] Beep command sent successfully
+[11:25:47.130] [11:25:47.129] [Dynaflex] Disconnecting from Dynaflex...
+[11:25:47.211] [11:25:47.211] [Dynaflex] Read loop ended
+[11:25:48.133] [11:25:48.132] [Dynaflex] Disconnected
+
+[11:25:50.659] [AdminViewModel] Exporting diagnostic logs...
+
+═══════════════════════════════════════════════════════════════
+END OF DIAGNOSTIC LOG
+═══════════════════════════════════════════════════════════════

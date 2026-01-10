@@ -1,0 +1,149 @@
+﻿<Window x:Class="MTUSDKDemo.DeviceUIPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MTUSDKDemo"
+        mc:Ignorable="d"
+        Title="Device UI Page" Height="500" Width="500" WindowStartupLocation="CenterOwner" Icon="Assets/ic_settings.png">
+
+    <Grid Margin="5,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="460"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="10,10,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="220"/>
+                <RowDefinition Height="95"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Label Content="Page Option: " VerticalContentAlignment="Center" Width="90" Height="25" FontWeight="Bold"/>
+                <ComboBox x:Name="PageOptionCB" Width="195" Height="25" VerticalAlignment="Center" Margin="0,0,0,0" SelectionChanged="PageOptionCB_SelectionChanged" >
+                    <ComboBoxItem Content="Text Lines"/>
+                    <ComboBoxItem Content="Text String Buttons"/>
+                    <ComboBoxItem Content="Amount Buttons"/>
+                    <ComboBoxItem Content="Custom Image"/>
+                </ComboBox>
+                <Label x:Name="TimeoutLabel" Content="Timeout:" VerticalContentAlignment="Center" Height="25" Width="60" FontWeight="Bold" Margin="10,0,0,0"/>
+                <TextBox x:Name="TimeoutTextBox" TextWrapping="Wrap" Text="" Width="40" VerticalContentAlignment="Center" Height="25" Margin="5,0,0,0"/>
+                <Label x:Name="SecLabel" Content="(secs)" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="0,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="20,0,0,0">
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="TitleLabel" Content="Title: " Width="70" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="TitleCB" Width="195" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="ButtonLabel1" Content="Button 1: " Width="70" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="ButtonCB1" Width="140" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                    </ComboBox>
+                    <Label x:Name="ValueLabel1" Content="Text 1:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <TextBox x:Name="ValueTextBox1" TextWrapping="Wrap" Text="" Width="160" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="ButtonLabel2" Content="Button 2: " Width="70" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="ButtonCB2" Width="140" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                    </ComboBox>
+                    <Label x:Name="ValueLabel2" Content="Text 2:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <TextBox x:Name="ValueTextBox2" TextWrapping="Wrap" Text="" Width="160" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="ButtonLabel3" Content="Button 3: " Width="70" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="ButtonCB3" Width="140" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                    </ComboBox>
+                    <Label x:Name="ValueLabel3" Content="Text 3:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <TextBox x:Name="ValueTextBox3" TextWrapping="Wrap" Text="" Width="160" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="ButtonLabel4" Content="Button 4: " Width="70" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="ButtonCB4" Width="140" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                    </ComboBox>
+                    <Label x:Name="ValueLabel4" Content="Text 4:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <TextBox x:Name="ValueTextBox4" TextWrapping="Wrap" Text="" Width="160" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="ButtonLabel5" Content="Button 5: " Width="70" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="ButtonCB5" Width="140" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                    </ComboBox>
+                    <Label x:Name="ValueLabel5" Content="Text 5:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <TextBox x:Name="ValueTextBox5" TextWrapping="Wrap" Text="" Width="160" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="ButtonLabel6" Content="Button 6: " Width="70" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="ButtonCB6" Width="140" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                    </ComboBox>
+                    <Label x:Name="ValueLabel6" Content="Text 6:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <TextBox x:Name="ValueTextBox6" TextWrapping="Wrap" Text="" Width="160" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Vertical" Margin="20,0,0,0">
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="FButtonLabel1" Content="F-Button Left: " Width="110" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="FButtonCB1" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="FButtonCB1_SelectionChanged" >
+                    </ComboBox>
+                    <Label x:Name="ColorLabel1" Content="Color:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <ComboBox x:Name="ColorCB1" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                        <ComboBoxItem Content="Red"/>
+                        <ComboBoxItem Content="Green"/>
+                        <ComboBoxItem Content="Yellow"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="FButtonLabel2" Content="F-Button Middle: " Width="110" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="FButtonCB2" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="FButtonCB2_SelectionChanged" >
+                    </ComboBox>
+                    <Label x:Name="ColorLabel2" Content="Color:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <ComboBox x:Name="ColorCB2" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                        <ComboBoxItem Content="Red"/>
+                        <ComboBoxItem Content="Green"/>
+                        <ComboBoxItem Content="Yellow"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="FButtonLabel3" Content="F-Button Right: " Width="110" VerticalContentAlignment="Center" Height="25" FontWeight="Bold"/>
+                    <ComboBox x:Name="FButtonCB3" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0" SelectionChanged="FButtonCB3_SelectionChanged" >
+                    </ComboBox>
+                    <Label x:Name="ColorLabel3" Content="Color:" VerticalContentAlignment="Center" Height="25" Width="50" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <ComboBox x:Name="ColorCB3" Width="100" Height="25" VerticalAlignment="Center" Margin="0,5,0,0">
+                        <ComboBoxItem Content="Red"/>
+                        <ComboBoxItem Content="Green"/>
+                        <ComboBoxItem Content="Yellow"/>
+                    </ComboBox>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <Label x:Name="ImageFileLabel" Content="Image File:" VerticalContentAlignment="Center" Height="25" Width="80" FontWeight="Bold" Margin="5,5,0,0"/>
+                <TextBox x:Name="ImageFileTextBox" TextWrapping="Wrap" Text="" Width="300" VerticalContentAlignment="Center" Height="25" Margin="0,5,0,0"/>
+                <Button x:Name="ImageFileButton" Content="..." Width="25" Height="25" Margin="10,5,0,0" VerticalContentAlignment="Center" Click="ImageFileButton_Click"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal">
+                <Button x:Name="OKButton" Content="OK" Width="85" Height="30" Margin="150,10,0,0" Click="OKButton_Click"/>
+                <Button x:Name="CancelButton" Content="Cancel" Width="85" Height="30" Margin="20,10,0,0" IsCancel="True" Click="CancelButton_Click"/>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+
+</Window>
