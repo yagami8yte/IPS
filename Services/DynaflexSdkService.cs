@@ -734,65 +734,19 @@ namespace IPS.Services
 
         private byte[] GetTlvPayload(byte[] data)
         {
-            // MagTek ARQC format: 2-byte status + F9 template + length + nested TLVs
-            // Example: 01 A0 F9 82 01 9C [nested TLV content...]
+            // SDK demo format: 2-byte big-endian length prefix followed by TLV data
+            // Example: 01 A0 [416 bytes of TLV data starting with F9...]
 
-            if (data.Length < 5)
-                return data;
+            if (data == null || data.Length <= 2)
+                return data ?? Array.Empty<byte>();
 
-            int offset = 0;
+            int tlvLen = ((data[0] & 0xFF) << 8) + (data[1] & 0xFF);
 
-            // Skip 2-byte status header if present (first byte is 01)
-            if (data[0] == 0x01)
+            if (tlvLen > 0 && tlvLen <= data.Length - 2)
             {
-                offset = 2;
-            }
-
-            // Check for F9/FA template tag
-            if (offset < data.Length && (data[offset] == 0xF9 || data[offset] == 0xFA))
-            {
-                offset++; // Skip template tag
-
-                // Parse length (BER-TLV format)
-                int length = 0;
-                if (offset < data.Length)
-                {
-                    if ((data[offset] & 0x80) != 0)
-                    {
-                        int numLenBytes = data[offset] & 0x7F;
-                        offset++;
-                        for (int j = 0; j < numLenBytes && offset < data.Length; j++)
-                        {
-                            length = (length << 8) | data[offset];
-                            offset++;
-                        }
-                    }
-                    else
-                    {
-                        length = data[offset];
-                        offset++;
-                    }
-                }
-
-                // Return the nested TLV content
-                if (offset + length <= data.Length)
-                {
-                    var payload = new byte[length];
-                    Array.Copy(data, offset, payload, 0, length);
-                    return payload;
-                }
-            }
-
-            // Fallback: try old method (2-byte length prefix)
-            if (data.Length > 2)
-            {
-                int tlvLen = (data[0] << 8) + data[1];
-                if (tlvLen > 0 && tlvLen <= data.Length - 2)
-                {
-                    var payload = new byte[tlvLen];
-                    Array.Copy(data, 2, payload, 0, tlvLen);
-                    return payload;
-                }
+                var payload = new byte[tlvLen];
+                Array.Copy(data, 2, payload, 0, tlvLen);
+                return payload;
             }
 
             return data;
@@ -800,13 +754,11 @@ namespace IPS.Services
 
         private Dictionary<string, byte[]> ParseTlv(byte[] data)
         {
-            var result = new Dictionary<string, byte[]>();
-            ParseTlvRecursive(data, result);
-            return result;
-        }
+            // Parse TLV matching SDK demo's MTParser.parseTLV behavior:
+            // - For constructed tags (bit 6 set): DON'T skip value bytes, continue parsing into them
+            // - For primitive tags: skip value bytes after storing
 
-        private void ParseTlvRecursive(byte[] data, Dictionary<string, byte[]> result)
-        {
+            var result = new Dictionary<string, byte[]>();
             int i = 0;
 
             while (i < data.Length)
@@ -857,42 +809,33 @@ namespace IPS.Services
                     i++;
                 }
 
-                // Parse value
-                if (i + length <= data.Length)
+                // Check if constructed (bit 6 set in first tag byte)
+                bool isConstructed = (firstByte & 0x20) != 0;
+
+                if (isConstructed)
                 {
-                    var value = new byte[length];
-                    Array.Copy(data, i, value, 0, length);
-
-                    // Store the value
-                    result[tag] = value;
-
-                    // Check if this is a constructed tag (templates like F0-FF, 70-7F, or bit 6 set)
-                    // These contain nested TLV data that we should also parse
-                    bool isConstructed = (firstByte & 0x20) != 0 ||  // Bit 6 indicates constructed
-                                        (firstByte >= 0xF0 && firstByte <= 0xFF) ||  // F0-FF templates
-                                        (firstByte >= 0x70 && firstByte <= 0x7F) ||  // 70-7F templates
-                                        tag == "82";  // 82 is often a constructed template
-
-                    if (isConstructed && length > 2)
-                    {
-                        // Recursively parse nested TLV
-                        try
-                        {
-                            ParseTlvRecursive(value, result);
-                        }
-                        catch
-                        {
-                            // Ignore parse errors in nested content
-                        }
-                    }
-
-                    i += length;
+                    // Constructed tag: DON'T skip value bytes, parser will continue into nested content
+                    // Just store a marker (SDK stores "[Container]")
+                    result[tag] = Array.Empty<byte>();
                 }
                 else
                 {
-                    break;
+                    // Primitive tag: store value and skip past it
+                    if (i + length <= data.Length)
+                    {
+                        var value = new byte[length];
+                        Array.Copy(data, i, value, 0, length);
+                        result[tag] = value;
+                        i += length;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
+
+            return result;
         }
 
         private string? GetTagHexValue(Dictionary<string, byte[]> tlv, string tag)
